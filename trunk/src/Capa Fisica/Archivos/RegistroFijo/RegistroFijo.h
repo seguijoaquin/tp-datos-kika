@@ -9,8 +9,14 @@ class ArchivoRegistroFijo: public Archivo {
 private:
 
 public:
-	ArchivoRegistroFijo();
+	ArchivoRegistroFijo(string nombre);
 	~ArchivoRegistroFijo();
+	list<Atributo>* leer(int numero,list<tamanioYTipoAtributo>* listaTipoAtributos);
+	void escribir(list<Atributo>* atributos, list<tamanioYTipoAtributo>* listaTipoAtributos);
+private:
+	int cantRegistros;
+	int tamanioRegistros;
+	int proximoEspacioLibre();
 };
 
 #endif
