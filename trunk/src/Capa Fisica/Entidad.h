@@ -7,14 +7,20 @@
 
 using namespace std;
 
-enum tipoAtributo{
+enum TipoAtributo{
 	ENTERO,
 	STRING,
 	INSTANCIA
 };
 
+enum TipoArchivo{
+	FIJO,
+	VARIABLE,
+	BLOQUES
+};
+
 struct atributo{
-	tipoAtributo tipo;
+	TipoAtributo tipo;
 	int cantidadID; //cantidad de bytes si es entero/string, ID si es entidad
 };
 
@@ -23,6 +29,7 @@ private:
 	list<atributo>* listaAtributos;
 	string nombre;
 	int ID;
+	TipoArchivo tipoArchivo;
 public:
 	Entidad(list<atributo>* listaAtributos,string nombre, int ID);
 	~Entidad();

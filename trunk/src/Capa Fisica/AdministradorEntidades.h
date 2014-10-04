@@ -10,7 +10,7 @@ using namespace std;
 class AdministradorEntidades {
 private:
 	list<Entidad>* listaEntidades;
-
+	int ultimoID;
 public:
 	AdministradorEntidades();
 	~AdministradorEntidades();
