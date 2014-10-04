@@ -1,11 +1,7 @@
 #ifndef ENTIDAD
 #define ENTIDAD
 
-#include <iostream>
-#include <list>
-#include <string.h>
-
-using namespace std;
+#include "Instancia.h"
 
 enum TipoAtributo{
 	ENTERO,
@@ -19,21 +15,22 @@ enum TipoArchivo{
 	BLOQUES
 };
 
-struct atributo{
+struct tamanioYTipoAtributo{
 	TipoAtributo tipo;
-	int cantidadID; //cantidad de bytes si es entero/string, ID si es entidad
+	int cantidadBytes; //cantidad de bytes del tipo de Atributo
 };
 
 class Entidad {
 private:
-	list<atributo>* listaAtributos;
+	list<tamanioYTipoAtributo>* listaAtributos;
 	string nombre;
 	int ID;
 	TipoArchivo tipoArchivo;
+	list<Instancia>* instancias;
 public:
-	Entidad(list<atributo>* listaAtributos,string nombre, int ID);
+	Entidad(list<tamanioYTipoAtributo>* listaAtributos,string nombre, int ID);
 	~Entidad();
-	list<atributo>* getListaAtributos();
+	list<tamanioYTipoAtributo>* getListaAtributos();
 	string getNombre();
 	int getID();
 };
