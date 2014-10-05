@@ -13,6 +13,7 @@ public:
 	~ArchivoRegistroFijo();
 	list<Atributo>* leer(int numero,list<tamanioYTipoAtributo>* listaTipoAtributos);
 	void escribir(list<Atributo>* atributos, list<tamanioYTipoAtributo>* listaTipoAtributos);
+	int getCantidad();
 private:
 	int cantRegistros;
 	int tamanioRegistros;

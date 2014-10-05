@@ -12,3 +12,7 @@ Instancia::~Instancia(){
 list<Atributo>* Instancia::getListaAtributos(){
 	return this->listaAtributos;
 }
+
+void Instancia::setListaAtributos(list<Atributo>* lista){
+	this->listaAtributos = lista;
+}
