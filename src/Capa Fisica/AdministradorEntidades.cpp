@@ -42,6 +42,8 @@ void AdministradorEntidades::menuUsuario(){
 			e2->listarInstancias();
 			break;
 	}
+	delete e1;
+	delete e2;
 }
 
 void AdministradorEntidades::crearEntidad(){
