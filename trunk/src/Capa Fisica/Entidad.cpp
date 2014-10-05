@@ -18,6 +18,7 @@ Entidad::Entidad(list<tamanioYTipoAtributo>* listaAtributos,string nombre, int I
 
 Entidad::~Entidad(){
 	delete this->listaAtributos;
+	delete this->archivo;
 }
 
 list<tamanioYTipoAtributo>* Entidad::getListaAtributos(){
