@@ -22,7 +22,7 @@ public:
 	int getCantidad();
 
 private:
-	vector<espacioInstancia> vectorMapaBits;
+	vector<espacioInstancia> vectorMapaBits; //el mapa indica la ubicacion de cada instancia
 	int cantInstancias;
 	int proximoEspacioLibre(int tamanioInstancia);
 	void leerMapaBits();

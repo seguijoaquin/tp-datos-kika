@@ -112,8 +112,7 @@ void ArchivoRegistroVariable::escribir(list<Atributo>* datosAtributos,list<taman
 			this->archivo.write((char*)&(it2->entero),it->cantidadBytes);
 		}
 	}
-
-
+	this->cantInstancias++;
 }
 
 int ArchivoRegistroVariable::proximoEspacioLibre(int tamanioInstancia){
@@ -158,5 +157,5 @@ int ArchivoRegistroVariable::getCantidad(){
 
 void ArchivoRegistroVariable::borrar(int numeroInstancia){
 	vectorMapaBits.erase(vectorMapaBits.begin() + numeroInstancia);
-	cantInstancias--;
+	this->cantInstancias--;
 }
