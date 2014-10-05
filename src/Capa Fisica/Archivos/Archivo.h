@@ -7,6 +7,7 @@ using namespace std;
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <vector>
 #include "../../constantes.h"
 
 struct Atributo{
@@ -42,6 +43,8 @@ public:
 	//tres de la 1era instancia y los otros tres de la 2da.
 	virtual list<Atributo>* leer(int numero,list<tamanioYTipoAtributo>* listaTipoAtributos);	//numero = numero de registro/instancia/bloque.
 	virtual void escribir(list<Atributo>* atributos, list<tamanioYTipoAtributo>* listaTipoAtributos);
+	virtual void borrar(int numero);
+
 protected:
 	fstream archivo;
 	string nombreArchivo;

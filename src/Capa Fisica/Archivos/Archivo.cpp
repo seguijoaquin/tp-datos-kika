@@ -20,3 +20,7 @@ void Archivo::escribir(list<Atributo>* atributos,list<tamanioYTipoAtributo>* lis
 int Archivo::getCantidad(){
 	return 0;
 }
+
+void Archivo::borrar(int numero){
+
+}
