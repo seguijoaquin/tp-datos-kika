@@ -57,7 +57,7 @@ void Entidad::leerInstancias(){
 	for (int i = 0; i < this->archivo->getCantidad(); i++) {
 		list<Atributo>* listaDatosAtributos = this->archivo->leer(i,this->listaAtributos);
 		if (listaDatosAtributos != NULL) { //Si es null no hay ninguna instancia en ese registro/bloque (para fijos y bloques)
-			cout<<"Pepe"<<endl;
+
 			if ((listaDatosAtributos->size() % this->listaAtributos->size()) == 0) {	//Se leyo una cant entera de instancias
 				int cantidadInstancias = listaDatosAtributos->size() / this->listaAtributos->size();
 				list<Atributo>::iterator it = listaDatosAtributos->begin();
@@ -66,7 +66,6 @@ void Entidad::leerInstancias(){
 					list<Atributo>* listaNueva = new list<Atributo>;
 					for (unsigned int i = 0; i < this->listaAtributos->size() && it != listaDatosAtributos->end(); it++,i++) {
 						listaNueva->push_back(*it);
-						cout<<"Pepe"<<endl;
 					}
 					instancia->setListaAtributos(listaNueva);
 					this->instancias->push_back(instancia);
@@ -82,10 +81,19 @@ void Entidad::listarInstancias(){
 		list<tamanioYTipoAtributo>::iterator it3 = this->listaAtributos->begin();
 		for (list<Atributo>::iterator it2 = (*it)->getListaAtributos()->begin(); it2 != (*it)->getListaAtributos()->end();it2++,it3++){
 			if (it3->tipo == TEXTO) {
-				cout<<it2->texto<<endl;
+				cout<<it2->texto<<" ";
 			} else {
-				cout<<it2->entero<<endl;
+				cout<<it2->entero<<" ";
 			}
 		}
+		cout<<endl;
 	}
+}
+
+void Entidad::borrar(int numero) {
+	this->archivo->borrar(numero);
+}
+
+int Entidad::getCantidad(){
+	return this->archivo->getCantidad();
 }

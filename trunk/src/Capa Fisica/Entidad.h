@@ -24,6 +24,8 @@ public:
 	int getID();
 	void leerInstancias();
 	void listarInstancias();
+	void borrar(int numero);
+	int getCantidad();
 };
 
 #endif
