@@ -81,18 +81,15 @@ void ArchivoRegistroFijo::escribir(list<Atributo>* datosAtributos,list<tamanioYT
 	if (datosAtributos->size() != listaTipoAtributos->size()) {
 		return;//Tirar excepcion
 	}
-	cout<<"Pepe1"<<this->archivo.tellp();cout<<endl;
 	list<Atributo>::iterator it2 = datosAtributos->begin();
 	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		if (it->tipo == TEXTO) {
 			this->archivo.write(it2->texto,it->cantidadBytes);
 		} else {
-			cout<<it2->entero<<" "<<it->cantidadBytes<<endl;
 			this->archivo.write((char*)&it2->entero,it->cantidadBytes);
 		}
 		it2++;
 	}
-	cout<<"Pepe"<<endl;
 
 }
 

@@ -6,6 +6,8 @@ ArchivoRegistroVariable::ArchivoRegistroVariable(string nombre){
 	if (!this->archivo) { //Si no existe
 		this->archivo.open(nombre.c_str(),ios::in | ios::out | ios::binary | ios::trunc);
 		this->cantInstancias = 0;
+		archivo.seekp(0,ios::beg);
+		archivo.write((char*)&this->cantInstancias, sizeof(this->cantInstancias));
 	} else {
 		this->archivo.seekg(0,ios::beg);
 		this->archivo.read((char*)&this->cantInstancias, sizeof(this->cantInstancias)); //El primer dato que hay en archivo es la cant de registros.
@@ -16,6 +18,7 @@ ArchivoRegistroVariable::ArchivoRegistroVariable(string nombre){
 }
 
 ArchivoRegistroVariable::~ArchivoRegistroVariable(){
+
 	this->escribirMapaBits();
 	archivo.seekp(0, ios::beg);
 	archivo.write((char*)&this->cantInstancias, sizeof(this->cantInstancias));
@@ -58,9 +61,7 @@ void ArchivoRegistroVariable::escribirMapaBits(){
 list<Atributo>* ArchivoRegistroVariable::leer(int numeroRegistro, list<tamanioYTipoAtributo>* listaTipoAtributos){
 	list<Atributo>* listaAtributos = new list<Atributo>;
 	if (numeroRegistro > this->cantInstancias) return NULL; // O throw exception
-
 	this->archivo.seekg(this->vectorMapaBits[numeroRegistro].inicio,ios::beg);
-
 	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		Atributo aux;
 		if (it->tipo == TEXTO) {
@@ -70,13 +71,15 @@ list<Atributo>* ArchivoRegistroVariable::leer(int numeroRegistro, list<tamanioYT
 			while (buffer[i] != separadorString && i < maxCantidadCaracteres) { //leo hasta encontrar caracter separador
 				i++;
 				this->archivo.read(&buffer[i],1);
+
 			}
 			if (buffer[i] == separadorString) {
-				strcpy(aux.texto,buffer);
+				aux.texto = new char[i+1];
+				strncpy(aux.texto,buffer,i);
+				aux.texto[i] = NULL;
 			} else {
 				cout<<"Error leyendo"<<endl; //Hubo algun error
 			}
-
 		} else {
 			this->archivo.read((char*)&aux.entero,it->cantidadBytes);
 		}
@@ -90,7 +93,6 @@ void ArchivoRegistroVariable::escribir(list<Atributo>* datosAtributos,list<taman
 	if (datosAtributos->size() != listaTipoAtributos->size()) {
 		return;//Tirar excepcion
 	}
-
 	int tamanioInstancia = 0;
 	list<Atributo>::iterator it2 = datosAtributos->begin();
 	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end();it++,it2++){
@@ -102,7 +104,6 @@ void ArchivoRegistroVariable::escribir(list<Atributo>* datosAtributos,list<taman
 	}
 	int proximoEspacioLibre = this->proximoEspacioLibre(tamanioInstancia);
 	this->archivo.seekp(proximoEspacioLibre,ios::beg);
-
 	it2 = datosAtributos->begin();
 	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++,it2++) {
 		if (it->tipo == TEXTO) {
@@ -119,6 +120,13 @@ int ArchivoRegistroVariable::proximoEspacioLibre(int tamanioInstancia){
 
 	vector<espacioInstancia>::iterator it = vectorMapaBits.begin();
 	unsigned int i = 0;
+	if (vectorMapaBits.size() == 0) { //No hay ninguna instancia
+		espacioInstancia espacio;
+		espacio.inicio = sizeof(this->cantInstancias);
+		espacio.fin = espacio.inicio + tamanioInstancia;
+		vectorMapaBits.push_back(espacio);
+		return espacio.inicio;
+	}
 	int espacioLibre = vectorMapaBits[i].inicio - sizeof(this->cantInstancias); //Primer espacio libre entre 1er dato de archivo(cantInstancias) y primer instancia
 	if(espacioLibre >= tamanioInstancia){ //si el dato entra en uno de los espacios libres
 		espacioInstancia espacio;
