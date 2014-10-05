@@ -117,10 +117,6 @@ void ArchivoRegistroVariable::escribir(list<Atributo>* datosAtributos,list<taman
 
 int ArchivoRegistroVariable::proximoEspacioLibre(int tamanioInstancia){
 
-	bool espacioEncontrado = false;
-	unsigned int posicionRegistro;
-	//unsigned int largoCadena = strlen(registro);
-	//unsigned int tamanioDato = sizeof(largoCadena) + largoCadena;
 	vector<espacioInstancia>::iterator it = vectorMapaBits.begin();
 	unsigned int i = 0;
 	int espacioLibre = vectorMapaBits[i].inicio - sizeof(this->cantInstancias); //Primer espacio libre entre 1er dato de archivo(cantInstancias) y primer instancia
@@ -132,7 +128,7 @@ int ArchivoRegistroVariable::proximoEspacioLibre(int tamanioInstancia){
 		return espacio.inicio;
 	}
 	it++;
-	for(i=1; ((i< vectorMapaBits.size()) && (!espacioEncontrado)) ; i++,it++){
+	for(i=1; i< vectorMapaBits.size()  ; i++,it++){
 		espacioLibre = vectorMapaBits[i].inicio - vectorMapaBits[i-1].fin;
 		if(espacioLibre >= tamanioInstancia){ //si el dato entra en uno de los espacios libres
 

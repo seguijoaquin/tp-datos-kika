@@ -1,11 +1,15 @@
 #include "RegistroFijo.h"
 
 
-ArchivoRegistroFijo::ArchivoRegistroFijo(string nombre){
-	this->archivo.open(nombre.c_str(),ios::in | ios::out | ios::binary);
+ArchivoRegistroFijo::ArchivoRegistroFijo(string nombre, int tam){
+	this->tamanioRegistros = tam;
+	this->archivo.open(nombre.c_str(),fstream::in | fstream::out | fstream::binary);
 	if (!this->archivo) { //Si no existe
-		this->archivo.open(nombre.c_str(),ios::in | ios::out | ios::binary | ios::trunc);
+		this->archivo.open(nombre.c_str(),fstream::in | fstream::out | fstream::binary | fstream::trunc);
 		this->cantRegistros = 0;
+		this->archivo.seekp(0,ios::beg);
+		archivo.write((char*)&this->cantRegistros, sizeof(this->cantRegistros));
+		archivo.write((char*)&this->tamanioRegistros, sizeof(this->tamanioRegistros));
 	} else {
 		this->archivo.seekg(0,ios::beg);
 		this->archivo.read((char*)&this->cantRegistros, sizeof(this->cantRegistros)); //El primer dato que hay en archivo es la cant de registros.
@@ -77,15 +81,18 @@ void ArchivoRegistroFijo::escribir(list<Atributo>* datosAtributos,list<tamanioYT
 	if (datosAtributos->size() != listaTipoAtributos->size()) {
 		return;//Tirar excepcion
 	}
+	cout<<"Pepe1"<<this->archivo.tellp();cout<<endl;
 	list<Atributo>::iterator it2 = datosAtributos->begin();
 	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		if (it->tipo == TEXTO) {
 			this->archivo.write(it2->texto,it->cantidadBytes);
 		} else {
-			this->archivo.write((char*)&(it2->entero),it->cantidadBytes);
+			cout<<it2->entero<<" "<<it->cantidadBytes<<endl;
+			this->archivo.write((char*)&it2->entero,it->cantidadBytes);
 		}
 		it2++;
 	}
+	cout<<"Pepe"<<endl;
 
 }
 
