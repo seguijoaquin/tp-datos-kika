@@ -5,12 +5,28 @@
 
 using namespace std;
 
+struct espacioInstancia{
+	int inicio;
+	int fin;
+};
+
 class ArchivoRegistroVariable: public Archivo {
 private:
 
 public:
-	ArchivoRegistroVariable();
+	ArchivoRegistroVariable(string nombre);
 	~ArchivoRegistroVariable();
+	list<Atributo>* leer(int numero,list<tamanioYTipoAtributo>* listaTipoAtributos);
+	void escribir(list<Atributo>* atributos, list<tamanioYTipoAtributo>* listaTipoAtributos);
+	void borrar(int numero);
+	int getCantidad();
+
+private:
+	vector<espacioInstancia> vectorMapaBits;
+	int cantInstancias;
+	int proximoEspacioLibre(int tamanioInstancia);
+	void leerMapaBits();
+	void escribirMapaBits();
 };
 
 #endif
