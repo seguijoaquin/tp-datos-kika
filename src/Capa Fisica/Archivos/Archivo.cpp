@@ -16,3 +16,7 @@ list<Atributo>* Archivo::leer(int numero,list<tamanioYTipoAtributo>* listaTipoAt
 void Archivo::escribir(list<Atributo>* atributos,list<tamanioYTipoAtributo>* listaTipoAtributos){
 
 }
+
+int Archivo::getCantidad(){
+	return 0;
+}

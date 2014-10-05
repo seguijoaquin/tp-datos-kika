@@ -51,6 +51,11 @@ void ArchivoRegistroFijo::escribir(list<Atributo>* atributos,list<tamanioYTipoAt
 	}
 
 }
- int ArchivoRegistroFijo::proximoEspacioLibre(){
-	 return 0;
- }
+
+int ArchivoRegistroFijo::proximoEspacioLibre(){
+	return 0;
+}
+
+int ArchivoRegistroFijo::getCantidad(){
+	return this->cantRegistros;
+}

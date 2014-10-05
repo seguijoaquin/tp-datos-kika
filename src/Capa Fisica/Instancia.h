@@ -4,21 +4,20 @@
 #include <iostream>
 #include <list>
 #include <string.h>
+#include "Archivos/Archivo.h"
 
 using namespace std;
 
-struct Atributo{
-	int entero;	//Si es una instancia se guarda el ID
-	string texto;
-};
+
 
 class Instancia {
 private:
-	list<Atributo> listaAtributos;
+	list<Atributo>* listaAtributos;
 public:
 	Instancia();
 	~Instancia();
-	list<Atributo>* getListaAtributos()
+	list<Atributo>* getListaAtributos();
+	void setListaAtributos(list<Atributo>* lista);
 };
 
 #endif
