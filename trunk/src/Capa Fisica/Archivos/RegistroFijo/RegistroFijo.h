@@ -13,11 +13,17 @@ public:
 	~ArchivoRegistroFijo();
 	list<Atributo>* leer(int numero,list<tamanioYTipoAtributo>* listaTipoAtributos);
 	void escribir(list<Atributo>* atributos, list<tamanioYTipoAtributo>* listaTipoAtributos);
+	void borrar(int numero);
 	int getCantidad();
+
+
 private:
+	vector<char> vectorMapaBits;
 	int cantRegistros;
 	int tamanioRegistros;
 	int proximoEspacioLibre();
+	void leerMapaBits();
+	void escribirMapaBits();
 };
 
 #endif
