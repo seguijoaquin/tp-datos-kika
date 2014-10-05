@@ -46,6 +46,7 @@ void Entidad::leerInstancias(){
 					instancia->setListaAtributos(listaNueva);
 					this->instancias->push_back(instancia);
 				}
+				delete listaDatosAtributos;
 			}
 		}
 	}
