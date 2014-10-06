@@ -19,7 +19,7 @@ using namespace std;
 class ArchivoBloque: public Archivo {
 public:
 
-        ArchivoBloque(string nombre);
+        ArchivoBloque(string nombre,int tamanio);
         ~ArchivoBloque();
         void agregarAtributo(Atributo* atributo);
         int getCantidad();

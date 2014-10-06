@@ -26,6 +26,7 @@ public:
 	void listarInstancias();
 	void borrar(int numero);
 	int getCantidad();
+	int getTamanioMaxInstancia();
 };
 
 #endif

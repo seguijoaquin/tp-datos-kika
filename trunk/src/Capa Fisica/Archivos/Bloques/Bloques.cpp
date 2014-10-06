@@ -1,9 +1,8 @@
 #include "Bloques.h"
 
 
-ArchivoBloque::ArchivoBloque(string nombre) {
-	int tamaniodebloque = 16 ; // esto esta hardcodeado, falta hacer un lector que lea el tamanio del bloque
-	this->tamanioBloque = tamaniodebloque;
+ArchivoBloque::ArchivoBloque(string nombre, int tamanio) {
+	this->tamanioBloque = maxInstanciasEnBloque * tamanio;
 	this->bloqueActual = 0;
     archivo.open(nombre.c_str(), fstream::in | fstream::out | fstream::binary);
     if(!archivo){ // si no existe, crear archivo nuevo
@@ -24,6 +23,7 @@ ArchivoBloque::~ArchivoBloque() {
         escribirEspaciosLibres();
         archivo.seekp(0, ios::beg);
         archivo.write((char*)&cantidadBloques, sizeof(cantidadBloques));
+        archivo.write((char*)&tamanioBloque, sizeof(tamanioBloque));
         archivo.close();
 }
 
@@ -44,19 +44,17 @@ void ArchivoBloque::leerMapaBloques(){
         	archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary | fstream::app);
 
         int bloqueActual = 0;
-		char cantInstanciasBloque;
-		char espacioLibreBloque;
-		archivoMapaBloques.read((char*)&cantInstanciasBloque, sizeof(char));
-		archivoMapaBloques.read((char*)&espacioLibreBloque, sizeof(char));
+		int cantInstanciasBloque;
+		int espacioLibreBloque;
+		archivoMapaBloques.read((char*)&cantInstanciasBloque, sizeof(cantInstanciasBloque));
+		archivoMapaBloques.read((char*)&espacioLibreBloque, sizeof(espacioLibreBloque));
 		while(!archivoMapaBloques.eof()){
 			Bloque* bloque = new Bloque(this->tamanioBloque);
 			bloque->setCantInstancias(cantInstanciasBloque);
 			bloque->setEspacioLibre(espacioLibreBloque);
 			this->vectorBloques.push_back(bloque);
-			//this->vectorBloques[bloqueActual]->setCantInstancias(cantInstanciasBloque);
-			//this->vectorBloques[bloqueActual]->setEspacioLibre( espacioLibreBloque);
-			archivoMapaBloques.read((char*)&cantInstanciasBloque, sizeof(char));
-			archivoMapaBloques.read((char*)&espacioLibreBloque, sizeof(char));
+			archivoMapaBloques.read((char*)&cantInstanciasBloque, sizeof(cantInstanciasBloque));
+			archivoMapaBloques.read((char*)&espacioLibreBloque, sizeof(espacioLibreBloque));
 			bloqueActual++;
 		}
 
@@ -69,10 +67,14 @@ void ArchivoBloque::escribirEspaciosLibres(){
         ofstream archivoMapaBloques;
         archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary);
         archivoMapaBloques.seekp(0, ios::beg);
+
         for(unsigned int i=0; i< this->cantidadBloques; i++){
-        	archivoMapaBloques.write((char*)(this->vectorBloques[i]->getCantInstancias()), sizeof(char));
-        	archivoMapaBloques.write((char*)(this->vectorBloques[i]->getEspacioLibre()), sizeof(char));
+        	int cantInstancias = this->vectorBloques[i]->getCantInstancias();
+        	int espacioLibre = this->vectorBloques[i]->getEspacioLibre();
+        	archivoMapaBloques.write((char*)&cantInstancias, sizeof(this->vectorBloques[i]->getCantInstancias()));
+        	archivoMapaBloques.write((char*)&espacioLibre, sizeof(this->vectorBloques[i]->getEspacioLibre()));
         }
+
         archivoMapaBloques.close();
 }
 
@@ -87,10 +89,10 @@ void ArchivoBloque::escribir(list<Atributo>* datosAtributos,list<tamanioYTipoAtr
 			tamanioInstancia += sizeof(it2->entero);
 		}
 	}
+
 	//tamanioInstancia+=1; //Por caracter separador instancias.
 	int proximoEspacioLibre = this->siguientePosicionLibre(tamanioInstancia);
 	this->archivo.seekp(proximoEspacioLibre,ios::beg);
-
 	it2 = datosAtributos->begin();
 	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++,it2++) {
 		if (it->tipo == TEXTO) {
@@ -101,57 +103,24 @@ void ArchivoBloque::escribir(list<Atributo>* datosAtributos,list<tamanioYTipoAtr
 		}
 	}
 	this->vectorBloques[this->bloqueActual]->incrementarInstancias();
-	//this->archivo.write(&separadorInstancia,1);
-
-//	//Bloque* bloque = new Bloque(this->tamanioBloque);
-//	list<Atributo>::iterator it2 = datosAtributos->begin();
-//
-//	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
-//		Atributo* atributo = new Atributo();
-//		if (it->tipo == TEXTO) {
-//			atributo->texto = it2->texto;
-//			bloque->agregarAtributo(atributo);
-//
-//			//this->archivo.write(it2->texto,it->cantidadBytes);
-//		} else {
-//			cout<<it2->entero<<" "<<it->cantidadBytes<<endl;
-//			atributo->entero = it2->entero;
-//			bloque->agregarAtributo(atributo);
-//			//this->archivo.write((char*)&it2->entero,it->cantidadBytes);
-//		}
-//		it2++;
-//	}
-//
-//		//if(bloque->getTamanio() > tamanioBloque) return -1; // ERROR DE TAMANIO OVERFLOW EN EL BLOQUE
-//
-//        unsigned int posicion = this->siguientePosicionLibre();
-//        archivo.seekp(sizeof(cantidadBloques) + posicion*tamanioBloque, ios::beg);
-//        archivo.write((char*)bloque, sizeof(bloque));
-//        cantidadBloques++;
-//
-//        //return posicion;
+	this->vectorBloques[this->bloqueActual]->setEspacioLibre(this->vectorBloques[this->bloqueActual]->getEspacioLibre() - tamanioInstancia);
 }
 
 unsigned int ArchivoBloque::siguientePosicionLibre(int tamanioInstancia){
 
-	for (int i = 0; i < this->cantidadBloques; i++){
+	for (unsigned int i = 0; i < this->cantidadBloques; i++){
 		Bloque* bloque = this->vectorBloques[i];
-		if(bloque->getEspacioLibre() > tamanioInstancia){
+		if(bloque->getEspacioLibre() >= tamanioInstancia){
 			this->bloqueActual = i;
-			bloque->setEspacioLibre(bloque->getEspacioLibre() - tamanioInstancia);
 			return (sizeof(this->cantidadBloques) + sizeof(this->tamanioBloque) + (i * this->tamanioBloque) + (this->tamanioBloque - bloque->getEspacioLibre()));
 		}
 	}
 	//Hay que crear bloque nuevo
 	this->bloqueActual = cantidadBloques;
 	this->cantidadBloques++;
-	this->archivo.seekp(0,ios::end);
-	char* x = new char[this->tamanioBloque];
-	this->archivo.write(x,this->tamanioBloque);
-
 	//Actualizo vectorBloques
 	Bloque* bloque = new Bloque(this->tamanioBloque);
-	bloque->setEspacioLibre(this->tamanioBloque - tamanioInstancia);
+	bloque->setCantInstancias(0);
 	this->vectorBloques.push_back(bloque);
 
 	return (sizeof(this->cantidadBloques) + sizeof(this->tamanioBloque) + this->bloqueActual * this->tamanioBloque);
@@ -162,13 +131,10 @@ list<Atributo>* ArchivoBloque::leer(int numeroBloque, list<tamanioYTipoAtributo>
 	list<Atributo>* listaAtributos = new list<Atributo>;
 	if (numeroBloque > this->cantidadBloques) return NULL; // O throw exception
 	if (this->vectorBloques[numeroBloque]->getCantInstancias() == 0) return NULL;
-
 	this->archivo.seekg(sizeof(this->cantidadBloques) + sizeof(this->tamanioBloque) + numeroBloque * this->tamanioBloque,ios::beg);
 	for(int i = 0; i < this->vectorBloques[numeroBloque]->getCantInstancias(); i++) {
 		for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 			Atributo aux;
-			Bloque* bloque = new Bloque(this->tamanioBloque);
-
 			if (it->tipo == TEXTO) {
 				char* buffer = new char[maxCantidadCaracteres + 1]; //+1 por separador
 				int i = 0;
