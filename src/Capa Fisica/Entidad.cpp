@@ -12,7 +12,7 @@ Entidad::Entidad(list<tamanioYTipoAtributo>* listaAtributos,string nombre, int I
 	}
 	if (tipoArchivo == FIJO) this->archivo = new ArchivoRegistroFijo(nombre,tam);
 	else if (tipoArchivo == VARIABLE) this->archivo = new ArchivoRegistroVariable(nombre);
-	else if (tipoArchivo == DEBLOQUES) this->archivo = new ArchivoBloque(nombre);
+	else if (tipoArchivo == DEBLOQUES) this->archivo = new ArchivoBloque(nombre,this->getTamanioMaxInstancia());
 }
 
 
@@ -54,6 +54,7 @@ void Entidad::crearInstancia(){
 }
 
 void Entidad::leerInstancias(){
+	cout<<"Cant: "<<this->archivo->getCantidad()<<endl;
 	for (int i = 0; i < this->archivo->getCantidad(); i++) {
 		list<Atributo>* listaDatosAtributos = this->archivo->leer(i,this->listaAtributos);
 		if (listaDatosAtributos != NULL) { //Si es null no hay ninguna instancia en ese registro/bloque (para fijos y bloques)
@@ -96,4 +97,16 @@ void Entidad::borrar(int numero) {
 
 int Entidad::getCantidad(){
 	return this->archivo->getCantidad();
+}
+
+int Entidad::getTamanioMaxInstancia(){
+	int tamanio = 0;
+	for (list<tamanioYTipoAtributo>::iterator it = this->listaAtributos->begin(); it != this->listaAtributos->end();it++){
+		if (it->tipo == TEXTO) {
+			tamanio += it->cantidadBytes + 1; //+1 por el caracter separador
+		} else {
+			tamanio += it->cantidadBytes;
+		}
+	}
+	return tamanio;
 }

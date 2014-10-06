@@ -19,25 +19,16 @@ class Bloque {
 public:
 	Bloque(int tamaniodelbloque);
 	virtual ~Bloque();
-	void agregarInstancia(Instancia* instancia);
-	void agregarAtributo(Atributo* atributo);
 	int getCantInstancias();
-	int getCantAtributos();
 	int getTamanio();
 	int getEspacioLibre();
 	void setEspacioLibre(int cant);
 	void setCantInstancias(int cant);
 	void incrementarInstancias();
 
-
-
-
 private:
-	vector<Instancia*> vectorInstancias;
-	vector<Atributo*> vectorAtributos;
 	int tamanio;
 	int cantInstancias;
-	int cantAtributos;
 	int espacioLibre;
 
 };
