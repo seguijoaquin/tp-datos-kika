@@ -24,6 +24,10 @@ public:
 	int getCantInstancias();
 	int getCantAtributos();
 	int getTamanio();
+	int getEspacioLibre();
+	void setEspacioLibre(int cant);
+	void setCantInstancias(int cant);
+	void incrementarInstancias();
 
 
 
@@ -34,6 +38,8 @@ private:
 	int tamanio;
 	int cantInstancias;
 	int cantAtributos;
+	int espacioLibre;
+
 };
 
 #endif /* BLOQUE_H_ */

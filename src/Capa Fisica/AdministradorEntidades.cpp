@@ -18,9 +18,7 @@ void AdministradorEntidades::menuUsuario(){
 	t1.cantidadBytes = sizeof(int); t1.tipo = ENTERO; l1->push_back(t1);
 	t1.cantidadBytes = sizeof(int); t1.tipo = ENTERO; l1->push_back(t1);
 	Entidad* e1 = new Entidad(l1,"ent1",0,DEBLOQUES);
-	printf(" MUERE ACA \n");
 	e1->leerInstancias();
-	printf(" MUERE ACA2 \n");
 	//e1 tiene 2 enteros
 	list<tamanioYTipoAtributo>* l2 = new list<tamanioYTipoAtributo>;
 	t1.cantidadBytes = sizeof(int); t1.tipo = ENTERO; l2->push_back(t1);
