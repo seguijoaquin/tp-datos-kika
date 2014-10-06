@@ -19,32 +19,22 @@ using namespace std;
 class ArchivoBloque: public Archivo {
 public:
 
-        //puede lanzar ExcepcionBloqueIncorrecto
         ArchivoBloque(string nombre);
         ~ArchivoBloque();
         void agregarAtributo(Atributo* atributo);
         int getCantidad();
 
-        //puede lanzar ExcepcionOverflowTamBloque
         void escribir(list<Atributo>* datosAtributos,list<tamanioYTipoAtributo>* listaTipoAtributos);
 
-        //puede lanzar ExcepcionOverflowTamBloque y ExcepcionBloqueInexistente
-        int reescribir(Bloque* bloque, unsigned int numeroBloque);
         list<Atributo>* leer(int numeroRegistro, list<tamanioYTipoAtributo>* listaTipoAtributos);
 
-        //puede lanzar ExcepcionBloqueInexistente
-        int borrar(unsigned int numBloque);
+        void borrar(unsigned int numBloque);
         unsigned int getCantidadBloques();
         unsigned int getTamanoBloque();
 
 private:
-        int tamanio;
-        int cantInstancias;
         int bloqueActual;
-        Bloque** vectorBloques;
-        //vector<Instancia> vectorInstancias;
-       // vector<int> vectorAtributos;
-        vector<char> vectorMapaBits;
+        vector<Bloque*> vectorBloques;
         unsigned int tamanioBloque;
         unsigned int cantidadBloques;
         bool esMultiplo(int tamanioBloque);
