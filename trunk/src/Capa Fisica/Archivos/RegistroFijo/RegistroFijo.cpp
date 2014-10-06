@@ -66,7 +66,8 @@ list<Atributo>* ArchivoRegistroFijo::leer(int numeroRegistro, list<tamanioYTipoA
 	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		Atributo aux;
 		if (it->tipo == TEXTO) {
-			this->archivo.read((char*)&aux.texto,it->cantidadBytes);
+			aux.texto = new char[it->cantidadBytes];
+			this->archivo.read(aux.texto,it->cantidadBytes);
 		} else {
 			this->archivo.read((char*)&aux.entero,it->cantidadBytes);
 		}
@@ -84,7 +85,11 @@ void ArchivoRegistroFijo::escribir(list<Atributo>* datosAtributos,list<tamanioYT
 	list<Atributo>::iterator it2 = datosAtributos->begin();
 	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		if (it->tipo == TEXTO) {
+			int x = this->archivo.tellp();
 			this->archivo.write(it2->texto,it->cantidadBytes);
+			char* y = new char[strlen(it2->texto) + 4];
+			this->archivo.seekg(x,ios::beg);
+			this->archivo.read(y,strlen(it2->texto) + 4);
 		} else {
 			this->archivo.write((char*)&it2->entero,it->cantidadBytes);
 		}
