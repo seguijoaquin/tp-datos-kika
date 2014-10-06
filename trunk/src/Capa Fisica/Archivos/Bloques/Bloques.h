@@ -39,14 +39,17 @@ public:
 
 private:
         int tamanio;
+        int cantInstancias;
+        int bloqueActual;
+        Bloque** vectorBloques;
         //vector<Instancia> vectorInstancias;
        // vector<int> vectorAtributos;
         vector<char> vectorMapaBits;
         unsigned int tamanioBloque;
         unsigned int cantidadBloques;
         bool esMultiplo(int tamanioBloque);
-        unsigned int siguientePosicionLibre();
-        void leerMapaBits();
+        unsigned int siguientePosicionLibre(int tamanioInstancia);
+        void leerMapaBloques();
         void escribirEspaciosLibres();
 };
 
