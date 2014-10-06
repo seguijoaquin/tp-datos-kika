@@ -24,7 +24,7 @@ enum TipoAtributo{
 enum TipoArchivo{
 	FIJO,
 	VARIABLE,
-	BLOQUES
+	DEBLOQUES
 };
 
 struct tamanioYTipoAtributo{

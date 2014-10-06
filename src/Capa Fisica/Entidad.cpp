@@ -12,7 +12,7 @@ Entidad::Entidad(list<tamanioYTipoAtributo>* listaAtributos,string nombre, int I
 	}
 	if (tipoArchivo == FIJO) this->archivo = new ArchivoRegistroFijo(nombre,tam);
 	else if (tipoArchivo == VARIABLE) this->archivo = new ArchivoRegistroVariable(nombre);
-	//else this->archivo = new ArchivoBloques(nombre);
+	else if (tipoArchivo == DEBLOQUES) this->archivo = new ArchivoBloque(nombre);
 }
 
 
