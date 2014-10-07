@@ -116,7 +116,7 @@ int ArchivoRegistroFijo::getCantidad(){
 	return this->cantRegistros;
 }
 
-void ArchivoRegistroFijo::borrar(int IDInstancia){
+int ArchivoRegistroFijo::borrar(int IDInstancia){
 	bool encontrado = false;
 	for (int i = 0; (i < this->getCantidad()) && (!encontrado);i++){
 		if (vectorMapaBits[i] == '1') {
@@ -126,9 +126,11 @@ void ArchivoRegistroFijo::borrar(int IDInstancia){
 			if (ID == IDInstancia) {
 				encontrado = true;
 				this->vectorMapaBits[i] = '0';
+				return 1;
 			}
 		}
 	}
+	return 0;
 
 	/*if(numeroRegistro >= vectorMapaBits.size()) {return; }//O tiro excepcion
 

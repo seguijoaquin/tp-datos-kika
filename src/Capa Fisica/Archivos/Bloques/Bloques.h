@@ -28,7 +28,7 @@ public:
 
         list<Atributo>* leer(int numeroRegistro, list<metaDataAtributo>* listaTipoAtributos);
 
-        void borrar(int IDInstancia);
+        int borrar(int IDInstancia);
         unsigned int getCantidadBloques();
         unsigned int getTamanoBloque();
 

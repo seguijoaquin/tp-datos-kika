@@ -13,7 +13,7 @@ public:
 	~ArchivoRegistroFijo();
 	list<Atributo>* leer(int numero,list<metaDataAtributo>* listaTipoAtributos);
 	void escribir(list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
-	void borrar(int IDInstancia);
+	int borrar(int IDInstancia);
 	int getCantidad();
 
 

@@ -2,7 +2,6 @@
 
 
 Instancia::Instancia(){
-
 }
 
 Instancia::~Instancia(){
@@ -15,4 +14,8 @@ list<Atributo>* Instancia::getListaAtributos(){
 
 void Instancia::setListaAtributos(list<Atributo>* lista){
 	this->listaAtributos = lista;
+}
+
+int Instancia::getID(){
+	return this->listaAtributos->front().entero; //el 1er elemento es el ID
 }

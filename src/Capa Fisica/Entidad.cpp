@@ -3,7 +3,6 @@
 
 Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,TipoArchivo tipoArchivo){
 	this->listaAtributos = listaAtributos;
-	this->instancias = new list<Instancia*>;
 	this->nombre = nombre;
 	this->ID = ID;
 	int tam = 0;
@@ -19,6 +18,7 @@ Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,Ti
 Entidad::~Entidad(){
 	delete this->listaAtributos;
 	delete this->archivo;
+	this->instancias.clear();
 }
 
 list<metaDataAtributo>* Entidad::getListaAtributos(){
@@ -50,7 +50,7 @@ void Entidad::crearInstancia(){
 	}
 	Instancia* instancia = new Instancia();
 	instancia->setListaAtributos(listaDatos);
-	this->instancias->push_back(instancia);
+	this->instancias.push_back(instancia);
 	this->archivo->escribir(listaDatos,this->listaAtributos);
 }
 
@@ -69,7 +69,7 @@ void Entidad::leerInstancias(){
 						listaNueva->push_back(*it);
 					}
 					instancia->setListaAtributos(listaNueva);
-					this->instancias->push_back(instancia);
+					this->instancias.push_back(instancia);
 				}
 				delete listaDatosAtributos;
 			}
@@ -78,9 +78,9 @@ void Entidad::leerInstancias(){
 }
 
 void Entidad::listarInstancias(){
-	for (list<Instancia*>::iterator it = this->instancias->begin(); it != this->instancias->end(); it++) {
+	for (unsigned int i = 0; i < this->instancias.size(); i++) {
 		list<metaDataAtributo>::iterator it3 = this->listaAtributos->begin();
-		for (list<Atributo>::iterator it2 = (*it)->getListaAtributos()->begin(); it2 != (*it)->getListaAtributos()->end();it2++,it3++){
+		for (list<Atributo>::iterator it2 = this->instancias[i]->getListaAtributos()->begin(); it2 != this->instancias[i]->getListaAtributos()->end();it2++,it3++){
 			cout<<it3->nombre<<": ";
 			if (it3->tipo == TEXTO) {
 				cout<<it2->texto<<" ";
@@ -93,7 +93,14 @@ void Entidad::listarInstancias(){
 }
 
 void Entidad::borrar(int numero) {
-	this->archivo->borrar(numero);
+	int encontrado = this->archivo->borrar(numero);
+	if (encontrado == 1) {
+		for (unsigned int i = 0; i < this->instancias.size();i++) {
+			if (this->instancias[i]->getID() == numero){
+				this->instancias.erase(this->instancias.begin() + i);
+			}
+		}
+	}
 }
 
 int Entidad::getCantidad(){

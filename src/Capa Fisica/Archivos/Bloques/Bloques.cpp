@@ -174,7 +174,7 @@ unsigned int ArchivoBloque::getTamanoBloque(){
 	return tamanioBloque;
 }
 
-void ArchivoBloque::borrar(int IDInstancia){
+int ArchivoBloque::borrar(int IDInstancia){
 	int pos = this->buscar(IDInstancia);
 	if (pos != -1) {
 		archivo.seekg(pos,ios::beg);
@@ -194,7 +194,9 @@ void ArchivoBloque::borrar(int IDInstancia){
 		archivo.write(buffer,espacioACopiar);
 		this->vectorBloques[bloqueActual]->setCantInstancias(this->vectorBloques[bloqueActual]->getCantInstancias() - 1);
 		this->vectorBloques[bloqueActual]->setEspacioLibre(this->vectorBloques[bloqueActual]->getEspacioLibre() + tamanio);
+		return 1;
 	}
+	return 0;
 }
 
 int ArchivoBloque::buscar(int IDInstancia){
