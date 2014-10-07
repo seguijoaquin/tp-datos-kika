@@ -11,6 +11,8 @@ class Interfaz{
 
 	private:
 		list<string>* opciones;
+		void crear_entidad();
+		void crear_instancia();
 	
 	public:
 		Interfaz();
