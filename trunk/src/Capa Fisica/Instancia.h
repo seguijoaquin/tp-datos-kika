@@ -18,6 +18,7 @@ public:
 	~Instancia();
 	list<Atributo>* getListaAtributos();
 	void setListaAtributos(list<Atributo>* lista);
+	int getID();
 };
 
 #endif

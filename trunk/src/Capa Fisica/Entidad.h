@@ -12,9 +12,10 @@ private:
 	list<metaDataAtributo>* listaAtributos;
 	string nombre;
 	int ID;
+	int ultimoIDInstancia;
 	TipoArchivo tipoArchivo;
 	Archivo* archivo;
-	list<Instancia*>* instancias;
+	vector<Instancia*> instancias;
 public:
 	Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,TipoArchivo tipoArchivo);
 	~Entidad();

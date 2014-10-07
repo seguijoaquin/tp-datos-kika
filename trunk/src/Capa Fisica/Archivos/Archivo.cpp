@@ -21,6 +21,6 @@ int Archivo::getCantidad(){
 	return 0;
 }
 
-void Archivo::borrar(int numero){
-
+int Archivo::borrar(int numero){
+	return 0;
 }

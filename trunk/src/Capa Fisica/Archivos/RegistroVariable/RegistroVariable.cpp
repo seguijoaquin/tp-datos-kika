@@ -159,7 +159,7 @@ int ArchivoRegistroVariable::getCantidad(){
 	return this->cantInstancias;
 }
 
-void ArchivoRegistroVariable::borrar(int IDInstancia){
+int ArchivoRegistroVariable::borrar(int IDInstancia){
 	bool encontrado = false;
 	for (int i = 0; (i < this->getCantidad()) && (!encontrado);i++){
 		this->archivo.seekg(this->vectorMapaBits[i].inicio,ios::beg);
@@ -169,8 +169,10 @@ void ArchivoRegistroVariable::borrar(int IDInstancia){
 			encontrado = true;
 			this->vectorMapaBits.erase(this->vectorMapaBits.begin() + i);
 			this->cantInstancias--;
+			return 1;
 		}
 	}
+	return 0;
 
 	/*vectorMapaBits.erase(vectorMapaBits.begin() + numeroInstancia);
 	this->cantInstancias--;*/
