@@ -24,11 +24,11 @@ public:
         void agregarAtributo(Atributo* atributo);
         int getCantidad();
 
-        void escribir(list<Atributo>* datosAtributos,list<tamanioYTipoAtributo>* listaTipoAtributos);
+        void escribir(list<Atributo>* datosAtributos,list<metaDataAtributo>* listaTipoAtributos);
 
-        list<Atributo>* leer(int numeroRegistro, list<tamanioYTipoAtributo>* listaTipoAtributos);
+        list<Atributo>* leer(int numeroRegistro, list<metaDataAtributo>* listaTipoAtributos);
 
-        void borrar(unsigned int numBloque);
+        void borrar(int IDInstancia);
         unsigned int getCantidadBloques();
         unsigned int getTamanoBloque();
 
@@ -41,6 +41,7 @@ private:
         unsigned int siguientePosicionLibre(int tamanioInstancia);
         void leerMapaBloques();
         void escribirEspaciosLibres();
+        int buscar(int idInstancia);
 };
 
 #endif

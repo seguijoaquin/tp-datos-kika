@@ -56,14 +56,14 @@ void ArchivoRegistroFijo::escribirMapaBits(){
 	archivoMapaBits.close();
 }
 
-list<Atributo>* ArchivoRegistroFijo::leer(int numeroRegistro, list<tamanioYTipoAtributo>* listaTipoAtributos){
+list<Atributo>* ArchivoRegistroFijo::leer(int numeroRegistro, list<metaDataAtributo>* listaTipoAtributos){
 	list<Atributo>* listaAtributos = new list<Atributo>;
 	if (numeroRegistro > this->cantRegistros) return NULL; // O throw exception
 	if (this->vectorMapaBits.at(numeroRegistro) == '0') return NULL;
 
 	this->archivo.seekg(sizeof(this->cantRegistros) + sizeof(this->tamanioRegistros) + numeroRegistro * this->tamanioRegistros,ios::beg);
 
-	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
+	for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		Atributo aux;
 		if (it->tipo == TEXTO) {
 			aux.texto = new char[it->cantidadBytes];
@@ -76,14 +76,14 @@ list<Atributo>* ArchivoRegistroFijo::leer(int numeroRegistro, list<tamanioYTipoA
 	return listaAtributos;
 }
 
-void ArchivoRegistroFijo::escribir(list<Atributo>* datosAtributos,list<tamanioYTipoAtributo>* listaTipoAtributos){
+void ArchivoRegistroFijo::escribir(list<Atributo>* datosAtributos,list<metaDataAtributo>* listaTipoAtributos){
 
 	this->archivo.seekp(sizeof(this->cantRegistros) + sizeof(this->tamanioRegistros) + this->proximoEspacioLibre() * this->tamanioRegistros,ios::beg);
 	if (datosAtributos->size() != listaTipoAtributos->size()) {
 		return;//Tirar excepcion
 	}
 	list<Atributo>::iterator it2 = datosAtributos->begin();
-	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
+	for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		if (it->tipo == TEXTO) {
 			int x = this->archivo.tellp();
 			this->archivo.write(it2->texto,it->cantidadBytes);
@@ -116,8 +116,21 @@ int ArchivoRegistroFijo::getCantidad(){
 	return this->cantRegistros;
 }
 
-void ArchivoRegistroFijo::borrar(int numeroRegistro){
-	if(numeroRegistro >= vectorMapaBits.size()) {return; }//O tiro excepcion
+void ArchivoRegistroFijo::borrar(int IDInstancia){
+	bool encontrado = false;
+	for (int i = 0; (i < this->getCantidad()) && (!encontrado);i++){
+		if (vectorMapaBits[i] == '1') {
+			this->archivo.seekg(sizeof(this->cantRegistros) + sizeof(this->tamanioRegistros) + i * this->tamanioRegistros,ios::beg);
+			int ID;
+			this->archivo.read((char*)&ID,sizeof(ID));
+			if (ID == IDInstancia) {
+				encontrado = true;
+				this->vectorMapaBits[i] = '0';
+			}
+		}
+	}
 
-	vectorMapaBits[numeroRegistro] = '0' ;
+	/*if(numeroRegistro >= vectorMapaBits.size()) {return; }//O tiro excepcion
+
+	vectorMapaBits[numeroRegistro] = '0' ;*/
 }

@@ -13,18 +13,19 @@ void AdministradorEntidades::leerArchivoEntidades(){
 }
 
 void AdministradorEntidades::menuUsuario(){
-	list<tamanioYTipoAtributo>* l1 = new list<tamanioYTipoAtributo>;
-	tamanioYTipoAtributo t1;
-	t1.cantidadBytes = sizeof(int); t1.tipo = ENTERO; l1->push_back(t1);
-	t1.cantidadBytes = sizeof(int); t1.tipo = ENTERO; l1->push_back(t1);
+	list<metaDataAtributo>* l1 = new list<metaDataAtributo>;
+	metaDataAtributo t1;
+	t1.cantidadBytes = sizeof(int); t1.tipo = ENTERO; t1.nombre = "ID";l1->push_back(t1);
+	t1.cantidadBytes = sizeof(int); t1.tipo = TEXTO; t1.nombre = "Nombre";l1->push_back(t1);
+	t1.cantidadBytes = sizeof(int); t1.tipo = ENTERO; t1.nombre = "Nro";l1->push_back(t1);
 	Entidad* e1 = new Entidad(l1,"ent1",0,DEBLOQUES);
 	e1->leerInstancias();
 	//e1 tiene 2 enteros
-	list<tamanioYTipoAtributo>* l2 = new list<tamanioYTipoAtributo>;
-	t1.cantidadBytes = sizeof(int); t1.tipo = ENTERO; l2->push_back(t1);
-	t1.cantidadBytes = 20; t1.tipo = TEXTO; l2->push_back(t1);
+	list<metaDataAtributo>* l2 = new list<metaDataAtributo>;
+	t1.cantidadBytes = sizeof(int); t1.tipo = ENTERO; t1.nombre = "ID";l2->push_back(t1);
+	t1.cantidadBytes = 20; t1.tipo = TEXTO; t1.nombre = "Nombre";l2->push_back(t1);
 	//e2 es un entero y un string
-	Entidad* e2 = new Entidad(l2,"ent2",0,VARIABLE);
+	Entidad* e2 = new Entidad(l2,"ent2",0,FIJO);
 	e2->leerInstancias();
 	int opcion = 1;
 	int n;

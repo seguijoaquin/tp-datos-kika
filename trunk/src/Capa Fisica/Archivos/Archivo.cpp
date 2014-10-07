@@ -9,11 +9,11 @@ Archivo::~Archivo(){
 
 }
 
-list<Atributo>* Archivo::leer(int numero,list<tamanioYTipoAtributo>* listaTipoAtributos){
+list<Atributo>* Archivo::leer(int numero,list<metaDataAtributo>* listaTipoAtributos){
 	return NULL;
 }
 
-void Archivo::escribir(list<Atributo>* atributos,list<tamanioYTipoAtributo>* listaTipoAtributos){
+void Archivo::escribir(list<Atributo>* atributos,list<metaDataAtributo>* listaTipoAtributos){
 
 }
 
