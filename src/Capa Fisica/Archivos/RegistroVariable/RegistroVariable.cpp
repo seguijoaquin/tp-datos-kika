@@ -58,11 +58,11 @@ void ArchivoRegistroVariable::escribirMapaBits(){
 	archivoMapaBits.close();
 }
 
-list<Atributo>* ArchivoRegistroVariable::leer(int numeroRegistro, list<tamanioYTipoAtributo>* listaTipoAtributos){
+list<Atributo>* ArchivoRegistroVariable::leer(int numeroRegistro, list<metaDataAtributo>* listaTipoAtributos){
 	list<Atributo>* listaAtributos = new list<Atributo>;
 	if (numeroRegistro > this->cantInstancias) return NULL; // O throw exception
 	this->archivo.seekg(this->vectorMapaBits[numeroRegistro].inicio,ios::beg);
-	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
+	for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		Atributo aux;
 		if (it->tipo == TEXTO) {
 			char* buffer = new char[maxCantidadCaracteres + 1]; //+1 por separador
@@ -88,14 +88,14 @@ list<Atributo>* ArchivoRegistroVariable::leer(int numeroRegistro, list<tamanioYT
 	return listaAtributos;
 }
 
-void ArchivoRegistroVariable::escribir(list<Atributo>* datosAtributos,list<tamanioYTipoAtributo>* listaTipoAtributos){
+void ArchivoRegistroVariable::escribir(list<Atributo>* datosAtributos,list<metaDataAtributo>* listaTipoAtributos){
 
 	if (datosAtributos->size() != listaTipoAtributos->size()) {
 		return;//Tirar excepcion
 	}
 	int tamanioInstancia = 0;
 	list<Atributo>::iterator it2 = datosAtributos->begin();
-	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end();it++,it2++){
+	for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end();it++,it2++){
 		if (it->tipo == TEXTO) {
 			tamanioInstancia += strlen(it2->texto) + 1; //+1 por el caracter separador
 		} else {
@@ -105,7 +105,7 @@ void ArchivoRegistroVariable::escribir(list<Atributo>* datosAtributos,list<taman
 	int proximoEspacioLibre = this->proximoEspacioLibre(tamanioInstancia);
 	this->archivo.seekp(proximoEspacioLibre,ios::beg);
 	it2 = datosAtributos->begin();
-	for (list<tamanioYTipoAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++,it2++) {
+	for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++,it2++) {
 		if (it->tipo == TEXTO) {
 			this->archivo.write(it2->texto,strlen(it2->texto));
 			this->archivo.write(&separadorString,1);
@@ -159,7 +159,19 @@ int ArchivoRegistroVariable::getCantidad(){
 	return this->cantInstancias;
 }
 
-void ArchivoRegistroVariable::borrar(int numeroInstancia){
-	vectorMapaBits.erase(vectorMapaBits.begin() + numeroInstancia);
-	this->cantInstancias--;
+void ArchivoRegistroVariable::borrar(int IDInstancia){
+	bool encontrado = false;
+	for (int i = 0; (i < this->getCantidad()) && (!encontrado);i++){
+		this->archivo.seekg(this->vectorMapaBits[i].inicio,ios::beg);
+		int ID;
+		this->archivo.read((char*)&ID,sizeof(ID));
+		if (ID == IDInstancia) {
+			encontrado = true;
+			this->vectorMapaBits.erase(this->vectorMapaBits.begin() + i);
+			this->cantInstancias--;
+		}
+	}
+
+	/*vectorMapaBits.erase(vectorMapaBits.begin() + numeroInstancia);
+	this->cantInstancias--;*/
 }

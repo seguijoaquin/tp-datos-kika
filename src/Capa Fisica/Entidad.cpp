@@ -1,13 +1,13 @@
 #include "Entidad.h"
 
 
-Entidad::Entidad(list<tamanioYTipoAtributo>* listaAtributos,string nombre, int ID,TipoArchivo tipoArchivo){
+Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,TipoArchivo tipoArchivo){
 	this->listaAtributos = listaAtributos;
 	this->instancias = new list<Instancia*>;
 	this->nombre = nombre;
 	this->ID = ID;
 	int tam = 0;
-	for(list<tamanioYTipoAtributo>::iterator it = listaAtributos->begin(); it != listaAtributos->end();it++){
+	for(list<metaDataAtributo>::iterator it = listaAtributos->begin(); it != listaAtributos->end();it++){
 		tam += it->cantidadBytes;
 	}
 	if (tipoArchivo == FIJO) this->archivo = new ArchivoRegistroFijo(nombre,tam);
@@ -21,7 +21,7 @@ Entidad::~Entidad(){
 	delete this->archivo;
 }
 
-list<tamanioYTipoAtributo>* Entidad::getListaAtributos(){
+list<metaDataAtributo>* Entidad::getListaAtributos(){
 	return this->listaAtributos;
 }
 
@@ -35,13 +35,14 @@ int Entidad::getID(){
 
 void Entidad::crearInstancia(){
 	list<Atributo>* listaDatos = new list<Atributo>;
-	for(list<tamanioYTipoAtributo>::iterator it = this->listaAtributos->begin(); it != this->listaAtributos->end();it++){
+	cout<<"Ingresar atributos:"<<endl;
+	for(list<metaDataAtributo>::iterator it = this->listaAtributos->begin(); it != this->listaAtributos->end();it++){
 		Atributo aux;
 		if (it->tipo == ENTERO | it->tipo == ENTID){
-			cout<<"Ingresar entero: ";
+			cout<<it->nombre<<"(entero): ";
 			cin>>aux.entero;
 		} else {
-			cout<<"Ingresar texto(max "<<it->cantidadBytes<<"): ";
+			cout<<it->nombre<<"(max "<<it->cantidadBytes<<"): ";
 			aux.texto = new char[maxCantidadCaracteres];
 			cin>>aux.texto;
 		}
@@ -54,7 +55,6 @@ void Entidad::crearInstancia(){
 }
 
 void Entidad::leerInstancias(){
-	cout<<"Cant: "<<this->archivo->getCantidad()<<endl;
 	for (int i = 0; i < this->archivo->getCantidad(); i++) {
 		list<Atributo>* listaDatosAtributos = this->archivo->leer(i,this->listaAtributos);
 		if (listaDatosAtributos != NULL) { //Si es null no hay ninguna instancia en ese registro/bloque (para fijos y bloques)
@@ -79,8 +79,9 @@ void Entidad::leerInstancias(){
 
 void Entidad::listarInstancias(){
 	for (list<Instancia*>::iterator it = this->instancias->begin(); it != this->instancias->end(); it++) {
-		list<tamanioYTipoAtributo>::iterator it3 = this->listaAtributos->begin();
+		list<metaDataAtributo>::iterator it3 = this->listaAtributos->begin();
 		for (list<Atributo>::iterator it2 = (*it)->getListaAtributos()->begin(); it2 != (*it)->getListaAtributos()->end();it2++,it3++){
+			cout<<it3->nombre<<": ";
 			if (it3->tipo == TEXTO) {
 				cout<<it2->texto<<" ";
 			} else {
@@ -101,7 +102,7 @@ int Entidad::getCantidad(){
 
 int Entidad::getTamanioMaxInstancia(){
 	int tamanio = 0;
-	for (list<tamanioYTipoAtributo>::iterator it = this->listaAtributos->begin(); it != this->listaAtributos->end();it++){
+	for (list<metaDataAtributo>::iterator it = this->listaAtributos->begin(); it != this->listaAtributos->end();it++){
 		if (it->tipo == TEXTO) {
 			tamanio += it->cantidadBytes + 1; //+1 por el caracter separador
 		} else {

@@ -9,16 +9,16 @@
 
 class Entidad {
 private:
-	list<tamanioYTipoAtributo>* listaAtributos;
+	list<metaDataAtributo>* listaAtributos;
 	string nombre;
 	int ID;
 	TipoArchivo tipoArchivo;
 	Archivo* archivo;
 	list<Instancia*>* instancias;
 public:
-	Entidad(list<tamanioYTipoAtributo>* listaAtributos,string nombre, int ID,TipoArchivo tipoArchivo);
+	Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,TipoArchivo tipoArchivo);
 	~Entidad();
-	list<tamanioYTipoAtributo>* getListaAtributos();
+	list<metaDataAtributo>* getListaAtributos();
 	string getNombre();
 	void crearInstancia();
 	int getID();
