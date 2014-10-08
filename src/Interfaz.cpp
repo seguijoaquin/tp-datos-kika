@@ -1,5 +1,7 @@
 #include "Interfaz.h"
 
+#include "Capa Fisica/AdministradorEntidades.h"
+
 Interfaz::Interfaz(){
 
 	this -> opciones = new list<string>;
@@ -26,7 +28,7 @@ void Interfaz::listar_opciones(){
 unsigned int Interfaz::pedir_opcion(){
 
 	char opget[5];
-	cout << " Numero de opcion: ";
+	cout << "Ingrese la opcion seleccionada: ";
 	cin >> opget;
 	cout << " \n";
 	cin.get();
@@ -43,40 +45,80 @@ void Interfaz::crear_entidad(){
 	
 	int indice = 1;
 	int opget = 0;
+	list<metaDataAtributo>* atts = new list<metaDataAtributo>; // Lista con atributos de la entidad.
+	metaDataAtributo att;
+	
+	/* Agrega el atributo del identificador */
+	att.cantidadBytes = sizeof(int); att.tipo = ENTERO; att.nombre = "ID";
+	atts->push_back(att);
+	
 	while(true){
-	/*  Pide atributos hasta que la opción de tipo de atributo sea *
-	 *     diferente de las existentes, deja de pedir atributos.   */
+	/*    Pide atributos hasta que la opción de tipo de atributo sea      *
+	 *  diferente de las existentes, en ese caso deja de pedir atributos. */
 	 
 		cout << "\n Atributo N°" << indice << ": \n  Tipo de atributo: \n";
 		cout << "    1. Entero.\n    2. Cadena de caracteres.\n    3. Entidad X.\n";
 		opget = this -> pedir_opcion();
 		
-		if( opget > 3 || opget < 1 ){break;}
+		if( opget > 3 || opget < 1 ){break;} // Opción no válida.
 		
-		cout << "Ingrese el nombre del atributo: ";
-		char nombre_att[50];
-		cin >> nombre_att;
-		cout << "\n";
+		// Agregar que hacer cuando no sea una opcion correcta.
 		
 		switch(opget){
 		/* Tipo de atributo seleccionado */
 		
 			case 1: // Entero
-
+				att.cantidadBytes = sizeof(int); att.tipo = ENTERO;
 				break;
 
 			case 2: // Cadena de caracteres
-
+				att.cantidadBytes = 50*sizeof(char); att.tipo = TEXTO;
 				break;
 
 			case 3: // Entidad X
-			
+				att.cantidadBytes = sizeof(int); att.tipo = ENTID; // Tamaño de la entidad, sizeof(int), 
+																   // ya que guarda el ID de la entidad.
 				break;
 		}
 		
+		cout << "Ingrese el nombre del atributo: ";
+		char nombre_att[50];
+		cin >> nombre_att;
+		cout << "\n";
+
+		att.nombre = nombre_att;
+		atts->push_back(att); // Agrega el atributo a la lista.
 		indice ++;
 	}
 	
+	/*      Especificación de tipo de archivo      */
+	cout << "\n Tipo de archivo para almacenar la entidad: \n";
+	cout << "    1. Archivo de registros de longitud fija.\n    2. Archivo de registros de longitud variable.\n    3. Archivo en bloque con registros de longitud variable.\n";
+	opget = this -> pedir_opcion();
+	
+	if( opget > 3 || opget < 1 ){  // Opción no válida.
+		return;
+	}
+	
+	TipoArchivo t_arch;
+	
+	switch(opget){
+		/* Tipo de archivo seleccionado */
+		
+			case 1: // Archivo de registros de longitud fija.
+				 t_arch = FIJO;
+				break;
+
+			case 2: // Archivo de registros de longitud variable.
+				t_arch = VARIABLE;
+				break;
+
+			case 3: // Archivo en bloque con registros de longitud variable.
+				t_arch = DEBLOQUES;
+				break;
+	}
+	
+	Entidad* ent = new Entidad(atts,nombre_entidad,0,t_arch);
 }
 
 void Interfaz::crear_instancia(){

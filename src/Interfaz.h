@@ -1,9 +1,10 @@
-#ifndef INTERFAZ
-#define INTERFAZ
+#ifndef INTERFAZ_H
+#define INTERFAZ_H
 
 #include <cstdlib>
 #include <iostream>
 #include <list>
+#include "Capa Fisica/Entidad.h"
 
 using namespace std;
 
