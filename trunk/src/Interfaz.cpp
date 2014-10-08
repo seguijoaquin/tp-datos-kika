@@ -38,13 +38,15 @@ unsigned int Interfaz::pedir_opcion(){
 void Interfaz::crear_entidad(){
 	
 	cout << "Ingrese el nombre de la entidad: ";
-	char nombre_entidad[50];
+	string nombre_entidad;
 	cin >> nombre_entidad;
 	
 	// Verificar que no exista.
 	
 	int indice = 1;
 	int opget = 0;
+	char tamanio[5];
+	unsigned int tamanio_string;
 	list<metaDataAtributo>* atts = new list<metaDataAtributo>; // Lista con atributos de la entidad.
 	metaDataAtributo att;
 	
@@ -72,7 +74,13 @@ void Interfaz::crear_entidad(){
 				break;
 
 			case 2: // Cadena de caracteres
-				att.cantidadBytes = 50*sizeof(char); att.tipo = TEXTO;
+				cout << "Ingrese el tamaño de la cadena de caracteres: ";
+				cin >> tamanio;
+				cout << " \n";
+				cin.get();
+				tamanio_string = atoi(tamanio);
+				att.cantidadBytes = tamanio_string*sizeof(char); att.tipo = TEXTO;
+				cout << "\n";
 				break;
 
 			case 3: // Entidad X
