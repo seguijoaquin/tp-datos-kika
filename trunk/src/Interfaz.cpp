@@ -161,12 +161,12 @@ bool Interfaz::ejecutar_opcion(unsigned int opc){
 }
 
 
-/*--------------------------------------------------------------------*/
+/*--------------------------------------------------------------------
 
 int main(){
 
 	Interfaz* iu = new Interfaz();
-	cout << "\n";
+	cout << endl;
 	iu -> listar_opciones();
 	unsigned int opc = iu -> pedir_opcion();
 	if(iu -> ejecutar_opcion(opc)){
@@ -176,3 +176,4 @@ int main(){
 	}
 	return 0;
 }
+*/
