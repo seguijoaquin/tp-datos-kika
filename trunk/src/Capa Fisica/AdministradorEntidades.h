@@ -25,10 +25,14 @@ public:
 	void leerArchivoEntidades();
 	void crearEntidad(Entidad* entidad);
 	void crearInstancia(int id);
-	void modificarInstancia();
+	void modificarInstancia(int id);
 	int getUltimoID();
 	int getID(int x);
 	void listarEntidades();
+	void listarInstancias(int id);
+	void eliminarInstancia(int id);
+	void eliminarInstancias(int id);
+	bool entidadExistente(string nombre);
 };
 
 #endif

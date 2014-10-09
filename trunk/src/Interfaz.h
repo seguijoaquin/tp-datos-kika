@@ -16,6 +16,7 @@ class Interfaz{
 		AdministradorEntidades* admin;
 		void crear_entidad();
 		void crear_instancia();
+		int seleccionar_entidad();
 	
 	public:
 		Interfaz();
@@ -23,7 +24,10 @@ class Interfaz{
 		void listar_opciones();
 		unsigned int pedir_opcion();
 		bool ejecutar_opcion(unsigned int opc);
-
+		void modificar_instancia();
+		void eliminar_instancia();
+		void eliminar_instancias();
+		void listar_instancias();
 };
 
 #endif
