@@ -1,15 +1,23 @@
 #include "AdministradorEntidades.h"
 
 AdministradorEntidades::AdministradorEntidades(){
+	this->archivo.open("entidades.txt",std::ios_base::out | std::ios_base::app);
 	this->listaEntidades = new list<Entidad>;
 }
 
 AdministradorEntidades::~AdministradorEntidades(){
+	this->archivo.close();
+	this->listaEntidades->clear();
+	delete this->listaEntidades;
+}
 
+void AdministradorEntidades::finalizarEntidad() {
+	this->archivo << '\n';
 }
 
 void AdministradorEntidades::leerArchivoEntidades(){
-
+/* parsea el archivo txt y carga la lista de entidades en memoria
+ * */
 }
 
 void AdministradorEntidades::menuUsuario(){
@@ -62,8 +70,96 @@ void AdministradorEntidades::menuUsuario(){
 	delete e2;
 }
 
-void AdministradorEntidades::crearEntidad(){
+void AdministradorEntidades::agregarDato(string buffer) {
+	this->archivo << buffer;
+	this->archivo << '@';
+}
 
+void AdministradorEntidades::agregarDato(int buffer) {
+	this->archivo << buffer;
+	this->archivo << '@';
+}
+
+int AdministradorEntidades::getUltimoID() {
+	return this->listaEntidades->end()->getID();
+}
+
+void AdministradorEntidades::crearEntidad(Entidad* entidad){
+	//Agrego ID
+	if (this->listaEntidades->size() == 0) { //Si la lista no tiene elementos, el primer ID es 1
+		this->agregarDato(1);
+	} else {
+		this->agregarDato(listaEntidades->end()->getID()+1);
+	}
+
+	//Agrego Nombre
+	cout << "Nombre Entidad:";
+	string nombreEntidad;
+	cin >> nombreEntidad;
+
+	//Verificar si la entrada por teclado ya esta en el archivo
+	this->agregarDato(nombreEntidad);
+
+	//Agrego Tipo de Archivo
+	cout << endl << "Agregar tipo de archivo: " <<
+		 endl << "1 - De registros de longitud fija" <<
+		 endl << "2 - De registros de longitud variable" <<
+		 endl << "3 - De bloques con registros de longitud variable" <<
+		 endl;
+	int tipoArchivo;
+	cin >> tipoArchivo;
+	this->agregarDato(tipoArchivo);
+
+	//AgregoAtributo
+	cout << "Agregar atributo? (s/n)" << endl;
+	char buffer;
+	int opcionEntidad;
+	cin >> buffer;
+	while (buffer != 'n' ) {
+		cout << "Tipo del atributo: " << endl;
+		this->listarEntidades();
+		cout << "#";
+		cin >> opcionEntidad;
+
+		//agarrar la entidad en la posicion 'opcionEntidad' de la lista y meterla en el archivo
+		list<Entidad>::iterator it = listaEntidades->begin();
+		string tipoAtributo;
+		for(int i = 1 ; i < opcionEntidad ;++i) {
+			++it;
+		}
+		tipoAtributo = it->getNombre();
+		this->agregarDato(tipoAtributo);
+
+		cout << "Nombre atributo: ";
+		string nombreAtributo;
+		cin >> nombreAtributo;
+		this->agregarDato(nombreAtributo);
+		cout << "Agregar atributo? (s/n)" << endl;
+		cin >> buffer;
+	}
+	this->finalizarEntidad();
+	//agregarEntidad a memoria
+}
+
+void AdministradorEntidades::listarEntidades() {
+	list<Entidad>::iterator it = this->listaEntidades->begin();
+	int cont = 1;
+	while( it != this->listaEntidades->end() )
+	{
+		cout << cont << it->getNombre() << endl;
+		++cont;
+		++it;
+	}
+	cout << "------------------" << endl;
+}
+
+int AdministradorEntidades::getID(int x) {
+	list<Entidad>::iterator it = listaEntidades->begin();
+	string tipoAtributo;
+	for(int i = 1 ; i < x ;++i) {
+		++it;
+	}
+	return it->getID();
 }
 
 void AdministradorEntidades::crearInstancia(){
