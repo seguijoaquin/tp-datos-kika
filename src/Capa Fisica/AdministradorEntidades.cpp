@@ -128,11 +128,21 @@ void AdministradorEntidades::listarEntidades() {
 	int cont = 1;
 	while( it != this->listaEntidades->end() )
 	{
-		cout << cont << it->getNombre() << endl;
+		cout << cont << " " << it->getNombre() << endl;
 		++cont;
 		++it;
 	}
 	cout << "------------------" << endl;
+}
+
+void AdministradorEntidades::listarInstancias(int id){
+	list<Entidad>::iterator it = this->listaEntidades->begin();
+	int i = 1;
+	while( i < id ){
+		++i;
+		++it;
+	}
+	it->listarInstancias();
 }
 
 int AdministradorEntidades::getID(int x) {
@@ -148,6 +158,25 @@ void AdministradorEntidades::crearInstancia(int id){
 
 }
 
-void AdministradorEntidades::modificarInstancia(){
+void AdministradorEntidades::modificarInstancia(int id){
 
+}
+
+void AdministradorEntidades::eliminarInstancia(int id){
+
+}
+
+void AdministradorEntidades::eliminarInstancias(int id){
+
+}
+
+bool AdministradorEntidades::entidadExistente(string nombre){
+	list<Entidad>::iterator it = this->listaEntidades->begin();
+	while( it != this->listaEntidades->end() ){
+		if(it->getNombre() == nombre){
+			return true;
+		}
+		++it;
+	}
+	return false;
 }

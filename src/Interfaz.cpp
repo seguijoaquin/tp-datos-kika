@@ -14,8 +14,7 @@ Interfaz::Interfaz(){
 	this -> opciones -> push_back("Salir.");
 
 	this -> admin    = new AdministradorEntidades();
-	this -> admin->leerArchivoEntidades();
-	// Inicializar administrador por si existe archivo preexistente
+	this -> admin->leerArchivoEntidades(); // Inicializa administrador si existe archivo preexistente.
 }
 
 Interfaz::~Interfaz(){
@@ -24,7 +23,6 @@ Interfaz::~Interfaz(){
 }
 
 void Interfaz::listar_opciones(){
-
 	cout << "Ingrese el número de la opcion seleccionada:\n";
 	int cont = 1;
 	list<string>::iterator it = this->opciones->begin();
@@ -36,7 +34,6 @@ void Interfaz::listar_opciones(){
 }
 
 unsigned int Interfaz::pedir_opcion(){
-
 	char opget[5];
 	cout << "Ingrese la opcion seleccionada: ";
 	cin >> opget;
@@ -45,12 +42,22 @@ unsigned int Interfaz::pedir_opcion(){
 	return atoi(opget);
 }
 
+int Interfaz::seleccionar_entidad(){
+	cout<<" Entidades:"<<endl;
+	this->admin->listarEntidades();
+	unsigned int opc = this->pedir_opcion();
+	return this->admin->getID(opc);
+}
+
 void Interfaz::crear_entidad(){
 	cout << "Ingrese el nombre de la entidad: ";
 	string nombre_entidad;
 	getline(cin,nombre_entidad); //preferible getline antes que cin >> porque incluye espacios
 
-	// Verificar que no exista.
+	if(this->admin->entidadExistente(nombre_entidad)){ // Verificar que no exista.
+		cout<<"Ya existe entidad con ese nombre"<<endl;
+		return;
+	}
 	
 	int indice = 1;
 	int opget = 0;
@@ -142,33 +149,58 @@ void Interfaz::crear_entidad(){
 }
 
 void Interfaz::crear_instancia(){
-	this->admin->listarEntidades();
-	unsigned int opc = this->pedir_opcion();
-	int id = this->admin->getID(opc);
+	int id = this->seleccionar_entidad();
 	this->admin->crearInstancia(id);
+}
+
+void Interfaz::modificar_instancia(){
+	int id = this->seleccionar_entidad();
+	this->admin->modificarInstancia(id);
+}
+
+void Interfaz::eliminar_instancia(){
+	int id = this->seleccionar_entidad();
+	this->admin->eliminarInstancia(id);
+}
+
+void Interfaz::eliminar_instancias(){
+	int id = this->seleccionar_entidad();
+	this->admin->eliminarInstancias(id);
+}
+
+void Interfaz::listar_instancias(){
+	int id = this->seleccionar_entidad();
+	this->admin->listarInstancias(id);
 }
 
 bool Interfaz::ejecutar_opcion(unsigned int opc){
 
 	switch (opc){
+
 		case 1:	// Crear nueva entidad.
 			this->crear_entidad();
 			break;
+
 		case 2: // Crear nueva instancia.
 			this->crear_instancia();
 			break;
+
 		case 3: // Modificar instancia.
-			cout << "Opcion 3."<<endl;
+			this->modificar_instancia();
 			break;
+
 		case 4: // Eliminar instancia.
-			cout<<"Opcion 4."<<endl;
+			this->eliminar_instancia();
 			break;
+
 		case 5: // Eliminar todas las instancias.
-			cout<< "Opcion 5."<<endl;
+			this->eliminar_instancias();
 			break;
+
 		case 6: // Listar instancias.
-			cout<<"Opcion 6."<<endl;
+			this->listar_instancias();
 			break;
+
 		default:
 			return false;
 	}
