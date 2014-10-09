@@ -17,8 +17,6 @@ void AdministradorEntidades::finalizarEntidad() {
 }
 
 void AdministradorEntidades::leerArchivoEntidades(){
-/* parsea el archivo txt y carga la lista de entidades en memoria
- * */
 }
 
 void AdministradorEntidades::menuUsuario(){
@@ -101,9 +99,8 @@ void AdministradorEntidades::agregarAtributo(metaDataAtributo atributo) {
 }
 
 void AdministradorEntidades::crearEntidad(Entidad* entidad){
-	//Agregar a la lista la entidad
-	this->listaEntidades->push_back(*entidad);
-	//Escribir en el archivo de entidades la entidad pedida
+	this->archivo.seekg(0,this->archivo.end); //me posiciono al final del archivo
+	this->listaEntidades->push_back(*entidad); //agrego entidad a la lista
 	this->agregarDato(entidad->getID());
 	this->agregarDato(entidad->getNombre());
 	switch (entidad->getTipoArchivo()) {
