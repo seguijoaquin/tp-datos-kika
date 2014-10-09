@@ -28,6 +28,7 @@ public:
 	void borrar(int numero);
 	int getCantidad();
 	int getTamanioMaxInstancia();
+	TipoArchivo getTipoArchivo();
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "AdministradorEntidades.h"
 
+
 AdministradorEntidades::AdministradorEntidades(){
 	this->archivo.open("entidades.txt",std::ios_base::out | std::ios_base::app);
 	this->listaEntidades = new list<Entidad>;
@@ -84,61 +85,44 @@ int AdministradorEntidades::getUltimoID() {
 	return this->listaEntidades->end()->getID();
 }
 
-void AdministradorEntidades::crearEntidad(Entidad* entidad){
-	//Agrego ID
-	if (this->listaEntidades->size() == 0) { //Si la lista no tiene elementos, el primer ID es 1
-		this->agregarDato(1);
-	} else {
-		this->agregarDato(listaEntidades->end()->getID()+1);
-	}
-
-	//Agrego Nombre
-	cout << "Nombre Entidad:";
-	string nombreEntidad;
-	cin >> nombreEntidad;
-
-	//Verificar si la entrada por teclado ya esta en el archivo
-	this->agregarDato(nombreEntidad);
-
-	//Agrego Tipo de Archivo
-	cout << endl << "Agregar tipo de archivo: " <<
-		 endl << "1 - De registros de longitud fija" <<
-		 endl << "2 - De registros de longitud variable" <<
-		 endl << "3 - De bloques con registros de longitud variable" <<
-		 endl;
-	int tipoArchivo;
-	cin >> tipoArchivo;
-	this->agregarDato(tipoArchivo);
-
-	//AgregoAtributo
-	cout << "Agregar atributo? (s/n)" << endl;
-	char buffer;
-	int opcionEntidad;
-	cin >> buffer;
-	while (buffer != 'n' ) {
-		cout << "Tipo del atributo: " << endl;
-		this->listarEntidades();
-		cout << "#";
-		cin >> opcionEntidad;
-
-		//agarrar la entidad en la posicion 'opcionEntidad' de la lista y meterla en el archivo
-		list<Entidad>::iterator it = listaEntidades->begin();
-		string tipoAtributo;
-		for(int i = 1 ; i < opcionEntidad ;++i) {
-			++it;
+void AdministradorEntidades::agregarAtributo(metaDataAtributo atributo) {
+	this->archivo << atributo.nombre;
+	this->archivo << ":";
+	switch (atributo.tipo) {
+			case ENTERO:	this->agregarDato("ENTERO");
+							break;
+			case TEXTO: 	this->agregarDato("TEXTO");
+							break;
+			case ENTID: this->agregarDato("ENTID");
+							break;
+			default:		this->agregarDato("DEFAULT");
+							break;
 		}
-		tipoAtributo = it->getNombre();
-		this->agregarDato(tipoAtributo);
+}
 
-		cout << "Nombre atributo: ";
-		string nombreAtributo;
-		cin >> nombreAtributo;
-		this->agregarDato(nombreAtributo);
-		cout << "Agregar atributo? (s/n)" << endl;
-		cin >> buffer;
+void AdministradorEntidades::crearEntidad(Entidad* entidad){
+	//Agregar a la lista la entidad
+	this->listaEntidades->push_back(*entidad);
+	//Escribir en el archivo de entidades la entidad pedida
+	this->agregarDato(entidad->getID());
+	this->agregarDato(entidad->getNombre());
+	switch (entidad->getTipoArchivo()) {
+		case FIJO:		this->agregarDato("FIJO");
+						break;
+		case VARIABLE: 	this->agregarDato("VARIABLE");
+						break;
+		case DEBLOQUES: this->agregarDato("DEBLOQUES");
+						break;
+		default:		this->agregarDato("DEFAULT");
+						break;
+	}
+	this->agregarDato(entidad->getListaAtributos()->size());
+	list<metaDataAtributo>::iterator it = entidad->getListaAtributos()->begin();
+	while (it != entidad->getListaAtributos()->end()) {
+		this->agregarAtributo(*it);
+		++it;
 	}
 	this->finalizarEntidad();
-	//agregarEntidad a memoria
 }
 
 void AdministradorEntidades::listarEntidades() {
