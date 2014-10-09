@@ -24,7 +24,7 @@ public:
 	void menuUsuario();
 	void leerArchivoEntidades();
 	void crearEntidad(Entidad* entidad);
-	void crearInstancia();
+	void crearInstancia(int id);
 	void modificarInstancia();
 	int getUltimoID();
 	int getID(int x);
