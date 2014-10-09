@@ -36,11 +36,10 @@ unsigned int Interfaz::pedir_opcion(){
 }
 
 void Interfaz::crear_entidad(){
-	
 	cout << "Ingrese el nombre de la entidad: ";
 	string nombre_entidad;
-	cin >> nombre_entidad;
-	
+	getline(cin,nombre_entidad); //preferible getline antes que cin >> porque incluye espacios
+
 	// Verificar que no exista.
 	
 	int indice = 1;
