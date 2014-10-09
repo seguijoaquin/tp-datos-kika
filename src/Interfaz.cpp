@@ -11,6 +11,16 @@ Interfaz::Interfaz(){
 	this -> opciones -> push_back("Eliminar instancia.");
 	this -> opciones -> push_back("Eliminar todas las instancias.");
 	this -> opciones -> push_back("Listar instancias.");
+	this -> opciones -> push_back("Salir.");
+
+	this -> admin    = new AdministradorEntidades();
+	this -> admin->leerArchivoEntidades();
+	// Inicializar administrador por si existe archivo preexistente
+}
+
+Interfaz::~Interfaz(){
+	delete this->opciones;
+	delete this->admin;
 }
 
 void Interfaz::listar_opciones(){
@@ -99,8 +109,8 @@ void Interfaz::crear_entidad(){
 	}
 	
 	/*      Especificación de tipo de archivo      */
-	cout << "\n Tipo de archivo para almacenar la entidad: \n";
-	cout << "    1. Archivo de registros de longitud fija.\n    2. Archivo de registros de longitud variable.\n    3. Archivo en bloque con registros de longitud variable.\n";
+	cout<<endl<<" Tipo de archivo para almacenar la entidad:"<<endl;
+	cout<<"    1. Archivo de registros de longitud fija."<<endl<<"    2. Archivo de registros de longitud variable."<<endl<<"    3. Archivo en bloque con registros de longitud variable."<<endl;
 	opget = this -> pedir_opcion();
 	
 	if( opget > 3 || opget < 1 ){  // Opción no válida.
@@ -125,11 +135,17 @@ void Interfaz::crear_entidad(){
 				break;
 	}
 	
-	Entidad* ent = new Entidad(atts,nombre_entidad,0,t_arch);
+	int id = this->admin->getUltimoID() + 1; // Pide ultimo id para asignarle a la entidad el siguiente
+
+	Entidad* ent = new Entidad(atts,nombre_entidad,id,t_arch);
+	this->admin->crearEntidad(ent);
 }
 
 void Interfaz::crear_instancia(){
-	
+	this->admin->listarEntidades();
+	unsigned int opc = this->pedir_opcion();
+	int id = this->admin->getID(opc);
+	this->admin->crearInstancia(id);
 }
 
 bool Interfaz::ejecutar_opcion(unsigned int opc){
@@ -142,37 +158,19 @@ bool Interfaz::ejecutar_opcion(unsigned int opc){
 			this->crear_instancia();
 			break;
 		case 3: // Modificar instancia.
-			cout << "Opcion 3.\n";
+			cout << "Opcion 3."<<endl;
 			break;
 		case 4: // Eliminar instancia.
-			cout << "Opcion 4.\n";
+			cout<<"Opcion 4."<<endl;
 			break;
 		case 5: // Eliminar todas las instancias.
-			cout << "Opcion 5.\n";
+			cout<< "Opcion 5."<<endl;
 			break;
 		case 6: // Listar instancias.
-			cout << "Opcion 6.\n";
+			cout<<"Opcion 6."<<endl;
 			break;
 		default:
 			return false;
 	}
 	return true;
 }
-
-
-/*--------------------------------------------------------------------
-
-int main(){
-
-	Interfaz* iu = new Interfaz();
-	cout << endl;
-	iu -> listar_opciones();
-	unsigned int opc = iu -> pedir_opcion();
-	if(iu -> ejecutar_opcion(opc)){
-		// Se ejecuto la opción.
-	}else{
-		cout << "La opción seleccionada es incorrecta.\n";
-	}
-	return 0;
-}
-*/

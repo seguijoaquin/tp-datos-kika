@@ -80,7 +80,8 @@ void AdministradorEntidades::agregarDato(int buffer) {
 }
 
 int AdministradorEntidades::getUltimoID() {
-	return this->listaEntidades->end()->getID();
+	if(this->listaEntidades->empty()) return 0;
+	return this->listaEntidades->back().getID();
 }
 
 void AdministradorEntidades::agregarAtributo(metaDataAtributo atributo) {
@@ -143,7 +144,7 @@ int AdministradorEntidades::getID(int x) {
 	return it->getID();
 }
 
-void AdministradorEntidades::crearInstancia(){
+void AdministradorEntidades::crearInstancia(int id){
 
 }
 
