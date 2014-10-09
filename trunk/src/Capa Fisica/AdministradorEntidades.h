@@ -5,6 +5,7 @@
 #include <list>
 #include <sstream>
 #include "Entidad.h"
+#include "Archivos/Archivo.h"
 
 using namespace std;
 
@@ -14,9 +15,9 @@ private:
 	int ultimoID;
 	std::fstream archivo;
 	void finalizarEntidad();
-	void listarEntidades();
 	void agregarDato(string buffer);
 	void agregarDato(int buffer);
+	void agregarAtributo(metaDataAtributo atributo);
 public:
 	AdministradorEntidades();
 	~AdministradorEntidades();
@@ -27,6 +28,7 @@ public:
 	void modificarInstancia();
 	int getUltimoID();
 	int getID(int x);
+	void listarEntidades();
 };
 
 #endif

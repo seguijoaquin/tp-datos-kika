@@ -118,3 +118,8 @@ int Entidad::getTamanioMaxInstancia(){
 	}
 	return tamanio;
 }
+
+TipoArchivo Entidad::getTipoArchivo() {
+	return this->tipoArchivo;
+}
+

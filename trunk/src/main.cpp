@@ -1,4 +1,3 @@
-//BLABLA
 
 #include <stdio.h>
 #include <iostream>
