@@ -15,7 +15,7 @@ public:
 	void escribir(list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
 	int borrar(int IDInstancia);
 	int getCantidad();
-
+	int modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
 
 private:
 	vector<char> vectorMapaBits;
@@ -24,6 +24,7 @@ private:
 	int proximoEspacioLibre();
 	void leerMapaBits();
 	void escribirMapaBits();
+	int buscar(int ID);
 };
 
 #endif

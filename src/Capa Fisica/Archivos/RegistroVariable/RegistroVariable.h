@@ -19,6 +19,7 @@ public:
 	list<Atributo>* leer(int numero,list<metaDataAtributo>* listaTipoAtributos);
 	void escribir(list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
 	int borrar(int IDInstancia);
+	int modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
 	int getCantidad();
 
 private:
@@ -27,6 +28,7 @@ private:
 	int proximoEspacioLibre(int tamanioInstancia);
 	void leerMapaBits();
 	void escribirMapaBits();
+	int buscar(int ID);
 };
 
 #endif

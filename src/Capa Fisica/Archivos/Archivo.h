@@ -45,6 +45,7 @@ public:
 	virtual list<Atributo>* leer(int numero,list<metaDataAtributo>* listaTipoAtributos);	//numero = numero de registro/instancia/bloque.
 	virtual void escribir(list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
 	virtual int borrar(int IDInstancia);
+	virtual int modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
 
 protected:
 	fstream archivo;

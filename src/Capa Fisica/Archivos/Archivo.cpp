@@ -24,3 +24,7 @@ int Archivo::getCantidad(){
 int Archivo::borrar(int numero){
 	return 0;
 }
+
+int Archivo::modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos){
+	return 0;
+}

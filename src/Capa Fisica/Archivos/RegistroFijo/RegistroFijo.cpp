@@ -85,11 +85,7 @@ void ArchivoRegistroFijo::escribir(list<Atributo>* datosAtributos,list<metaDataA
 	list<Atributo>::iterator it2 = datosAtributos->begin();
 	for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		if (it->tipo == TEXTO) {
-			int x = this->archivo.tellp();
 			this->archivo.write(it2->texto,it->cantidadBytes);
-			char* y = new char[strlen(it2->texto) + 4];
-			this->archivo.seekg(x,ios::beg);
-			this->archivo.read(y,strlen(it2->texto) + 4);
 		} else {
 			this->archivo.write((char*)&it2->entero,it->cantidadBytes);
 		}
@@ -135,4 +131,36 @@ int ArchivoRegistroFijo::borrar(int IDInstancia){
 	/*if(numeroRegistro >= vectorMapaBits.size()) {return; }//O tiro excepcion
 
 	vectorMapaBits[numeroRegistro] = '0' ;*/
+}
+
+int ArchivoRegistroFijo::modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos){
+	int pos = this->buscar(ID);
+	if (pos != -1) {
+		this->archivo.seekp(pos,ios::beg);
+		list<Atributo>::iterator it2 = atributos->begin();
+		for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
+			if (it->tipo == TEXTO) {
+				this->archivo.write(it2->texto,it->cantidadBytes);
+			} else {
+				this->archivo.write((char*)&it2->entero,it->cantidadBytes);
+			}
+			it2++;
+		}
+		return 1;
+	}
+	return -1;
+}
+
+int ArchivoRegistroFijo::buscar(int IDInstancia){
+	bool encontrado = false;
+	int ID,posActual;
+	for (unsigned int i = 0; (i < this->cantRegistros) && (!encontrado); i++) {
+		this->archivo.seekg(sizeof(this->cantRegistros) + sizeof(this->tamanioRegistros) + i * this->tamanioRegistros,ios::beg);
+		posActual = this->archivo.tellg();
+		this->archivo.read((char*)&ID,sizeof(ID));
+		if (ID == IDInstancia) {
+			return posActual;
+		}
+	}
+	return -1;
 }
