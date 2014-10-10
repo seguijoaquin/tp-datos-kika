@@ -158,12 +158,27 @@ void AdministradorEntidades::crearInstancia(int id){
 
 }
 
-void AdministradorEntidades::modificarInstancia(int id){
+Entidad AdministradorEntidades::getEntidad(int id){
+	list<Entidad>::iterator it = listaEntidades->begin();
+	for(int i = 1 ; i < id ;++i) {
+		++it;
+	}
+	return *it;
+}
+
+void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int num_instancia){
 
 }
 
-void AdministradorEntidades::eliminarInstancia(int id){
+void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int num_instancia){
+	Entidad ent = this->getEntidad(id);
+	list<metaDataAtributo>* atts = ent.getListaAtributos();
+	list<metaDataAtributo>::iterator it = atts->begin();
+	for(unsigned int i = 1 ; i < num_instancia ;++i) {
+			++it;
+	}
 
+	// Eliminar instancia de la lista y del archivo donde se encuentre.
 }
 
 void AdministradorEntidades::eliminarInstancias(int id){

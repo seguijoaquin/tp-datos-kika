@@ -26,6 +26,8 @@ public:
 	void leerInstancias();
 	void listarInstancias();
 	void borrar(int numero);
+	int getCantidadInstancias();
+	Instancia* getInstancia(int id);
 	int getCantidad();
 	int getTamanioMaxInstancia();
 	TipoArchivo getTipoArchivo();

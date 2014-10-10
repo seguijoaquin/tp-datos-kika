@@ -103,6 +103,14 @@ void Entidad::borrar(int numero) {
 	}
 }
 
+int Entidad::getCantidadInstancias(){
+	return this->instancias.size();
+}
+
+Instancia* Entidad::getInstancia(int id){
+	return this->instancias[id];
+}
+
 int Entidad::getCantidad(){
 	return this->archivo->getCantidad();
 }
