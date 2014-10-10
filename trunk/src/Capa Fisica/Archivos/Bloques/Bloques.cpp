@@ -219,3 +219,8 @@ int ArchivoBloque::buscar(int IDInstancia){
 	return -1;
 }
 
+int ArchivoBloque::modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos){
+	return -1;
+}
+
+

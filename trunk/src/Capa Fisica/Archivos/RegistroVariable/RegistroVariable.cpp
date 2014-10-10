@@ -177,3 +177,57 @@ int ArchivoRegistroVariable::borrar(int IDInstancia){
 	/*vectorMapaBits.erase(vectorMapaBits.begin() + numeroInstancia);
 	this->cantInstancias--;*/
 }
+
+int ArchivoRegistroVariable::modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos){
+	int pos = this->buscar(ID);
+	if (pos != -1) {
+		int tamanioInstancia = 0;
+		list<Atributo>::iterator it2 = atributos->begin();
+		for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end();it++,it2++){
+			if (it->tipo == TEXTO) {
+				tamanioInstancia += strlen(it2->texto) + 1; //+1 por el caracter separador
+			} else {
+				tamanioInstancia += sizeof(it2->entero);
+			}
+		}
+		int espacioLibre = 2 * tamanioInstancia; //Asumo que entra la instancia en su pos actual
+		if (pos < this->cantInstancias - 1) { //Si no es la ultima instancia, tengo q ver el espacio q hay entre esta y la proxima instancia para ver si entra.
+			espacioLibre = this->vectorMapaBits[pos+1].inicio - this->vectorMapaBits[pos].inicio;
+		}
+		//Si no entra, la borro y la escribo de nuevo donde haya lugar.
+		if (tamanioInstancia > espacioLibre) {
+			this->borrar(ID);
+			this->escribir(atributos,listaTipoAtributos);
+			return 1;
+		}
+
+		this->archivo.seekp(this->vectorMapaBits[pos].inicio,ios::beg);
+		it2 = atributos->begin();
+		for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++,it2++) {
+			if (it->tipo == TEXTO) {
+				this->archivo.write(it2->texto,strlen(it2->texto));
+				this->archivo.write(&separadorString,1);
+			} else {
+				this->archivo.write((char*)&(it2->entero),it->cantidadBytes);
+			}
+		}
+		this->vectorMapaBits[pos].fin = this->vectorMapaBits[pos].inicio + tamanioInstancia;
+	}
+	return -1;
+}
+
+int ArchivoRegistroVariable::buscar(int IDInstancia){
+	bool encontrado = false;
+	int ID,posActual;
+	for (unsigned int i = 0; (i < this->cantInstancias) && (!encontrado); i++) {
+		this->archivo.seekg(this->vectorMapaBits[i].inicio,ios::beg);
+		posActual = this->archivo.tellg();
+		this->archivo.read((char*)&ID,sizeof(ID));
+		if (ID == IDInstancia) {
+			return i;
+		}
+	}
+	return -1;
+
+	return -1;
+}

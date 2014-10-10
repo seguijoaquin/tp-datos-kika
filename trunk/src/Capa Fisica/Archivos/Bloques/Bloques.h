@@ -27,7 +27,7 @@ public:
         void escribir(list<Atributo>* datosAtributos,list<metaDataAtributo>* listaTipoAtributos);
 
         list<Atributo>* leer(int numeroRegistro, list<metaDataAtributo>* listaTipoAtributos);
-
+        int modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
         int borrar(int IDInstancia);
         unsigned int getCantidadBloques();
         unsigned int getTamanoBloque();
