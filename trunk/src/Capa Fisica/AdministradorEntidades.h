@@ -6,6 +6,9 @@
 #include <sstream>
 #include "Entidad.h"
 #include "Archivos/Archivo.h"
+#include <cstring>
+#include <cstdlib>
+
 
 using namespace std;
 

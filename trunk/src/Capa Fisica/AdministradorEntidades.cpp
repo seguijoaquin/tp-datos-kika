@@ -2,7 +2,7 @@
 
 
 AdministradorEntidades::AdministradorEntidades(){
-	this->archivo.open("entidades.txt",std::ios_base::out | std::ios_base::app);
+	this->archivo.open("entidades.txt",std::ios_base::out|std::ios_base::in|std::ios_base::app);
 	this->listaEntidades = new list<Entidad>;
 }
 
@@ -17,6 +17,52 @@ void AdministradorEntidades::finalizarEntidad() {
 }
 
 void AdministradorEntidades::leerArchivoEntidades(){
+	this->archivo.seekg(0,this->archivo.beg);
+	this->archivo.clear();
+	std::string str;
+	std::getline(this->archivo,str);
+	while (!this->archivo.eof() && !str.empty()) {
+		char * cstr = new char [str.length()+1];
+		std::strcpy (cstr, str.c_str());
+		std::string p = std::strtok (cstr,"@"); //Separo ID
+		int id = std::atoi(p.c_str());
+
+		p = std::strtok(NULL,"@"); //Separo Nombre
+		std::string nombreEntidad = p;
+
+		p = std::strtok(NULL,"@"); //Separo tipo
+		std::string tipo_l = p;
+		TipoArchivo tipoArchivo;
+		if (tipo_l == "FIJO") tipoArchivo = FIJO;
+		if (tipo_l == "DEBLOQUES") tipoArchivo = DEBLOQUES;
+		if (tipo_l == "VARIABLE") tipoArchivo = VARIABLE;
+
+		p = std::strtok(NULL,"@"); //Separo cantidad atributos
+		int cantAtributos = std::atoi(p.c_str());
+
+		list<metaDataAtributo>* listaAtribs = new list<metaDataAtributo>;
+		for (int j=1;j<=cantAtributos;++j) {
+			p = std::strtok(NULL,"@"); //Separo nombre
+			std::string nombreAtributo = p;
+			p = std::strtok(NULL,"@"); //Separo tipo
+			std::string tipoAtrib = p;
+			TipoAtributo tipoAtributo;
+			if (tipoAtrib == "ENTERO") tipoAtributo = ENTERO;
+			if (tipoAtrib == "TEXTO") tipoAtributo = TEXTO;
+			if (tipoAtrib == "ENTID") tipoAtributo = ENTID;
+			p = std::strtok(NULL,"@"); //Separo cantidad Bytes
+			int cantidadBytes = std::atoi(p.c_str());
+			metaDataAtributo* nuevoAtributo = new metaDataAtributo();
+			nuevoAtributo->nombre = nombreAtributo;
+			nuevoAtributo->tipo = tipoAtributo;
+			nuevoAtributo->cantidadBytes = cantidadBytes;
+			listaAtribs->push_back(*nuevoAtributo);
+		}
+		Entidad* nuevaEntidad = new Entidad(listaAtribs,nombreEntidad,id,tipoArchivo);
+		this->listaEntidades->push_back(*nuevaEntidad);
+		delete[] cstr;
+		std::getline(this->archivo,str);
+	}
 }
 
 void AdministradorEntidades::menuUsuario(){
@@ -86,17 +132,18 @@ int AdministradorEntidades::getUltimoID() {
 
 void AdministradorEntidades::agregarAtributo(metaDataAtributo atributo) {
 	this->archivo << atributo.nombre;
-	this->archivo << ":";
+	this->archivo << "@";
 	switch (atributo.tipo) {
 			case ENTERO:	this->agregarDato("ENTERO");
 							break;
 			case TEXTO: 	this->agregarDato("TEXTO");
 							break;
-			case ENTID: this->agregarDato("ENTID");
+			case ENTID: 	this->agregarDato("ENTID");
 							break;
 			default:		this->agregarDato("DEFAULT");
 							break;
 		}
+	this->agregarDato(atributo.cantidadBytes);
 }
 
 void AdministradorEntidades::crearEntidad(Entidad* entidad){
@@ -195,3 +242,5 @@ bool AdministradorEntidades::entidadExistente(string nombre){
 	}
 	return false;
 }
+
+
