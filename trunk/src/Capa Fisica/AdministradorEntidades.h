@@ -25,12 +25,13 @@ public:
 	void leerArchivoEntidades();
 	void crearEntidad(Entidad* entidad);
 	void crearInstancia(int id);
-	void modificarInstancia(int id);
 	int getUltimoID();
 	int getID(int x);
 	void listarEntidades();
 	void listarInstancias(int id);
-	void eliminarInstancia(int id);
+	Entidad getEntidad(int id);
+	void eliminarInstancia(unsigned int id, unsigned int num_instancia);
+	void modificarInstancia(unsigned int id, unsigned int num_instancia);
 	void eliminarInstancias(int id);
 	bool entidadExistente(string nombre);
 };
