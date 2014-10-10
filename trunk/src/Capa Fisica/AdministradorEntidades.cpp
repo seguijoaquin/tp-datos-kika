@@ -2,7 +2,7 @@
 
 
 AdministradorEntidades::AdministradorEntidades(){
-	this->archivo.open("entidades.txt",std::ios_base::out|std::ios_base::in|std::ios_base::app);
+	this->archivo.open("entidades.txt",std::ios_base::out | std::ios_base::in);
 	this->listaEntidades = new list<Entidad>;
 }
 
@@ -17,12 +17,12 @@ void AdministradorEntidades::finalizarEntidad() {
 }
 
 void AdministradorEntidades::leerArchivoEntidades(){
-	this->archivo.seekg(0,this->archivo.beg);
-	this->archivo.clear();
+	std::fstream arch;
+	arch.open("entidades.txt",std::ios_base::in);
 	std::string str;
-	std::getline(this->archivo,str);
-	while (!this->archivo.eof() && !str.empty()) {
-		char * cstr = new char [str.length()+1];
+	std::getline(arch,str);
+	while (!arch.eof() && !str.empty()) {
+		char* cstr = new char [str.length()+1];
 		std::strcpy (cstr, str.c_str());
 		std::string p = std::strtok (cstr,"@"); //Separo ID
 		int id = std::atoi(p.c_str());
@@ -59,10 +59,12 @@ void AdministradorEntidades::leerArchivoEntidades(){
 			listaAtribs->push_back(*nuevoAtributo);
 		}
 		Entidad* nuevaEntidad = new Entidad(listaAtribs,nombreEntidad,id,tipoArchivo);
+		cout << nombreEntidad << " - " << id << endl;
 		this->listaEntidades->push_back(*nuevaEntidad);
+		std::getline(arch,str);
 		delete[] cstr;
-		std::getline(this->archivo,str);
 	}
+	arch.close();
 }
 
 void AdministradorEntidades::menuUsuario(){

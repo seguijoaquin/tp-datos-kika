@@ -10,9 +10,9 @@ int main(){
 	unsigned int opc = 0;
 	while(opc != 7){
 		cout << endl;
-		iu -> listar_opciones();
-		opc = iu -> pedir_opcion();
-		if(iu -> ejecutar_opcion(opc)){
+		iu->listar_opciones();
+		opc = iu->pedir_opcion();
+		if(iu->ejecutar_opcion(opc)){
 			// Se ejecuto la opción.
 		}else if(opc == 7){
 			cout<<"Adios."<<endl;
