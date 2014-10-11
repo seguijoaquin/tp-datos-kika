@@ -13,6 +13,7 @@ Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,Ti
 	if (tipoArchivo == FIJO) this->archivo = new ArchivoRegistroFijo(nombre,tam);
 	else if (tipoArchivo == VARIABLE) this->archivo = new ArchivoRegistroVariable(nombre);
 	else if (tipoArchivo == DEBLOQUES) this->archivo = new ArchivoBloque(nombre,this->getTamanioMaxInstancia());
+	this->tipoArchivo = tipoArchivo;
 }
 
 Entidad::~Entidad(){
