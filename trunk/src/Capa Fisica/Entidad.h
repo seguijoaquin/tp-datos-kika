@@ -25,11 +25,12 @@ public:
 	int getID();
 	void leerInstancias();
 	void listarInstancias();
-	void borrar(int numero);
 	int getCantidadInstancias();
 	Instancia* getInstancia(int id);
 	int getCantidad();
 	int getTamanioMaxInstancia();
+	void eliminarInstancia(int id_instancia);
+	void modificarInstancia(int id_instancia);
 	TipoArchivo getTipoArchivo();
 };
 
