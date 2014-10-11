@@ -2,6 +2,7 @@
 
 
 Instancia::Instancia(){
+	this->listaAtributos = NULL;
 }
 
 Instancia::~Instancia(){
@@ -13,6 +14,10 @@ list<Atributo>* Instancia::getListaAtributos(){
 }
 
 void Instancia::setListaAtributos(list<Atributo>* lista){
+	if (this->listaAtributos != NULL) {
+		this->listaAtributos->clear();
+		delete this->listaAtributos;
+	}
 	this->listaAtributos = lista;
 }
 
