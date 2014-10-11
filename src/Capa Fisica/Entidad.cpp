@@ -50,7 +50,10 @@ void Entidad::crearInstancia(){
 		} else {
 			cout<<it->nombre<<"(max "<<it->cantidadBytes<<"): ";
 			aux.texto = new char[maxCantidadCaracteres];
-			cin>>aux.texto;
+			do {
+				cin>>aux.texto;
+				if (strlen(aux.texto) > it->cantidadBytes) cout<<"La cantidad de caracteres excede el maximo permitido. Ingrese nuevamente el valor: ";
+			} while (strlen(aux.texto) > it->cantidadBytes);
 		}
 		listaDatos->push_back(aux);
 		it++;
@@ -163,7 +166,10 @@ void Entidad::modificarInstancia(int id_instancia){
 			auxChar = new char[metaIter->cantidadBytes+1];
 			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo string (max " << metaIter->cantidadBytes<<" caracateres):"<<iter->texto<<endl;
 			cout<<"Ingrese el nuevo valor: ";
-			cin >> auxChar;
+			do {
+				cin>>auxChar;
+				if (strlen(auxChar) > metaIter->cantidadBytes) cout<<"La cantidad de caracteres excede el maximo permitido. Ingrese nuevamente el valor: ";
+			} while (strlen(auxChar) > metaIter->cantidadBytes);
 
 			// Crear nuevo atributo.
 			atributo = new Atributo();
