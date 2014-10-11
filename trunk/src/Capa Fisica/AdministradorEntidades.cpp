@@ -246,6 +246,7 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 	// Pregunta nuevos valores de atributos.
 	while(metaIter != metaAtts->end()){
 		if(metaIter->tipo == ENTERO){
+			cout<<endl;
 			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo int: "<<iter->entero<<endl;
 			cout<<"Ingrese el nuevo valor: ";
 			cin >> opget;
@@ -258,6 +259,7 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 			atributo->entero = auxInt;
 
 		}else if(metaIter->tipo == TEXTO){
+			cout<<endl;
 			auxChar = new char[metaIter->cantidadBytes+1];
 			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo string (max " << metaIter->cantidadBytes<<" caracateres):"<<iter->texto<<endl;
 			cout<<"Ingrese el nuevo valor: ";
@@ -273,8 +275,10 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 		}else{ // Entidad X
 			// Llama recursivamente a modificarInstancia con la
 			// instancia contenida en la que se esta modificando.
-			cout<<"Modificacion de la instancia de "<< this->getEntidad(metaIter->idEntidad)->getNombre() <<":"<<endl;
+			cout<<endl;
+			cout<<endl<<"    Modificacion de la instancia de "<< this->getEntidad(metaIter->idEntidad)->getNombre() <<":"<<endl;
 			this->modificarInstancia(metaIter->idEntidad, iter->entero);
+			cout<<"  Continua con la actualización de atributos de la instancia de la entidad "<<ent->getNombre()<<endl;
 		}
 		newAtts->push_back(*atributo);
 		metaIter++;
