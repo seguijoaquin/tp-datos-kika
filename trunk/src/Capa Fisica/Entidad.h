@@ -30,6 +30,7 @@ public:
 	int getCantidad();
 	int getTamanioMaxInstancia();
 	void eliminarInstancia(int id_instancia);
+	void eliminarInstancias();
 	void modificarInstancia(int id_instancia);
 	TipoArchivo getTipoArchivo();
 };

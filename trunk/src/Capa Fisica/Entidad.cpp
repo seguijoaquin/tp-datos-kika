@@ -112,6 +112,14 @@ void Entidad::eliminarInstancia(int id_instancia) {
 	}
 }
 
+void Entidad::eliminarInstancias(){
+	// Borrar lista de instancias y el archivo.
+	for(unsigned int i = 0; i < this->instancias.size(); i++){
+		this->archivo->borrar(this->instancias[i]->getID());
+	}
+	this->instancias.clear();
+}
+
 void Entidad::modificarInstancia(int id_instancia){
 	Instancia* inst = this->getInstancia(id_instancia);
 	if(!inst)return;
@@ -123,10 +131,19 @@ void Entidad::modificarInstancia(int id_instancia){
 	list<metaDataAtributo>::iterator metaIter = metaAtts->begin();
 	list<Atributo>::iterator iter = atts->begin();
 
+	metaIter++; //Salteo atributo de ID.
+	iter++;		//Salteo atributo de ID.
+
+	// Gurado el atributo ID.
+	atributo = new Atributo();
+	atributo->entero = inst->getID();
+	newAtts->push_back(*atributo);
+
+
 	// Variables auxiliares para leer entrada de usuario.
 	char opget[5];
 	int auxInt;
-	char* auxChar;
+	char* auxChar = new char();
 
 	// Pregunta nuevos valores de atributos.
 	while(metaIter != metaAtts->end()){
@@ -160,6 +177,7 @@ void Entidad::modificarInstancia(int id_instancia){
 		iter++;
 	}
 	this->archivo->modificarInstancia(id_instancia,newAtts,metaAtts);
+	inst->setListaAtributos(newAtts);
 }
 
 int Entidad::getCantidadInstancias(){

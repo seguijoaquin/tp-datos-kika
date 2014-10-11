@@ -179,7 +179,7 @@ void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_
 }
 
 void AdministradorEntidades::eliminarInstancias(int id){
-
+	this->getEntidad(id)->eliminarInstancias();
 }
 
 bool AdministradorEntidades::entidadExistente(string nombre){
