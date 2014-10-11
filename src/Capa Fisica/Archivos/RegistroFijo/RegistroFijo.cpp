@@ -66,8 +66,9 @@ list<Atributo>* ArchivoRegistroFijo::leer(int numeroRegistro, list<metaDataAtrib
 	for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++) {
 		Atributo aux;
 		if (it->tipo == TEXTO) {
-			aux.texto = new char[it->cantidadBytes];
+			aux.texto = new char[it->cantidadBytes + 1];
 			this->archivo.read(aux.texto,it->cantidadBytes);
+			aux.texto[it->cantidadBytes] = NULL;
 		} else {
 			this->archivo.read((char*)&aux.entero,it->cantidadBytes);
 		}
