@@ -71,7 +71,7 @@ void AdministradorEntidades::leerArchivoEntidades(){
 }
 
 void AdministradorEntidades::agregarDato(string buffer) {
-	this->archivo << buffer;
+	this->archivo.write(buffer.c_str(),buffer.size());
 	this->archivo << '@';
 }
 
