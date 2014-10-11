@@ -151,50 +151,33 @@ void Interfaz::crear_instancia(){
 void Interfaz::modificar_instancia(){
 
 	int id_entidad = this->seleccionar_entidad();	// Preguntar el id de la entidad
-	Entidad ent = this->admin->getEntidad(id_entidad);	// Obtiene la entidad
+	Entidad* ent = this->admin->getEntidad(id_entidad);	// Obtiene la entidad
 
-	cout<<"Instancias de la entidad "<<ent.getNombre()<<":"<<endl;
-	ent.listarInstancias();							// Muestra sus instancias.
+	cout<<"Instancias de la entidad "<<ent->getNombre()<<":"<<endl;
+	ent->listarInstancias();							// Muestra sus instancias.
 
-	int num_instancia = this->pedir_opcion();	// Pide instancia a modificar.
-	if (num_instancia > ent.getCantidadInstancias()){
+	int id_instancia = this->pedir_opcion();	// Pide instancia a modificar.
+	if (id_instancia > ent->getCantidadInstancias()){
 		// Si la opcion obtenida es mayor a la cantidad de instancias.
 		cout<<"Opción ingresada es incorrecta."<<endl;
 		return;
 	}
-
-	Instancia* inst = ent.getInstancia(num_instancia);
-	list<Atributo>* atts = inst->getListaAtributos();
-
-	// - Preguntar que atributo debe modificarse
-	// - Mostrar el estado actual del atributo.
-	// - Pedir nuevo estado.
-	// - Pasar al administrador de entidades:
-	// 		- id de la entidad. (id_entidad)
-	// 		- numero de la instancia en la lista. (num_instancia)
-	//		- numero del atributo en la lista. ()
-	// 		- Nuevo estado del atributo. ()
-
+	ent->modificarInstancia(id_instancia);
 }
 
 void Interfaz::eliminar_instancia(){
 
 	unsigned int id = this->seleccionar_entidad();
-	Entidad ent = this->admin->getEntidad(id);
-	cout<<"Instancias de la entidad "<<ent.getNombre()<<":"<<endl<<endl;
-	ent.listarInstancias();
+	Entidad* ent = this->admin->getEntidad(id);
+	cout<<"Instancias de la entidad "<<ent->getNombre()<<":"<<endl<<endl;
+	ent->listarInstancias();
 
 	int num_instancia = this->pedir_opcion();	// Pide instancia a modificar.
-	if (num_instancia > ent.getCantidadInstancias()){
+	if (num_instancia > ent->getCantidadInstancias()){
 		// Si la opcion obtenida es mayor a la cantidad de instancias.
 		cout<<"Opción ingresada es incorrecta."<<endl;
 		return;
 	}
-
-	// Pasa al administrador de entidades:
-	//		- id de la entidad. (id)
-	//		- numero de la instancia en la lista. (num_instancia)
-
 	this->admin->eliminarInstancia(id,num_instancia);
 }
 

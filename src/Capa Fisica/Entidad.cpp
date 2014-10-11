@@ -5,6 +5,7 @@ Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,Ti
 	this->listaAtributos = listaAtributos;
 	this->nombre = nombre;
 	this->ID = ID;
+	this->ultimoIDInstancia = 0;
 	int tam = 0;
 	for(list<metaDataAtributo>::iterator it = listaAtributos->begin(); it != listaAtributos->end();it++){
 		tam += it->cantidadBytes;
@@ -36,8 +37,12 @@ int Entidad::getID(){
 void Entidad::crearInstancia(){
 	list<Atributo>* listaDatos = new list<Atributo>;
 	cout<<"Ingresar atributos:"<<endl;
-	for(list<metaDataAtributo>::iterator it = this->listaAtributos->begin(); it != this->listaAtributos->end();it++){
-		Atributo aux;
+	list<metaDataAtributo>::iterator it = this->listaAtributos->begin();
+	Atributo aux;
+	aux.entero = ++this->ultimoIDInstancia;
+	listaDatos->push_back(aux);
+	it++;
+	for(it; it != this->listaAtributos->end();it++){
 		if (it->tipo == ENTERO | it->tipo == ENTID){
 			cout<<it->nombre<<"(entero): ";
 			cin>>aux.entero;
@@ -70,6 +75,7 @@ void Entidad::leerInstancias(){
 					}
 					instancia->setListaAtributos(listaNueva);
 					this->instancias.push_back(instancia);
+					if(this->ultimoIDInstancia < instancia->getID()) this->ultimoIDInstancia = instancia->getID();
 				}
 				delete listaDatosAtributos;
 			}
@@ -92,15 +98,19 @@ void Entidad::listarInstancias(){
 	}
 }
 
-void Entidad::borrar(int numero) {
-	int encontrado = this->archivo->borrar(numero);
+void Entidad::eliminarInstancia(int id_instancia) {
+	int encontrado = this->archivo->borrar(id_instancia);
 	if (encontrado == 1) {
 		for (unsigned int i = 0; i < this->instancias.size();i++) {
-			if (this->instancias[i]->getID() == numero){
+			if (this->instancias[i]->getID() == id_instancia){
 				this->instancias.erase(this->instancias.begin() + i);
 			}
 		}
 	}
+}
+
+void Entidad::modificarInstancia(int id_instancia){
+	// Hacer.
 }
 
 int Entidad::getCantidadInstancias(){
@@ -108,7 +118,12 @@ int Entidad::getCantidadInstancias(){
 }
 
 Instancia* Entidad::getInstancia(int id){
-	return this->instancias[id];
+	for(int i = 0; i < this->instancias.size(); i++){
+		if(this->instancias[i]->getID() == id){
+			return this->instancias[i];
+		}
+	}
+	return NULL;
 }
 
 int Entidad::getCantidad(){

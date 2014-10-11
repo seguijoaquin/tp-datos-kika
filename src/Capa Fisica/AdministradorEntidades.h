@@ -32,9 +32,9 @@ public:
 	int getID(int x);
 	void listarEntidades();
 	void listarInstancias(int id);
-	Entidad getEntidad(int id);
-	void eliminarInstancia(unsigned int id, unsigned int num_instancia);
-	void modificarInstancia(unsigned int id, unsigned int num_instancia);
+	Entidad* getEntidad(int id);
+	void eliminarInstancia(unsigned int id, unsigned int id_instancia);
+	void modificarInstancia(unsigned int id, unsigned int id_instancia);
 	void eliminarInstancias(int id);
 	bool entidadExistente(string nombre);
 };
