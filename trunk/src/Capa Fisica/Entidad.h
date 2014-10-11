@@ -21,7 +21,8 @@ public:
 	~Entidad();
 	list<metaDataAtributo>* getListaAtributos();
 	string getNombre();
-	void crearInstancia();
+	void crearInstancia(list<Atributo>* listaDatos);
+	int getUltimoIDInstancia();
 	int getID();
 	void leerInstancias();
 	void listarInstancias();
@@ -31,7 +32,7 @@ public:
 	int getTamanioMaxInstancia();
 	void eliminarInstancia(int id_instancia);
 	void eliminarInstancias();
-	void modificarInstancia(int id_instancia);
+	void modificarInstancia(int id_instancia, list<metaDataAtributo>* metaAtts, list<Atributo>* newAtts);
 	TipoArchivo getTipoArchivo();
 };
 

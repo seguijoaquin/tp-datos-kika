@@ -32,7 +32,7 @@ unsigned int Interfaz::pedir_opcion(){
 	char opget[5];
 	cout << "Ingrese la opcion seleccionada: ";
 	cin >> opget;
-	cout << " \n";
+	cout << endl;
 	cin.get();
 	return atoi(opget);
 }
@@ -164,7 +164,7 @@ void Interfaz::modificar_instancia(){
 		cout<<"Opción ingresada es incorrecta."<<endl;
 		return;
 	}
-	ent->modificarInstancia(id_instancia);
+	admin->modificarInstancia(ent->getID(),id_instancia);
 }
 
 void Interfaz::eliminar_instancia(){

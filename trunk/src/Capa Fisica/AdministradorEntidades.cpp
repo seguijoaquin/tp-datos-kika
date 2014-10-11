@@ -156,11 +156,54 @@ int AdministradorEntidades::getID(int x) {
 }
 
 void AdministradorEntidades::crearInstancia(int id){
-	list<Entidad>::iterator it = listaEntidades->begin();
-	for(int i = 1 ; i < id ;++i) {
-		++it;
+
+	Entidad* ent = this->getEntidad(id);
+	Entidad* auxEnt;
+	char opget[5];
+	list<Atributo>* listaDatos = new list<Atributo>;
+	cout<<"Ingresar atributos:"<<endl;
+	list<metaDataAtributo>::iterator iterAtts = ent->getListaAtributos()->begin();
+
+	Atributo aux;
+
+	// Agrega el ID.
+	aux.entero = ent->getUltimoIDInstancia() + 1;
+	listaDatos->push_back(aux);
+	iterAtts++;
+
+	while(iterAtts != ent->getListaAtributos()->end()){
+
+		if (iterAtts->tipo == ENTERO){
+			cout<<iterAtts->nombre<<"(entero): ";
+			cin>>aux.entero;
+
+		}else if(iterAtts->tipo == ENTID){
+
+			// No hay instancia de la entidad pedida.
+
+			cout<<iterAtts->nombre<<"(entidad)"<<endl;
+
+			auxEnt = this->getEntidad(iterAtts->idEntidad); // Entidad de la que pide.
+			auxEnt->listarInstancias();
+
+			cout << "Ingrese el ID de la instancia que desea utilizar: ";
+			cin >> opget;
+			cout << endl;
+			cin.get();
+			aux.entero = atoi(opget);
+
+		}else {
+			cout<<iterAtts->nombre<<"(max "<<iterAtts->cantidadBytes<<"): ";
+			aux.texto = new char[maxCantidadCaracteres];
+			do {
+				cin>>aux.texto;
+				if (strlen(aux.texto) > iterAtts->cantidadBytes) cout<<"La cantidad de caracteres excede el maximo permitido. Ingrese nuevamente el valor: ";
+			} while (strlen(aux.texto) > iterAtts->cantidadBytes);
+		}
+		listaDatos->push_back(aux);
+		iterAtts++;
 	}
-	it->crearInstancia();
+	ent->crearInstancia(listaDatos);
 }
 
 Entidad* AdministradorEntidades::getEntidad(int id){
@@ -172,8 +215,71 @@ Entidad* AdministradorEntidades::getEntidad(int id){
 }
 
 void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id_instancia){
+
 	Entidad* ent = this->getEntidad(id);
-	ent->modificarInstancia(id_instancia);
+	Instancia* inst = ent->getInstancia(id_instancia);
+	if(!inst)return;
+
+	list<metaDataAtributo>* metaAtts = ent->getListaAtributos(); // Metadata de atibutos.
+	list<Atributo>* atts = inst->getListaAtributos();	// Vieja lista de atributos.
+	list<Atributo>* newAtts = new list<Atributo>;		// Nueva lista de atributos.
+	Atributo* atributo;
+
+	list<metaDataAtributo>::iterator metaIter = metaAtts->begin();
+	list<Atributo>::iterator iter = atts->begin();
+
+	metaIter++; //Salteo atributo de ID.
+	iter++;		//Salteo atributo de ID.
+
+	// Guardo el atributo ID.
+	atributo = new Atributo();
+	atributo->entero = inst->getID();
+	newAtts->push_back(*atributo);
+
+
+	// Variables auxiliares para leer entrada de usuario.
+	char opget[5];
+	int auxInt;
+	char* auxChar;
+
+	// Pregunta nuevos valores de atributos.
+	while(metaIter != metaAtts->end()){
+		if(metaIter->tipo == ENTERO){
+			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo int: "<<iter->entero<<endl;
+			cout<<"Ingrese el nuevo valor: ";
+			cin >> opget;
+			cout <<endl;
+			cin.get();
+			auxInt = atoi(opget);
+
+			//  Crear nuevo atributo.
+			atributo = new Atributo();
+			atributo->entero = auxInt;
+
+		}else if(metaIter->tipo == TEXTO){
+			auxChar = new char[metaIter->cantidadBytes+1];
+			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo string (max " << metaIter->cantidadBytes<<" caracateres):"<<iter->texto<<endl;
+			cout<<"Ingrese el nuevo valor: ";
+			do {
+				cin>>auxChar;
+				if (strlen(auxChar) > metaIter->cantidadBytes) cout<<"La cantidad de caracteres excede el maximo permitido. Ingrese nuevamente el valor: ";
+			} while (strlen(auxChar) > metaIter->cantidadBytes);
+
+			// Crear nuevo atributo.
+			atributo = new Atributo();
+			atributo->texto = auxChar;
+
+		}else{ // Entidad X
+			// Llama recursivamente a modificarInstancia con la
+			// instancia contenida en la que se esta modificando.
+			cout<<"Modificacion de la instancia de "<< this->getEntidad(metaIter->idEntidad)->getNombre() <<":"<<endl;
+			this->modificarInstancia(metaIter->idEntidad, iter->entero);
+		}
+		newAtts->push_back(*atributo);
+		metaIter++;
+		iter++;
+	}
+	ent->modificarInstancia(id_instancia, metaAtts, newAtts);
 }
 
 void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_instancia){
