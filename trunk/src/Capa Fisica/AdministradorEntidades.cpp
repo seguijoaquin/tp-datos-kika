@@ -44,6 +44,8 @@ void AdministradorEntidades::leerArchivoEntidades(){
 		for (int j=1;j<=cantAtributos;++j) {
 			p = std::strtok(NULL,"@"); //Separo nombre
 			std::string nombreAtributo = p;
+			p = std::strtok(NULL,"@"); //Separo ID entidad
+			int id_entidad = std::atoi(p.c_str());
 			p = std::strtok(NULL,"@"); //Separo tipo
 			std::string tipoAtrib = p;
 			TipoAtributo tipoAtributo;
@@ -56,6 +58,7 @@ void AdministradorEntidades::leerArchivoEntidades(){
 			nuevoAtributo->nombre = nombreAtributo;
 			nuevoAtributo->tipo = tipoAtributo;
 			nuevoAtributo->cantidadBytes = cantidadBytes;
+			nuevoAtributo->idEntidad = id_entidad;
 			listaAtribs->push_back(*nuevoAtributo);
 		}
 		Entidad* nuevaEntidad = new Entidad(listaAtribs,nombreEntidad,id,tipoArchivo);
@@ -83,8 +86,8 @@ int AdministradorEntidades::getUltimoID() {
 }
 
 void AdministradorEntidades::agregarAtributo(metaDataAtributo atributo) {
-	this->archivo << atributo.nombre;
-	this->archivo << "@";
+	this->agregarDato(atributo.nombre);
+	this->agregarDato(atributo.idEntidad);
 	switch (atributo.tipo) {
 			case ENTERO:	this->agregarDato("ENTERO");
 							break;
