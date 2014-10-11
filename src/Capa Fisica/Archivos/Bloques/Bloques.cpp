@@ -220,6 +220,56 @@ int ArchivoBloque::buscar(int IDInstancia){
 }
 
 int ArchivoBloque::modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos){
+	int pos = this->buscar(ID);
+	if (pos != -1 ){
+
+		int tamanioInstanciaNuevo = sizeof(int);	//Se guarda tamanioInstancia en archivo
+		list<Atributo>::iterator it2 = atributos->begin();
+		for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end();it++,it2++){
+			if (it->tipo == TEXTO) {
+				tamanioInstanciaNuevo += strlen(it2->texto) + 1; //+1 por el caracter separador
+			} else {
+				tamanioInstanciaNuevo += sizeof(it2->entero);
+			}
+		}
+		int tamanioInstanciaViejo;
+		this->archivo.seekg(pos,ios::beg);
+		this->archivo.read((char*)&tamanioInstanciaViejo,sizeof(tamanioInstanciaViejo));
+		if (tamanioInstanciaViejo < tamanioInstanciaNuevo ) { //Si no entra donde estaba
+			this->borrar(ID);
+			this->escribir(atributos,listaTipoAtributos);
+		} else {	//Lo escribo donde estaba y muevo lo q estaba despues para atras.
+			//Escribo
+			this->archivo.seekp(pos,ios::beg);
+			it2 = atributos->begin();
+			this->archivo.write((char*)&tamanioInstanciaNuevo,sizeof(tamanioInstanciaNuevo));
+			for (list<metaDataAtributo>::iterator it = listaTipoAtributos->begin(); it != listaTipoAtributos->end(); it++,it2++) {
+				if (it->tipo == TEXTO) {
+					this->archivo.write(it2->texto,strlen(it2->texto));
+					this->archivo.write(&separadorString,1);
+				} else {
+					this->archivo.write((char*)&(it2->entero),it->cantidadBytes);
+				}
+			}
+			//Muevo lo q esta para atras
+			int diferencia = tamanioInstanciaViejo - tamanioInstanciaNuevo;
+			int espacioACopiar = 8 + (bloqueActual + 1) * tamanioBloque - (pos + tamanioInstanciaViejo);
+			char* buffer = new char[espacioACopiar];
+			archivo.seekg(0,ios::end);
+			if (pos + tamanioInstanciaViejo + espacioACopiar >= archivo.tellg()){
+				espacioACopiar = archivo.tellg() - pos - tamanioInstanciaViejo;
+			}
+			archivo.seekg(pos + tamanioInstanciaViejo,ios::beg);
+			archivo.read(buffer,espacioACopiar);
+
+			archivo.seekp(pos + tamanioInstanciaNuevo,ios::beg);
+			archivo.write(buffer,espacioACopiar);
+			this->vectorBloques[bloqueActual]->setEspacioLibre(this->vectorBloques[bloqueActual]->getEspacioLibre() + diferencia);
+		}
+
+
+
+	}
 	return -1;
 }
 
