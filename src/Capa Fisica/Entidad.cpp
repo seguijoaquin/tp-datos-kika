@@ -143,7 +143,7 @@ void Entidad::modificarInstancia(int id_instancia){
 	// Variables auxiliares para leer entrada de usuario.
 	char opget[5];
 	int auxInt;
-	char* auxChar = new char();
+	char* auxChar;
 
 	// Pregunta nuevos valores de atributos.
 	while(metaIter != metaAtts->end()){
@@ -160,6 +160,7 @@ void Entidad::modificarInstancia(int id_instancia){
 			atributo->entero = auxInt;
 
 		}else if(metaIter->tipo == TEXTO){
+			auxChar = new char[metaIter->cantidadBytes+1];
 			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo string: "<<iter->texto<<endl;
 			cout<<"Ingrese el nuevo valor: ";
 			cin >> auxChar;
