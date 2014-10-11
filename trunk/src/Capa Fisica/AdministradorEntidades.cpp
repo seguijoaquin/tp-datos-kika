@@ -169,7 +169,8 @@ Entidad* AdministradorEntidades::getEntidad(int id){
 }
 
 void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id_instancia){
-
+	Entidad* ent = this->getEntidad(id);
+	ent->modificarInstancia(id_instancia);
 }
 
 void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_instancia){

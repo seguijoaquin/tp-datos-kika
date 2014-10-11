@@ -1,5 +1,5 @@
 #include "Entidad.h"
-
+#include <cstdlib>
 
 Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,TipoArchivo tipoArchivo){
 	this->listaAtributos = listaAtributos;
@@ -14,7 +14,6 @@ Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,Ti
 	else if (tipoArchivo == VARIABLE) this->archivo = new ArchivoRegistroVariable(nombre);
 	else if (tipoArchivo == DEBLOQUES) this->archivo = new ArchivoBloque(nombre,this->getTamanioMaxInstancia());
 }
-
 
 Entidad::~Entidad(){
 	delete this->listaAtributos;
@@ -42,8 +41,9 @@ void Entidad::crearInstancia(){
 	aux.entero = ++this->ultimoIDInstancia;
 	listaDatos->push_back(aux);
 	it++;
-	for(it; it != this->listaAtributos->end();it++){
-		if (it->tipo == ENTERO | it->tipo == ENTID){
+
+	while(it != this->listaAtributos->end()){
+		if (it->tipo == ENTERO || it->tipo == ENTID){
 			cout<<it->nombre<<"(entero): ";
 			cin>>aux.entero;
 		} else {
@@ -52,7 +52,9 @@ void Entidad::crearInstancia(){
 			cin>>aux.texto;
 		}
 		listaDatos->push_back(aux);
+		it++;
 	}
+
 	Instancia* instancia = new Instancia();
 	instancia->setListaAtributos(listaDatos);
 	this->instancias.push_back(instancia);
@@ -110,7 +112,53 @@ void Entidad::eliminarInstancia(int id_instancia) {
 }
 
 void Entidad::modificarInstancia(int id_instancia){
-	// Hacer.
+	Instancia* inst = this->getInstancia(id_instancia);
+	if(!inst)return;
+	list<metaDataAtributo>* metaAtts = this->listaAtributos; // Metadata de atibutos.
+	list<Atributo>* atts = inst->getListaAtributos();	// Vieja lista de atributos.
+	list<Atributo>* newAtts = new list<Atributo>;		// Nueva lista de atributos.
+	Atributo* atributo;
+
+	list<metaDataAtributo>::iterator metaIter = metaAtts->begin();
+	list<Atributo>::iterator iter = atts->begin();
+
+	// Variables auxiliares para leer entrada de usuario.
+	char opget[5];
+	int auxInt;
+	char* auxChar;
+
+	// Pregunta nuevos valores de atributos.
+	while(metaIter != metaAtts->end()){
+		if(metaIter->tipo == ENTERO){
+			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo int: "<<iter->entero<<endl;
+			cout<<"Ingrese el nuevo valor: ";
+			cin >> opget;
+			cout <<endl;
+			cin.get();
+			auxInt = atoi(opget);
+
+			//  Crear nuevo atributo.
+			atributo = new Atributo();
+			atributo->entero = auxInt;
+
+		}else if(metaIter->tipo == TEXTO){
+			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo string: "<<iter->texto<<endl;
+			cout<<"Ingrese el nuevo valor: ";
+			cin >> auxChar;
+
+			// Crear nuevo atributo.
+			atributo = new Atributo();
+			atributo->texto = auxChar;
+
+		}else{ // Entidad X
+			// Hacer modificarInstancia(Entidad) de la instancia almacenada en el att.
+
+		}
+		newAtts->push_back(*atributo);
+		metaIter++;
+		iter++;
+	}
+	this->archivo->modificarInstancia(id_instancia,newAtts,metaAtts);
 }
 
 int Entidad::getCantidadInstancias(){
@@ -118,7 +166,7 @@ int Entidad::getCantidadInstancias(){
 }
 
 Instancia* Entidad::getInstancia(int id){
-	for(int i = 0; i < this->instancias.size(); i++){
+	for(unsigned int i = 0; i < this->instancias.size(); i++){
 		if(this->instancias[i]->getID() == id){
 			return this->instancias[i];
 		}
