@@ -161,7 +161,7 @@ void Entidad::modificarInstancia(int id_instancia){
 
 		}else if(metaIter->tipo == TEXTO){
 			auxChar = new char[metaIter->cantidadBytes+1];
-			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo string: "<<iter->texto<<endl;
+			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo string (max " << metaIter->cantidadBytes<<" caracateres):"<<iter->texto<<endl;
 			cout<<"Ingrese el nuevo valor: ";
 			cin >> auxChar;
 
