@@ -95,8 +95,10 @@ void Interfaz::crear_entidad(){
 				break;
 
 			case 3: // Entidad X
-				att.cantidadBytes = sizeof(int); att.tipo = ENTID; // Tamaño de la entidad, sizeof(int), 
-																   // ya que guarda el ID de la entidad.
+				att.cantidadBytes = sizeof(int); att.tipo = ENTID;	// Tamaño de la entidad, sizeof(int),
+																	// ya que guarda el ID de la entidad.
+
+				att.idEntidad = this->seleccionar_entidad();
 				break;
 		}
 		

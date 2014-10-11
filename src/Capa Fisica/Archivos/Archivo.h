@@ -31,6 +31,7 @@ struct metaDataAtributo{
 	TipoAtributo tipo;
 	int cantidadBytes; //cantidad de bytes del tipo de Atributo
 	string nombre;
+	unsigned int idEntidad; // Para el caso de atributo de tipo entidad.
 };
 
 class Archivo {

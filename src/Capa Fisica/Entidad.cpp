@@ -44,10 +44,14 @@ void Entidad::crearInstancia(){
 	it++;
 
 	while(it != this->listaAtributos->end()){
-		if (it->tipo == ENTERO || it->tipo == ENTID){
+		if (it->tipo == ENTERO){
 			cout<<it->nombre<<"(entero): ";
 			cin>>aux.entero;
-		} else {
+		}else if(it->tipo == ENTID){
+			cout<<it->nombre<<"(entidad): ";
+			cin>>aux.entero;
+
+		}else {
 			cout<<it->nombre<<"(max "<<it->cantidadBytes<<"): ";
 			aux.texto = new char[maxCantidadCaracteres];
 			do {
