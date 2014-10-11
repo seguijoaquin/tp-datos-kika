@@ -34,39 +34,12 @@ int Entidad::getID(){
 	return this->ID;
 }
 
-void Entidad::crearInstancia(){
-	list<Atributo>* listaDatos = new list<Atributo>;
-	cout<<"Ingresar atributos:"<<endl;
-	list<metaDataAtributo>::iterator it = this->listaAtributos->begin();
-	Atributo aux;
-	aux.entero = ++this->ultimoIDInstancia;
-	listaDatos->push_back(aux);
-	it++;
-
-	while(it != this->listaAtributos->end()){
-		if (it->tipo == ENTERO){
-			cout<<it->nombre<<"(entero): ";
-			cin>>aux.entero;
-		}else if(it->tipo == ENTID){
-			cout<<it->nombre<<"(entidad): ";
-			cin>>aux.entero;
-
-		}else {
-			cout<<it->nombre<<"(max "<<it->cantidadBytes<<"): ";
-			aux.texto = new char[maxCantidadCaracteres];
-			do {
-				cin>>aux.texto;
-				if (strlen(aux.texto) > it->cantidadBytes) cout<<"La cantidad de caracteres excede el maximo permitido. Ingrese nuevamente el valor: ";
-			} while (strlen(aux.texto) > it->cantidadBytes);
-		}
-		listaDatos->push_back(aux);
-		it++;
-	}
-
+void Entidad::crearInstancia(list<Atributo>* listaDatos){
 	Instancia* instancia = new Instancia();
 	instancia->setListaAtributos(listaDatos);
 	this->instancias.push_back(instancia);
 	this->archivo->escribir(listaDatos,this->listaAtributos);
+	++this->ultimoIDInstancia;
 }
 
 void Entidad::leerInstancias(){
@@ -127,66 +100,9 @@ void Entidad::eliminarInstancias(){
 	this->instancias.clear();
 }
 
-void Entidad::modificarInstancia(int id_instancia){
+void Entidad::modificarInstancia(int id_instancia, list<metaDataAtributo>* metaAtts, list<Atributo>* newAtts){
+
 	Instancia* inst = this->getInstancia(id_instancia);
-	if(!inst)return;
-	list<metaDataAtributo>* metaAtts = this->listaAtributos; // Metadata de atibutos.
-	list<Atributo>* atts = inst->getListaAtributos();	// Vieja lista de atributos.
-	list<Atributo>* newAtts = new list<Atributo>;		// Nueva lista de atributos.
-	Atributo* atributo;
-
-	list<metaDataAtributo>::iterator metaIter = metaAtts->begin();
-	list<Atributo>::iterator iter = atts->begin();
-
-	metaIter++; //Salteo atributo de ID.
-	iter++;		//Salteo atributo de ID.
-
-	// Gurado el atributo ID.
-	atributo = new Atributo();
-	atributo->entero = inst->getID();
-	newAtts->push_back(*atributo);
-
-
-	// Variables auxiliares para leer entrada de usuario.
-	char opget[5];
-	int auxInt;
-	char* auxChar;
-
-	// Pregunta nuevos valores de atributos.
-	while(metaIter != metaAtts->end()){
-		if(metaIter->tipo == ENTERO){
-			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo int: "<<iter->entero<<endl;
-			cout<<"Ingrese el nuevo valor: ";
-			cin >> opget;
-			cout <<endl;
-			cin.get();
-			auxInt = atoi(opget);
-
-			//  Crear nuevo atributo.
-			atributo = new Atributo();
-			atributo->entero = auxInt;
-
-		}else if(metaIter->tipo == TEXTO){
-			auxChar = new char[metaIter->cantidadBytes+1];
-			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo string (max " << metaIter->cantidadBytes<<" caracateres):"<<iter->texto<<endl;
-			cout<<"Ingrese el nuevo valor: ";
-			do {
-				cin>>auxChar;
-				if (strlen(auxChar) > metaIter->cantidadBytes) cout<<"La cantidad de caracteres excede el maximo permitido. Ingrese nuevamente el valor: ";
-			} while (strlen(auxChar) > metaIter->cantidadBytes);
-
-			// Crear nuevo atributo.
-			atributo = new Atributo();
-			atributo->texto = auxChar;
-
-		}else{ // Entidad X
-			// Hacer modificarInstancia(Entidad) de la instancia almacenada en el att.
-
-		}
-		newAtts->push_back(*atributo);
-		metaIter++;
-		iter++;
-	}
 	this->archivo->modificarInstancia(id_instancia,newAtts,metaAtts);
 	inst->setListaAtributos(newAtts);
 }
@@ -207,6 +123,11 @@ Instancia* Entidad::getInstancia(int id){
 int Entidad::getCantidad(){
 	return this->archivo->getCantidad();
 }
+
+int Entidad::getUltimoIDInstancia(){
+	return this->ultimoIDInstancia;
+}
+
 
 int Entidad::getTamanioMaxInstancia(){
 	int tamanio = 0;
