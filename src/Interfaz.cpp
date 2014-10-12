@@ -105,7 +105,9 @@ void Interfaz::crear_entidad(){
 		
 		cout << "Ingrese el nombre del atributo: ";
 		std::string nombre_att;
-		getline(cin,nombre_att); //Preferible getline antes que >>
+		do {
+			getline(cin,nombre_att);
+		} while (nombre_att.size() > 50);
 		//cin >> nombre_att;
 		cout << "\n";
 
