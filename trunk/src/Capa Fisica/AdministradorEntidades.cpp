@@ -260,13 +260,14 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 
 		}else if(metaIter->tipo == TEXTO){
 			cout<<endl;
-			auxChar = new char[metaIter->cantidadBytes+1];
+			//auxChar = new char[metaIter->cantidadBytes+1];
+			std::string auxChar;
 			cout<<"Valor anterior del atributo "<<metaIter->nombre<<", de tipo string (max " << metaIter->cantidadBytes<<" caracateres):"<<iter->texto<<endl;
 			cout<<"Ingrese el nuevo valor: ";
 			do {
-				cin>>auxChar;
-				if (strlen(auxChar) > metaIter->cantidadBytes) cout<<"La cantidad de caracteres excede el maximo permitido. Ingrese nuevamente el valor: ";
-			} while (strlen(auxChar) > metaIter->cantidadBytes);
+				std::getline(cin,auxChar);
+				if (auxChar.size() > metaIter->cantidadBytes) cout<<"La cantidad de caracteres excede el maximo permitido. Ingrese nuevamente el valor: ";
+			} while (auxChar.size() > metaIter->cantidadBytes);
 
 			// Crear nuevo atributo.
 			atributo = new Atributo();
