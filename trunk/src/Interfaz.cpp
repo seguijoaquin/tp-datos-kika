@@ -40,8 +40,15 @@ unsigned int Interfaz::pedir_opcion(){
 int Interfaz::seleccionar_entidad(){
 	cout<<" Entidades:"<<endl;
 	this->admin->listarEntidades();
-	unsigned int opc = this->pedir_opcion();
-	return this->admin->getID(opc);
+	unsigned int opc;
+	do {
+		opc = this->pedir_opcion();
+		opc = this->admin->getID(opc);
+		if (opc == 0) {
+			cout<<"Opcion ingresada es incorrecta, ingrese valor nuevamente"<<endl;
+		}
+	} while (opc == 0);
+	return opc;
 }
 
 void Interfaz::crear_entidad(){
@@ -181,11 +188,6 @@ void Interfaz::eliminar_instancia(){
 	ent->listarInstancias();
 
 	int num_instancia = this->pedir_opcion();	// Pide instancia a modificar.
-	if (num_instancia > ent->getCantidadInstancias()){
-		// Si la opcion obtenida es mayor a la cantidad de instancias.
-		cout<<"Opción ingresada es incorrecta."<<endl;
-		return;
-	}
 	this->admin->eliminarInstancia(id,num_instancia);
 }
 
