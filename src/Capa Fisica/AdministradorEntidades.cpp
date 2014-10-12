@@ -225,6 +225,7 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 	list<Atributo>* atts = inst->getListaAtributos();	// Vieja lista de atributos.
 	list<Atributo>* newAtts = new list<Atributo>;		// Nueva lista de atributos.
 	Atributo* atributo;
+	Entidad* auxEnt;
 
 	list<metaDataAtributo>::iterator metaIter = metaAtts->begin();
 	list<Atributo>::iterator iter = atts->begin();
@@ -274,12 +275,19 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 			atributo->texto = auxChar;
 
 		}else{ // Entidad X
-			// Llama recursivamente a modificarInstancia con la
-			// instancia contenida en la que se esta modificando.
-			cout<<endl;
-			cout<<endl<<"    Modificacion de la instancia de "<< this->getEntidad(metaIter->idEntidad)->getNombre() <<":"<<endl;
-			this->modificarInstancia(metaIter->idEntidad, iter->entero);
-			cout<<"  Continua con la actualización de atributos de la instancia de la entidad "<<ent->getNombre()<<endl;
+
+			auxEnt = this->getEntidad(metaIter->idEntidad); // Entidad de la que pide.
+			cout << "Modificacion del atributo entidad " << auxEnt->getNombre() << ":" << endl;
+			auxEnt->listarInstancias();
+			cout << "Ingrese el ID de la nueva instancia que desea utilizar: ";
+			cin >> opget;
+			cout << endl;
+			cin.get();
+			auxInt = atoi(opget);
+
+			//  Crear nuevo atributo.
+			atributo = new Atributo();
+			atributo->entero = auxInt;
 		}
 		newAtts->push_back(*atributo);
 		metaIter++;
