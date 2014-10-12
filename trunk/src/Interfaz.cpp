@@ -62,7 +62,7 @@ void Interfaz::crear_entidad(){
 	metaDataAtributo att;
 	
 	/* Agrega el atributo del identificador */
-	att.cantidadBytes = sizeof(int); att.tipo = ENTERO; att.nombre = "ID";
+	att.cantidadBytes = sizeof(int); att.tipo = ENTERO; att.nombre = "ID"; att.idEntidad = 0;
 	atts->push_back(att);
 	
 	while(true){
@@ -83,6 +83,7 @@ void Interfaz::crear_entidad(){
 		
 			case 1: // Entero
 				att.cantidadBytes = sizeof(int); att.tipo = ENTERO;
+				att.idEntidad = 0;
 				break;
 
 			case 2: // Cadena de caracteres
@@ -92,6 +93,7 @@ void Interfaz::crear_entidad(){
 				cin.get();
 				tamanio_string = atoi(tamanio);
 				att.cantidadBytes = tamanio_string*sizeof(char); att.tipo = TEXTO;
+				att.idEntidad = 0;
 				cout << "\n";
 				break;
 
