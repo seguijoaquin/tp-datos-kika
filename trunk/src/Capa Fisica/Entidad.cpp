@@ -89,6 +89,8 @@ void Entidad::eliminarInstancia(int id_instancia) {
 				this->instancias.erase(this->instancias.begin() + i);
 			}
 		}
+	} else {
+		cout<<"Opcion ingresada es incorrecta"<<endl;
 	}
 }
 

@@ -150,6 +150,9 @@ void AdministradorEntidades::listarInstancias(int id){
 
 int AdministradorEntidades::getID(int x) {
 	list<Entidad>::iterator it = listaEntidades->begin();
+	if (x > this->listaEntidades->size() | x < 0) {
+		return 0;
+	}
 	for(int i = 1 ; i < x ;++i) {
 		++it;
 	}
@@ -188,10 +191,17 @@ void AdministradorEntidades::crearInstancia(int id){
 			auxEnt->listarInstancias();
 
 			cout << "Ingrese el ID de la instancia que desea utilizar: ";
-			cin >> opget;
-			cout << endl;
-			cin.get();
-			aux.entero = atoi(opget);
+			Instancia* instancia;
+			do {
+				cin >> opget;
+				cout << endl;
+				cin.get();
+				aux.entero = atoi(opget);
+				instancia = auxEnt->getInstancia(aux.entero);
+				if (instancia == NULL) {
+					cout<<"Opción ingresada es incorrecta."<<endl;
+				}
+			} while (instancia == NULL);
 
 		}else {
 			cout<<iterAtts->nombre<<"(max "<<iterAtts->cantidadBytes<<"): ";
@@ -219,7 +229,10 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 
 	Entidad* ent = this->getEntidad(id);
 	Instancia* inst = ent->getInstancia(id_instancia);
-	if(!inst)return;
+	if(!inst){
+		cout<<"Opción ingresada es incorrecta."<<endl;
+		return;
+	}
 
 	list<metaDataAtributo>* metaAtts = ent->getListaAtributos(); // Metadata de atibutos.
 	list<Atributo>* atts = inst->getListaAtributos();	// Vieja lista de atributos.
