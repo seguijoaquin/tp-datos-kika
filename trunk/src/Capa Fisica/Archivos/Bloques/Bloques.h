@@ -13,6 +13,8 @@
 #include "../Archivo.h"
 #include "../../Bloque.h"
 
+#define TAMANIOBLOQUE_DEFAULT 512
+
 
 using namespace std;
 
