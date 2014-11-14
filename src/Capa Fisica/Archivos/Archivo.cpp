@@ -13,6 +13,7 @@ list<Atributo>* Archivo::leer(int numero,list<metaDataAtributo>* listaTipoAtribu
 	return NULL;
 }
 
+
 void Archivo::escribir(list<Atributo>* atributos,list<metaDataAtributo>* listaTipoAtributos){
 
 }
