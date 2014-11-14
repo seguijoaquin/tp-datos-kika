@@ -2,7 +2,7 @@
 
 
 ArchivoBloque::ArchivoBloque(string nombre, int tamanio) {
-	this->tamanioBloque = maxInstanciasEnBloque * (tamanio + sizeof(int));	//tamanioInsancia + dato q guarda el tamanio
+	this->tamanioBloque = tamanio;//maxInstanciasEnBloque * (tamanio + sizeof(int));	//tamanioInsancia + dato q guarda el tamanio
 	this->bloqueActual = 0;
     archivo.open(nombre.c_str(), fstream::in | fstream::out | fstream::binary);
     if(!archivo){ // si no existe, crear archivo nuevo
@@ -106,6 +106,30 @@ void ArchivoBloque::escribir(list<Atributo>* datosAtributos,list<metaDataAtribut
 	this->vectorBloques[this->bloqueActual]->setEspacioLibre(this->vectorBloques[this->bloqueActual]->getEspacioLibre() - tamanioInstancia);
 }
 
+unsigned int ArchivoBloque::escribir(char* bloque){
+
+	if(strlen(bloque) > tamanioBloque) throw ExcepcionOverflowTamBloque();
+
+	unsigned int posicion = this->siguientePosicionLibre();
+	archivo.seekp(sizeof(cantidadBloques) + posicion*tamanioBloque, ios::beg);
+	archivo.write(bloque, tamanioBloque);
+	cantidadBloques++;
+
+	return posicion;
+}
+
+unsigned int ArchivoBloque::siguientePosicionLibre(){
+
+	unsigned int pos;
+	for(pos= 0; pos<vectorMapaBits.size() && vectorMapaBits.at(pos)=='1'; pos++){};
+	if(pos== vectorMapaBits.size())
+	     vectorMapaBits.push_back('1');
+	else vectorMapaBits.at(pos) = '1';
+
+	return pos;
+}
+
+
 unsigned int ArchivoBloque::siguientePosicionLibre(int tamanioInstancia){
 
 	for (unsigned int i = 0; i < this->cantidadBloques; i++){
@@ -160,6 +184,21 @@ list<Atributo>* ArchivoBloque::leer(int numeroBloque, list<metaDataAtributo>* li
 		}
 	}
 	return listaAtributos;
+}
+
+void ArchivoBloque::leer(char* &bloque, unsigned int numBloque){
+
+	archivo.seekg(sizeof(cantidadBloques) + numBloque*tamanioBloque, ios::beg);
+	archivo.read(bloque, tamanioBloque);
+}
+
+void ArchivoBloque::reescribir(char* bloque, unsigned int posicion){
+
+	if(strlen(bloque) > tamanioBloque) throw ExcepcionOverflowTamBloque();
+	if(posicion >= this->vectorBloques.size()) throw ExcepcionBloqueInexistente();
+
+	archivo.seekp(sizeof(cantidadBloques) + posicion*tamanioBloque, ios::beg);
+	archivo.write(bloque, tamanioBloque);
 }
 
 unsigned int ArchivoBloque::getCantidadBloques(){

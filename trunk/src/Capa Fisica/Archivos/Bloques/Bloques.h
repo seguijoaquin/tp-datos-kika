@@ -12,6 +12,9 @@
 #include <string.h>
 #include "../Archivo.h"
 #include "../../Bloque.h"
+#include "../../Excepciones/ExcepcionBloqueInexistente.h"
+#include "../../Excepciones/ExcepcionBloqueIncorrecto.h"
+#include "../../Excepciones/ExcepcionOverflowTamBloque.h"
 
 #define TAMANIOBLOQUE_DEFAULT 512
 
@@ -27,20 +30,24 @@ public:
         int getCantidad();
 
         void escribir(list<Atributo>* datosAtributos,list<metaDataAtributo>* listaTipoAtributos);
-
+        unsigned int escribir(char* bloque);
         list<Atributo>* leer(int numeroRegistro, list<metaDataAtributo>* listaTipoAtributos);
+        void leer(char* &bloque, unsigned int numBloque);
         int modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
         int borrar(int IDInstancia);
+        void reescribir(char* bloque, unsigned int posicion);
         unsigned int getCantidadBloques();
         unsigned int getTamanoBloque();
 
 private:
         int bloqueActual;
         vector<Bloque*> vectorBloques;
+        vector<char> vectorMapaBits;
         unsigned int tamanioBloque;
         unsigned int cantidadBloques;
         bool esMultiplo(int tamanioBloque);
         unsigned int siguientePosicionLibre(int tamanioInstancia);
+        unsigned int siguientePosicionLibre();
         void leerMapaBloques();
         void escribirEspaciosLibres();
         int buscar(int idInstancia);
