@@ -67,7 +67,7 @@ void Nodo::setCantidadDeElementos(unsigned int cantidad){
 Nodo* Nodo::cargar(ArchivoBloque* archivo, unsigned int indice){
 
 	char* bloque = new char[archivo->getTamanoBloque()];
-//	archivo->leer(bloque, indice);
+	archivo->leer(bloque, indice);
 	unsigned int tamanioInt = sizeof(unsigned int);
 
 	unsigned int nivel;

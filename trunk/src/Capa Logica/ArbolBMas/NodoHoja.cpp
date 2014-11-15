@@ -19,9 +19,9 @@ NodoHoja::NodoHoja(){
 
 NodoHoja::NodoHoja(ArchivoBloque* archivo) {
 
-//        char bloque[archivo->getTamanoBloque()];
-// 		unsigned int numeroDeBloque = archivo->escribir(bloque);
-//		this->setNumeroDeBloque(numeroDeBloque);
+		char bloque[archivo->getTamanoBloque()];
+ 		unsigned int numeroDeBloque = archivo->escribir(bloque);
+		this->setNumeroDeBloque(numeroDeBloque);
 
     this->referenciaAlSiguiente = 0;
     this->elementos = new list<RegistroArbol*>();
@@ -46,7 +46,7 @@ NodoHoja::~NodoHoja() {
 NodoHoja* NodoHoja::cargar(ArchivoBloque* archivo, unsigned int nroDeBloque){
 
 	char* bloque = new char[archivo->getTamanoBloque()];
-//	archivo->leer(bloque, nroDeBloque);
+	archivo->leer(bloque, nroDeBloque);
 	return NodoHoja::hidratar(bloque);
 }
 
@@ -95,9 +95,7 @@ void NodoHoja::persistir(ArchivoBloque *& archivo){
         //Persisto los registros
         bytesOcupados += this->persistirRegistros(bloqueApersistir + bytesOcupados);
 
-
-
-//        archivo->reescribir(bloqueApersistir, numeroDeBloque);
+        archivo->reescribir(bloqueApersistir, numeroDeBloque);
 
 }
 

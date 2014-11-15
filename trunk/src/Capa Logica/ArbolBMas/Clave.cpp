@@ -18,7 +18,7 @@ unsigned int Clave::tamanioMaximoBloque;
 
 Clave::Clave(string clave) {
 	this->id = clave;
-	this->tamanioMaximoBloque = TAMANIOCLAVE_DEFAULT;
+	this->tamanioMaximoBloque = TAMANIOBLOQUE_DEFAULT;
 }
 
 Clave::~Clave() {

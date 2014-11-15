@@ -11,8 +11,9 @@
 
 #include <iostream>
 #include "string.h"
+#include "../../Capa Fisica/Archivos/Bloques/Bloques.h"
 
-#define TAMANIOCLAVE_DEFAULT 64
+#define TAMANIOCLAVE_DEFAULT 512
 
 using namespace std;
 
