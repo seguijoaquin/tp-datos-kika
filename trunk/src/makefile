@@ -13,6 +13,9 @@ RM := rm -rf
 -include Capa\ Fisica/Archivos/Bloques/subdir.mk
 -include Capa\ Fisica/Archivos/subdir.mk
 -include Capa\ Fisica/subdir.mk
+-include Capa\ Fisica/Excepciones/subdir.mk
+-include Capa\ Logica/ArbolBMas/subdir.mk
+-include Capa\ Logica/HashExtensible/subdir.mk
 -include subdir.mk
 -include objects.mk
 
