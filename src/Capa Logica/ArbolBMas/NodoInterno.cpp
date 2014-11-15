@@ -12,39 +12,22 @@ unsigned int NodoInterno::tamanioMaximoBloque;
 unsigned int NodoInterno::tamanioMaximoClave;
 
 NodoInterno::NodoInterno() {
-	// TODO Auto-generated constructor stub
-//	try{
-//		LectorConfig* lector = LectorConfig::getLector("//Aplicacion/config");
-//    	this->tamanioMaximoBloque = StringUtil::str2int(lector->getValor("tamanioBloque"));
-//    	this->tamanioMaximoClave = StringUtil::str2int(lector->getValor("tamanioClave"));
-//	}
-//	catch(Excepcion& e){
-//
-//		this->tamanioMaximoBloque = TAMANIOBLOQUE_DEFAULT;
-//		this->tamanioMaximoClave = TAMANIOCLAVE_DEFAULT;
-//	}
+		this->tamanioMaximoBloque = TAMANIOBLOQUE_DEFAULT;
+		this->tamanioMaximoClave = TAMANIOCLAVE_DEFAULT;
+
 }
 
 NodoInterno::NodoInterno(ArchivoBloque* archivo){
+		this->tamanioMaximoBloque = TAMANIOBLOQUE_DEFAULT;
+		this->tamanioMaximoClave = TAMANIOCLAVE_DEFAULT;
 
-//	try{
-//		LectorConfig* lector = LectorConfig::getLector("//Aplicacion/config");
-//    	this->tamanioMaximoBloque = StringUtil::str2int(lector->getValor("tamanioBloque"));
-//    	this->tamanioMaximoClave = StringUtil::str2int(lector->getValor("tamanioClave"));
-//	}
-//	catch(Excepcion& e){
-//
-//		this->tamanioMaximoBloque = TAMANIOBLOQUE_DEFAULT;
-//		this->tamanioMaximoClave = TAMANIOCLAVE_DEFAULT;
-//	}
 
-//	char bloque[tamanioMaximoBloque]; //CAMBIAR ESTOOOOOOO
-//	unsigned int numeroDeBloque = archivo->escribir(bloque);
-//	this->setNumeroDeBloque(numeroDeBloque);
+	char bloque[tamanioMaximoBloque]; //CAMBIAR ESTOOOOOOO
+	unsigned int numeroDeBloque = archivo->escribir(bloque);
+	this->setNumeroDeBloque(numeroDeBloque);
 }
 
 NodoInterno::~NodoInterno() {
-	// TODO Auto-generated destructor stub
 
 }
 
@@ -198,7 +181,7 @@ bool NodoInterno::capacidadMinima(){
 NodoInterno* NodoInterno::cargar(ArchivoBloque* archivo, unsigned int indice){
 
 	char* bloque = new char[archivo->getTamanoBloque()];
-//	archivo->leer(bloque, indice);
+	archivo->leer(bloque, indice);
 	return NodoInterno::hidratar(bloque,indice);
 }
 
@@ -311,7 +294,7 @@ void NodoInterno::persistir(ArchivoBloque* &archivo){
 
 	bytesOcupados += this->persistirReferenciasANodosInternos(bloque + bytesOcupados);
 
-//	archivo->reescribir(bloque, this->getNumeroDeBloque());
+	archivo->reescribir(bloque, this->getNumeroDeBloque());
 }
 
 //Persisto clave y ref a los hijos
