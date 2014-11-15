@@ -4,47 +4,47 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../CapaLogica/HashExtensible/Bucket.cpp \
-../CapaLogica/HashExtensible/Convertidor.cpp \
-../CapaLogica/HashExtensible/Hash.cpp \
-../CapaLogica/HashExtensible/HashClave.cpp \
-../CapaLogica/HashExtensible/HashElement.cpp \
-../CapaLogica/HashExtensible/HashNode.cpp \
-../CapaLogica/HashExtensible/HashNodeInterpreter.cpp \
-../CapaLogica/HashExtensible/HashTable.cpp \
-../CapaLogica/HashExtensible/Salvable.cpp \
-../CapaLogica/HashExtensible/Serializable.cpp \
-../CapaLogica/HashExtensible/main_hash.cpp 
+../Capa\ Logica/HashExtensible/Bucket.cpp \
+../Capa\ Logica/HashExtensible/Convertidor.cpp \
+../Capa\ Logica/HashExtensible/Hash.cpp \
+../Capa\ Logica/HashExtensible/HashClave.cpp \
+../Capa\ Logica/HashExtensible/HashElement.cpp \
+../Capa\ Logica/HashExtensible/HashNode.cpp \
+../Capa\ Logica/HashExtensible/HashNodeInterpreter.cpp \
+../Capa\ Logica/HashExtensible/HashTable.cpp \
+../Capa\ Logica/HashExtensible/Salvable.cpp \
+../Capa\ Logica/HashExtensible/Serializable.cpp \
+../Capa\ Logica/HashExtensible/main_hash.cpp 
 
 OBJS += \
-./CapaLogica/HashExtensible/Bucket.o \
-./CapaLogica/HashExtensible/Convertidor.o \
-./CapaLogica/HashExtensible/Hash.o \
-./CapaLogica/HashExtensible/HashClave.o \
-./CapaLogica/HashExtensible/HashElement.o \
-./CapaLogica/HashExtensible/HashNode.o \
-./CapaLogica/HashExtensible/HashNodeInterpreter.o \
-./CapaLogica/HashExtensible/HashTable.o \
-./CapaLogica/HashExtensible/Salvable.o \
-./CapaLogica/HashExtensible/Serializable.o \
-./CapaLogica/HashExtensible/main_hash.o 
+./Capa\ Logica/HashExtensible/Bucket.o \
+./Capa\ Logica/HashExtensible/Convertidor.o \
+./Capa\ Logica/HashExtensible/Hash.o \
+./Capa\ Logica/HashExtensible/HashClave.o \
+./Capa\ Logica/HashExtensible/HashElement.o \
+./Capa\ Logica/HashExtensible/HashNode.o \
+./Capa\ Logica/HashExtensible/HashNodeInterpreter.o \
+./Capa\ Logica/HashExtensible/HashTable.o \
+./Capa\ Logica/HashExtensible/Salvable.o \
+./Capa\ Logica/HashExtensible/Serializable.o \
+./Capa\ Logica/HashExtensible/main_hash.o 
 
 CPP_DEPS += \
-./CapaLogica/HashExtensible/Bucket.d \
-./CapaLogica/HashExtensible/Convertidor.d \
-./CapaLogica/HashExtensible/Hash.d \
-./CapaLogica/HashExtensible/HashClave.d \
-./CapaLogica/HashExtensible/HashElement.d \
-./CapaLogica/HashExtensible/HashNode.d \
-./CapaLogica/HashExtensible/HashNodeInterpreter.d \
-./CapaLogica/HashExtensible/HashTable.d \
-./CapaLogica/HashExtensible/Salvable.d \
-./CapaLogica/HashExtensible/Serializable.d \
-./CapaLogica/HashExtensible/main_hash.d 
+./Capa\ Logica/HashExtensible/Bucket.d \
+./Capa\ Logica/HashExtensible/Convertidor.d \
+./Capa\ Logica/HashExtensible/Hash.d \
+./Capa\ Logica/HashExtensible/HashClave.d \
+./Capa\ Logica/HashExtensible/HashElement.d \
+./Capa\ Logica/HashExtensible/HashNode.d \
+./Capa\ Logica/HashExtensible/HashNodeInterpreter.d \
+./Capa\ Logica/HashExtensible/HashTable.d \
+./Capa\ Logica/HashExtensible/Salvable.d \
+./Capa\ Logica/HashExtensible/Serializable.d \
+./Capa\ Logica/HashExtensible/main_hash.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-CapaLogica/HashExtensible/%.o: ../CapaLogica/HashExtensible/%.cpp
+Capa\ Logica/HashExtensible/%.o: ../CapaLogica/HashExtensible/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	g++ -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"

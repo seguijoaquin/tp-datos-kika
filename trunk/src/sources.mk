@@ -28,4 +28,7 @@ Capa\ Fisica/Archivos/RegistroVariable \
 Capa\ Fisica/Archivos/RegistroFijo \
 Capa\ Fisica/Archivos/Bloques \
 Capa\ Fisica/Archivos \
-
+Capa\ Fisica\Excepciones \
+Capa\ Logica \
+Capa\ Logica/ArbolBMas \
+Capa\ Logica/HashExtensible \
