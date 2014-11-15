@@ -35,7 +35,7 @@ int Entidad::getID(){
 }
 
 void Entidad::crearInstancia(list<Atributo>* listaDatos){
-	Instancia* instancia = new Instancia();
+	Instancia* instancia = new Instancia(this->listaAtributos);
 	instancia->setListaAtributos(listaDatos);
 	this->instancias.push_back(instancia);
 	this->archivo->escribir(listaDatos,this->listaAtributos);
@@ -51,7 +51,7 @@ void Entidad::leerInstancias(){
 				int cantidadInstancias = listaDatosAtributos->size() / this->listaAtributos->size();
 				list<Atributo>::iterator it = listaDatosAtributos->begin();
 				for (int i = 0; i < cantidadInstancias; i++) {
-					Instancia* instancia = new Instancia();
+					Instancia* instancia = new Instancia(this->listaAtributos);
 					list<Atributo>* listaNueva = new list<Atributo>;
 					for (unsigned int i = 0; i < this->listaAtributos->size() && it != listaDatosAtributos->end(); it++,i++) {
 						listaNueva->push_back(*it);
