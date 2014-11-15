@@ -5,7 +5,7 @@
 #include <list>
 #include <string.h>
 #include "Archivos/Archivo.h"
-
+#include "StringUtil.h"
 using namespace std;
 
 
@@ -13,12 +13,16 @@ using namespace std;
 class Instancia {
 private:
 	list<Atributo>* listaAtributos;
+	list<metaDataAtributo>* listaMetaAtributos;
 public:
-	Instancia();
+	Instancia(list<metaDataAtributo>* listaMetaAtributos);
 	~Instancia();
 	list<Atributo>* getListaAtributos();
 	void setListaAtributos(list<Atributo>* lista);
+	void setListaMetaAtributos(list<metaDataAtributo>* listaMetaAtributos);
 	int getID();
+	string serializar();
+	void desSerializar(string aDeserealizar);
 };
 
 #endif
