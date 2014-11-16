@@ -5,7 +5,7 @@
 #include "Archivos/RegistroFijo/RegistroFijo.h"
 #include "Archivos/RegistroVariable/RegistroVariable.h"
 #include "Archivos/Bloques/Bloques.h"
-
+#include "../Capa Logica/HashExtensible/Hash.h"
 
 class Entidad {
 private:
@@ -15,13 +15,14 @@ private:
 	int ultimoIDInstancia;
 	TipoArchivo tipoArchivo;
 	Archivo* archivo;
+	Hash* indice;
 	vector<Instancia*> instancias;
 public:
 	Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,TipoArchivo tipoArchivo);
 	~Entidad();
 	list<metaDataAtributo>* getListaAtributos();
 	string getNombre();
-	void crearInstancia(list<Atributo>* listaDatos);
+	bool crearInstancia(list<Atributo>* listaDatos);
 	int getUltimoIDInstancia();
 	int getID();
 	void leerInstancias();
@@ -30,10 +31,11 @@ public:
 	Instancia* getInstancia(int id);
 	int getCantidad();
 	int getTamanioMaxInstancia();
-	void eliminarInstancia(int id_instancia);
+	bool eliminarInstancia(int id_instancia);
 	void eliminarInstancias();
 	void modificarInstancia(int id_instancia, list<metaDataAtributo>* metaAtts, list<Atributo>* newAtts);
 	TipoArchivo getTipoArchivo();
+	Instancia* buscarInstancia(string id, bool &error);
 };
 
 #endif

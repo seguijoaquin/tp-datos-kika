@@ -34,7 +34,7 @@ public:
         list<Atributo>* leer(int numeroRegistro, list<metaDataAtributo>* listaTipoAtributos);
         void leer(char* &bloque, unsigned int numBloque);
         int modificarInstancia(int ID, list<Atributo>* atributos, list<metaDataAtributo>* listaTipoAtributos);
-        int borrar(int IDInstancia);
+        int borrar(int numeroBloque);
         void reescribir(char* bloque, unsigned int posicion);
         unsigned int getCantidadBloques();
         unsigned int getTamanoBloque();
