@@ -62,7 +62,7 @@ void AdministradorEntidades::leerArchivoEntidades(){
 			listaAtribs->push_back(*nuevoAtributo);
 		}
 		Entidad* nuevaEntidad = new Entidad(listaAtribs,nombreEntidad,id,tipoArchivo);
-		nuevaEntidad->leerInstancias();
+		//nuevaEntidad->leerInstancias();
 		this->listaEntidades->push_back(*nuevaEntidad);
 		std::getline(arch,str);
 		delete[] cstr;
@@ -107,7 +107,7 @@ void AdministradorEntidades::crearEntidad(Entidad* entidad){
 	this->listaEntidades->push_back(*entidad); //agrego entidad a la lista
 	this->agregarDato(entidad->getID());
 	this->agregarDato(entidad->getNombre());
-	switch (entidad->getTipoArchivo()) {
+	/*switch (entidad->getTipoArchivo()) {
 		case FIJO:		this->agregarDato("FIJO");
 						break;
 		case VARIABLE: 	this->agregarDato("VARIABLE");
@@ -116,7 +116,7 @@ void AdministradorEntidades::crearEntidad(Entidad* entidad){
 						break;
 		default:		this->agregarDato("DEFAULT");
 						break;
-	}
+	}*/
 	this->agregarDato(entidad->getListaAtributos()->size());
 	list<metaDataAtributo>::iterator it = entidad->getListaAtributos()->begin();
 	while (it != entidad->getListaAtributos()->end()) {
@@ -169,10 +169,8 @@ void AdministradorEntidades::crearInstancia(int id){
 	list<metaDataAtributo>::iterator iterAtts = ent->getListaAtributos()->begin();
 
 	Atributo aux;
-	int idAux;
 	// Agrega el ID.
 	aux.entero = ent->getUltimoIDInstancia() + 1;
-	idAux = aux.entero;
 	listaDatos->push_back(aux);
 	iterAtts++;
 
@@ -192,17 +190,18 @@ void AdministradorEntidades::crearInstancia(int id){
 			auxEnt->listarInstancias();
 
 			cout << "Ingrese el ID de la instancia que desea utilizar: ";
-			Instancia* instancia;
+			bool error;
 			do {
 				cin >> opget;
 				cout << endl;
 				cin.get();
 				aux.entero = atoi(opget);
-				instancia = auxEnt->getInstancia(aux.entero);
-				if (instancia == NULL) {
+
+				auxEnt->getInstancia(aux.entero,error);
+				if (error) {
 					cout<<"Opción ingresada es incorrecta."<<endl;
 				}
-			} while (instancia == NULL);
+			} while (error);
 
 		}else {
 			cout<<iterAtts->nombre<<"(max "<<iterAtts->cantidadBytes<<"): ";
@@ -216,19 +215,6 @@ void AdministradorEntidades::crearInstancia(int id){
 		iterAtts++;
 	}
 	ent->crearInstancia(listaDatos);
-	bool error;
-	Instancia* inst = ent->buscarInstancia(StringUtil::int2string(idAux),error);
-	list<metaDataAtributo>* listaAtributos = ent->getListaAtributos();
-	list<metaDataAtributo>::iterator it3 = listaAtributos->begin();
-	for (list<Atributo>::iterator it2 = inst->getListaAtributos()->begin(); it2 != inst->getListaAtributos()->end();it2++,it3++){
-		cout<<it3->nombre<<": ";
-		if (it3->tipo == TEXTO) {
-			cout<<it2->texto<<" ";
-		} else {
-			cout<<it2->entero<<" ";
-		}
-	}
-	cout<<endl;
 }
 
 Entidad* AdministradorEntidades::getEntidad(int id){
@@ -242,8 +228,9 @@ Entidad* AdministradorEntidades::getEntidad(int id){
 void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id_instancia){
 
 	Entidad* ent = this->getEntidad(id);
-	Instancia* inst = ent->getInstancia(id_instancia);
-	if(!inst){
+	bool error;
+	Instancia* inst = ent->getInstancia(id_instancia,error);
+	if(error){
 		cout<<"Opción ingresada es incorrecta."<<endl;
 		return;
 	}
@@ -320,32 +307,13 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 		metaIter++;
 		iter++;
 	}
-	ent->modificarInstancia(id_instancia, metaAtts, newAtts);
+	ent->modificarInstancia(id_instancia, newAtts);
 }
 
 void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_instancia){
-	bool error;
 	Entidad* ent = this->getEntidad(id);
 
 	ent->eliminarInstancia(id_instancia);
-
-	/*Instancia* inst = ent->buscarInstancia(StringUtil::int2string(id_instancia),error);
-	if (!error) {
-		list<metaDataAtributo>* listaAtributos = ent->getListaAtributos();
-
-		list<metaDataAtributo>::iterator it3 = listaAtributos->begin();
-		for (list<Atributo>::iterator it2 = inst->getListaAtributos()->begin(); it2 != inst->getListaAtributos()->end();it2++,it3++){
-			cout<<it3->nombre<<": ";
-			if (it3->tipo == TEXTO) {
-				cout<<it2->texto<<" ";
-			} else {
-				cout<<it2->entero<<" ";
-			}
-		}
-		cout<<endl;
-	} else {
-		cout<<"Instancia no encontrada"<<endl;
-	}*/
 }
 
 void AdministradorEntidades::eliminarInstancias(int id){
