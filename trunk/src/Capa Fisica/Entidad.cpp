@@ -13,12 +13,17 @@ Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,Ti
 	if (tipoArchivo == FIJO) this->archivo = new ArchivoRegistroFijo(nombre,tam);
 	else if (tipoArchivo == VARIABLE) this->archivo = new ArchivoRegistroVariable(nombre);
 	else if (tipoArchivo == DEBLOQUES) this->archivo = new ArchivoBloque(nombre,this->getTamanioMaxInstancia());
+	const string rutaBaseIndice = "Hash";
+	string rutaTabla = "tabla.dat";
+	string rutaNodos = "nodos.dat";
+	this->indice = new Hash(rutaBaseIndice + nombre + rutaTabla, rutaBaseIndice + nombre + rutaNodos);
 	this->tipoArchivo = tipoArchivo;
 }
 
 Entidad::~Entidad(){
 	delete this->listaAtributos;
 	delete this->archivo;
+	delete this->indice;
 	this->instancias.clear();
 }
 
@@ -34,13 +39,7 @@ int Entidad::getID(){
 	return this->ID;
 }
 
-void Entidad::crearInstancia(list<Atributo>* listaDatos){
-	Instancia* instancia = new Instancia(this->listaAtributos);
-	instancia->setListaAtributos(listaDatos);
-	this->instancias.push_back(instancia);
-	this->archivo->escribir(listaDatos,this->listaAtributos);
-	++this->ultimoIDInstancia;
-}
+
 
 void Entidad::leerInstancias(){
 	for (int i = 0; i < this->archivo->getCantidad(); i++) {
@@ -81,8 +80,8 @@ void Entidad::listarInstancias(){
 	}
 }
 
-void Entidad::eliminarInstancia(int id_instancia) {
-	int encontrado = this->archivo->borrar(id_instancia);
+bool Entidad::eliminarInstancia(int id_instancia) {
+	/*int encontrado = this->archivo->borrar(id_instancia);
 	if (encontrado == 1) {
 		for (unsigned int i = 0; i < this->instancias.size();i++) {
 			if (this->instancias[i]->getID() == id_instancia){
@@ -91,7 +90,13 @@ void Entidad::eliminarInstancia(int id_instancia) {
 		}
 	} else {
 		cout<<"Opcion ingresada es incorrecta"<<endl;
+	}*/
+	try {
+		this->indice->elminarElemento(StringUtil::int2string(id_instancia));
+	}catch(Excepcion& e){
+		return false;
 	}
+	return true;
 }
 
 void Entidad::eliminarInstancias(){
@@ -146,4 +151,42 @@ int Entidad::getTamanioMaxInstancia(){
 TipoArchivo Entidad::getTipoArchivo() {
 	return this->tipoArchivo;
 }
+
+bool Entidad::crearInstancia(list<Atributo>* listaDatos){
+	Instancia* instancia = new Instancia(this->listaAtributos);
+	instancia->setListaAtributos(listaDatos);
+	this->instancias.push_back(instancia);
+	this->archivo->escribir(listaDatos,this->listaAtributos);
+	++this->ultimoIDInstancia;
+	try {
+		this->indice->insertarElemento(StringUtil::int2string(instancia->getID()),instancia->serializar());
+	} catch (ExceptionElementoKeyYaIngresado& e){
+			return false;
+	}
+	/*string id = StringUtil::int2string(instancia->getID());
+	try{
+		string instanciaSerializada = this->indice->buscarElemento(id);
+		Instancia* instancia = new Instancia(this->listaAtributos);
+		instancia->desSerializar(instanciaSerializada);
+		return instancia;
+	} catch (ExceptionElementoNoEncontrado &e){
+		return new Instancia(this->listaAtributos);
+	}*/
+	return true;
+}
+
+Instancia* Entidad::buscarInstancia(string id, bool &error){
+	try{
+		cout<<"BuscandoID: "<<id<<endl;
+		string instanciaSerializada = this->indice->buscarElemento(id);
+		Instancia* instancia = new Instancia(this->listaAtributos);
+		instancia->desSerializar(instanciaSerializada);
+		error = false;
+		return instancia;
+	} catch (ExceptionElementoNoEncontrado &e){
+		error = true;
+		return new Instancia(this->listaAtributos);
+	}
+}
+
 
