@@ -172,11 +172,7 @@ void Interfaz::modificar_instancia(){
 	ent->listarInstancias();							// Muestra sus instancias.
 
 	int id_instancia = this->pedir_opcion();	// Pide instancia a modificar.
-	if (id_instancia > ent->getCantidadInstancias()){
-		// Si la opcion obtenida es mayor a la cantidad de instancias.
-		cout<<"Opción ingresada es incorrecta."<<endl;
-		return;
-	}
+
 	admin->modificarInstancia(ent->getID(),id_instancia);
 }
 
