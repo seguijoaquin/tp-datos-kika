@@ -15,7 +15,7 @@ using namespace std;
 
 enum tipoEstructura { ARBOL, HASH};
 
-virtual class Estructura {
+class Estructura {
 private:
 	string nombre;
 	tipoEstructura tipo;
