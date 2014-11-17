@@ -78,7 +78,7 @@ void Interfaz::crear_entidad(){
 	 
 		cout << "\n Atributo N°" << indice << ": \n  Tipo de atributo: \n";
 		cout << "    1. Entero.\n    2. Cadena de caracteres.\n    3. Entidad X."<<endl;
-		cout << "    Ingrese otra opción para no agregar mas atributos."<<endl;
+		cout << "    0. Salir"<<endl;
 		opget = this -> pedir_opcion();
 		
 		if( opget > 3 || opget < 1 ){break;} // Opción no válida.
