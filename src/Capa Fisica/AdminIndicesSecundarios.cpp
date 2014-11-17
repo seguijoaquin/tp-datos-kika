@@ -7,6 +7,7 @@
 
 
 #include "AdminIndicesSecundarios.h"
+#include "../Capa Logica/ArbolBMas/ArbolBMas.h"
 
 void AdministradorIndices::listar_indices(){
 //	list<Estructura>::iterator it;
