@@ -14,7 +14,7 @@ class Interfaz{
 	private:
 		list<string>* opciones;
 		AdministradorEntidades* admin;
-		void crear_entidad();
+		//void crear_entidad();
 		void crear_instancia();
 		int seleccionar_entidad();
 	

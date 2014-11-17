@@ -101,7 +101,7 @@ void AdministradorEntidades::agregarAtributo(metaDataAtributo atributo) {
 	this->agregarDato(atributo.cantidadBytes);
 }
 
-void AdministradorEntidades::crearEntidad(Entidad* entidad){
+/*void AdministradorEntidades::crearEntidad(Entidad* entidad){
 	this->archivo.seekg(0,this->archivo.end); //me posiciono al final del archivo
 	this->listaEntidades->push_back(*entidad); //agrego entidad a la lista
 	this->agregarDato(entidad->getID());
@@ -123,7 +123,7 @@ void AdministradorEntidades::crearEntidad(Entidad* entidad){
 		++it;
 	}
 	this->finalizarEntidad();
-}
+}*/
 
 void AdministradorEntidades::listarEntidades() {
 	list<Entidad>::iterator it = this->listaEntidades->begin();
