@@ -8,13 +8,13 @@ int main(){
 
 	Interfaz* iu = new Interfaz();
 	unsigned int opc = 0;
-	while(opc != 7){
+	while(opc != 6){
 		cout << endl;
 		iu->listar_opciones();
 		opc = iu->pedir_opcion();
 		if(iu->ejecutar_opcion(opc)){
 			// Se ejecuto la opción.
-		}else if(opc == 7){
+		}else if(opc == 6){
 			cout<<"Adios."<<endl;
 		}else{
 			cout<<"La opción seleccionada es incorrecta."<<endl;

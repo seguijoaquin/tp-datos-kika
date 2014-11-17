@@ -2,7 +2,7 @@
 
 Interfaz::Interfaz(){
 	this -> opciones = new list<string>;
-	this -> opciones -> push_back("Crear nueva Entidad.");
+	//this -> opciones -> push_back("Crear nueva Entidad.");
 	this -> opciones -> push_back("Crear nueva Instancia.");
 	this -> opciones -> push_back("Modificar Instancia.");
 	this -> opciones -> push_back("Eliminar instancia.");
@@ -50,7 +50,7 @@ int Interfaz::seleccionar_entidad(){
 	} while (opc == 0);
 	return opc;
 }
-
+/*
 void Interfaz::crear_entidad(){
 	cout << "Ingrese el nombre de la entidad: ";
 	string nombre_entidad;
@@ -68,13 +68,13 @@ void Interfaz::crear_entidad(){
 	list<metaDataAtributo>* atts = new list<metaDataAtributo>; // Lista con atributos de la entidad.
 	metaDataAtributo att;
 	
-	/* Agrega el atributo del identificador */
+	/* Agrega el atributo del identificador
 	att.cantidadBytes = sizeof(int); att.tipo = ENTERO; att.nombre = "ID"; att.idEntidad = 0;
 	atts->push_back(att);
 	
 	while(true){
 	/*    Pide atributos hasta que la opción de tipo de atributo sea      *
-	 *  diferente de las existentes, en ese caso deja de pedir atributos. */
+	 *  diferente de las existentes, en ese caso deja de pedir atributos.
 	 
 		cout << "\n Atributo N°" << indice << ": \n  Tipo de atributo: \n";
 		cout << "    1. Entero.\n    2. Cadena de caracteres.\n    3. Entidad X."<<endl;
@@ -86,7 +86,7 @@ void Interfaz::crear_entidad(){
 		// Agregar que hacer cuando no sea una opcion correcta.
 		
 		switch(opget){
-		/* Tipo de atributo seleccionado */
+		/* Tipo de atributo seleccionado
 		
 			case 1: // Entero
 				att.cantidadBytes = sizeof(int); att.tipo = ENTERO;
@@ -125,7 +125,7 @@ void Interfaz::crear_entidad(){
 		indice ++;
 	}
 	
-	/*      Especificación de tipo de archivo      */
+	/*      Especificación de tipo de archivo
 	cout<<endl<<" Tipo de archivo para almacenar la entidad:"<<endl;
 	cout<<"    1. Archivo de registros de longitud fija."<<endl<<"    2. Archivo de registros de longitud variable."<<endl<<"    3. Archivo en bloque con registros de longitud variable."<<endl;
 	opget = this -> pedir_opcion();
@@ -137,7 +137,7 @@ void Interfaz::crear_entidad(){
 	TipoArchivo t_arch;
 	
 	switch(opget){
-		/* Tipo de archivo seleccionado */
+		/* Tipo de archivo seleccionado
 		
 			case 1: // Archivo de registros de longitud fija.
 				 t_arch = FIJO;
@@ -157,7 +157,7 @@ void Interfaz::crear_entidad(){
 	Entidad* ent = new Entidad(atts,nombre_entidad,id,t_arch);
 	this->admin->crearEntidad(ent);
 }
-
+*/
 void Interfaz::crear_instancia(){
 	int id = this->seleccionar_entidad();
 	this->admin->crearInstancia(id);
@@ -201,27 +201,27 @@ bool Interfaz::ejecutar_opcion(unsigned int opc){
 
 	switch (opc){
 
-		case 1:	// Crear nueva entidad.
+		/*case 1:	// Crear nueva entidad.
 			this->crear_entidad();
 			break;
-
-		case 2: // Crear nueva instancia.
+*/
+		case 1: // Crear nueva instancia.
 			this->crear_instancia();
 			break;
 
-		case 3: // Modificar instancia.
+		case 2: // Modificar instancia.
 			this->modificar_instancia();
 			break;
 
-		case 4: // Eliminar instancia.
+		case 3: // Eliminar instancia.
 			this->eliminar_instancia();
 			break;
 
-		case 5: // Eliminar todas las instancias.
+		case 4: // Eliminar todas las instancias.
 			this->eliminar_instancias();
 			break;
 
-		case 6: // Listar instancias.
+		case 5: // Listar instancias.
 			this->listar_instancias();
 			break;
 

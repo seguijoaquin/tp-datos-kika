@@ -26,7 +26,7 @@ public:
 	~AdministradorEntidades();
 	void menuUsuario();
 	void leerArchivoEntidades();
-	void crearEntidad(Entidad* entidad);
+	//void crearEntidad(Entidad* entidad);
 	void crearInstancia(int id);
 	int getUltimoID();
 	int getID(int x);
