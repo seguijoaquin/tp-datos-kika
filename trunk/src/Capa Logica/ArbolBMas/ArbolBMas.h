@@ -15,11 +15,12 @@
 #include "Nodo.h"
 #include "NodoHoja.h"
 #include "NodoInterno.h"
+#include "../Estructura.h"
 
 
 using namespace std;
 
-class ArbolBMas {
+class ArbolBMas : public Estructura {
 
 private:
 
