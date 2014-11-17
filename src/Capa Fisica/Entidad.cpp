@@ -17,7 +17,7 @@ Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,Ti
 	/*if (tipoArchivo == FIJO) this->archivo = new ArchivoRegistroFijo(nombre,tam);
 	else if (tipoArchivo == VARIABLE) this->archivo = new ArchivoRegistroVariable(nombre);
 	else if (tipoArchivo == DEBLOQUES) this->archivo = new ArchivoBloque(nombre,this->getTamanioMaxInstancia());*/
-	//this->tipoArchivo = tipoArchivo;
+	this->tipoArchivo = tipoArchivo;
 	this->leerInstancias();
 }
 
@@ -146,10 +146,10 @@ int Entidad::getTamanioMaxInstancia(){
 	}
 	return tamanio;
 }
-/*
+
 TipoArchivo Entidad::getTipoArchivo() {
 	return this->tipoArchivo;
-}*/
+}
 
 bool Entidad::crearInstancia(list<Atributo>* listaDatos){
 	Instancia* instancia = new Instancia(this->listaAtributos);
@@ -197,8 +197,6 @@ void Entidad::leerInstancias(){
 		}
 
 	}
-	cout<<"UltimoID: "<<this->ultimoIDInstancia<<endl;
-
 	/*for (int i = 0; i < this->archivo->getCantidad(); i++) {
 		list<Atributo>* listaDatosAtributos = this->archivo->leer(i,this->listaAtributos);
 		if (listaDatosAtributos != NULL) { //Si es null no hay ninguna instancia en ese registro/bloque (para fijos y bloques)

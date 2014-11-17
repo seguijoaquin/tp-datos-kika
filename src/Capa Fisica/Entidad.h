@@ -13,7 +13,7 @@ private:
 	string nombre;
 	int ID;
 	int ultimoIDInstancia;
-	//TipoArchivo tipoArchivo;
+	TipoArchivo tipoArchivo;
 	//Archivo* archivo;
 	Hash* indice;
 	//vector<Instancia*> instancias;
@@ -33,7 +33,7 @@ public:
 	bool eliminarInstancia(int id_instancia);
 	void eliminarInstancias();
 	void modificarInstancia(int id_instancia, list<Atributo>* newAtts);
-	//TipoArchivo getTipoArchivo();
+	TipoArchivo getTipoArchivo();
 	Instancia* getInstancia(int id, bool &error);
 };
 
