@@ -39,7 +39,6 @@ void AdministradorEntidades::leerArchivoEntidades(){
 
 		p = std::strtok(NULL,"@"); //Separo cantidad atributos
 		int cantAtributos = std::atoi(p.c_str());
-
 		list<metaDataAtributo>* listaAtribs = new list<metaDataAtributo>;
 		for (int j=1;j<=cantAtributos;++j) {
 			p = std::strtok(NULL,"@"); //Separo nombre
@@ -107,7 +106,7 @@ void AdministradorEntidades::crearEntidad(Entidad* entidad){
 	this->listaEntidades->push_back(*entidad); //agrego entidad a la lista
 	this->agregarDato(entidad->getID());
 	this->agregarDato(entidad->getNombre());
-	/*switch (entidad->getTipoArchivo()) {
+	switch (entidad->getTipoArchivo()) {
 		case FIJO:		this->agregarDato("FIJO");
 						break;
 		case VARIABLE: 	this->agregarDato("VARIABLE");
@@ -116,7 +115,7 @@ void AdministradorEntidades::crearEntidad(Entidad* entidad){
 						break;
 		default:		this->agregarDato("DEFAULT");
 						break;
-	}*/
+	}
 	this->agregarDato(entidad->getListaAtributos()->size());
 	list<metaDataAtributo>::iterator it = entidad->getListaAtributos()->begin();
 	while (it != entidad->getListaAtributos()->end()) {
