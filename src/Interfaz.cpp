@@ -8,14 +8,16 @@ Interfaz::Interfaz(){
 	this -> opciones -> push_back("Eliminar instancia.");
 	this -> opciones -> push_back("Eliminar todas las instancias.");
 	this -> opciones -> push_back("Listar instancias.");
+	this->opciones->push_back("Administrar Indices Secundarios");
 	this -> opciones -> push_back("Salir.");
-	this -> admin    = new AdministradorEntidades();
-	this -> admin->leerArchivoEntidades(); // Inicializa administrador si existe archivo preexistente.
+	this -> adminEntidades    = new AdministradorEntidades();
+	this -> adminEntidades->leerArchivoEntidades(); // Inicializa administrador si existe archivo preexistente.
+	this->adminIndices = new AdministradorIndices();
 }
 
 Interfaz::~Interfaz(){
 	delete this->opciones;
-	delete this->admin;
+	delete this->adminEntidades;
 }
 
 void Interfaz::listar_opciones(){
@@ -39,11 +41,11 @@ unsigned int Interfaz::pedir_opcion(){
 
 int Interfaz::seleccionar_entidad(){
 	cout<<" Entidades:"<<endl;
-	this->admin->listarEntidades();
+	this->adminEntidades->listarEntidades();
 	unsigned int opc;
 	do {
 		opc = this->pedir_opcion();
-		opc = this->admin->getID(opc);
+		opc = this->adminEntidades->getID(opc);
 		if (opc == 0) {
 			cout<<"Opcion ingresada es incorrecta, ingrese valor nuevamente"<<endl;
 		}
@@ -160,41 +162,63 @@ void Interfaz::crear_entidad(){
 */
 void Interfaz::crear_instancia(){
 	int id = this->seleccionar_entidad();
-	this->admin->crearInstancia(id);
+	this->adminEntidades->crearInstancia(id);
 }
 
 void Interfaz::modificar_instancia(){
 
 	int id_entidad = this->seleccionar_entidad();	// Preguntar el id de la entidad
-	Entidad* ent = this->admin->getEntidad(id_entidad);	// Obtiene la entidad
+	Entidad* ent = this->adminEntidades->getEntidad(id_entidad);	// Obtiene la entidad
 
 	cout<<"Instancias de la entidad "<<ent->getNombre()<<":"<<endl;
 	ent->listarInstancias();							// Muestra sus instancias.
 
 	int id_instancia = this->pedir_opcion();	// Pide instancia a modificar.
 
-	admin->modificarInstancia(ent->getID(),id_instancia);
+	adminEntidades->modificarInstancia(ent->getID(),id_instancia);
 }
 
 void Interfaz::eliminar_instancia(){
 
 	unsigned int id = this->seleccionar_entidad();
-	Entidad* ent = this->admin->getEntidad(id);
+	Entidad* ent = this->adminEntidades->getEntidad(id);
 	cout<<"Instancias de la entidad "<<ent->getNombre()<<":"<<endl<<endl;
 	ent->listarInstancias();
 
 	int num_instancia = this->pedir_opcion();	// Pide instancia a modificar.
-	this->admin->eliminarInstancia(id,num_instancia);
+	this->adminEntidades->eliminarInstancia(id,num_instancia);
 }
 
 void Interfaz::eliminar_instancias(){
 	int id = this->seleccionar_entidad();
-	this->admin->eliminarInstancias(id);
+	this->adminEntidades->eliminarInstancias(id);
 }
 
 void Interfaz::listar_instancias(){
 	int id = this->seleccionar_entidad();
-	this->admin->listarInstancias(id);
+	this->adminEntidades->listarInstancias(id);
+}
+
+void Interfaz::administrar_indices_secundarios(){
+	cout << "1 - Crear nuevo indice secundario" << endl;
+	cout << "2 - Eliminar indice secundario existente" << endl;
+	cout << "3 - Listar indices secundarios" << endl;
+	cout << "0 - Salir" << endl;
+	int opc;
+	cin >> opc;
+	switch (opc) {
+		case 1 :this->adminIndices->crear_indice();
+				break;
+		case 2: this->adminIndices->listar_indices();
+				cout << "Elegir indice: ";
+				int x;
+				cin >> x;
+				this->adminIndices->eliminar_indice(x);
+				break;
+		case 3: this->adminIndices->listar_indices();
+				break;
+		default: break;
+	}
 }
 
 bool Interfaz::ejecutar_opcion(unsigned int opc){
@@ -223,6 +247,10 @@ bool Interfaz::ejecutar_opcion(unsigned int opc){
 
 		case 5: // Listar instancias.
 			this->listar_instancias();
+			break;
+
+		case 6: //Crear indice secundario
+			this->administrar_indices_secundarios();
 			break;
 
 		default:

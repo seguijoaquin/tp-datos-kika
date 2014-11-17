@@ -138,13 +138,18 @@ void AdministradorEntidades::listarEntidades() {
 }
 
 void AdministradorEntidades::listarInstancias(int id){
-	list<Entidad>::iterator it = this->listaEntidades->begin();
-	int i = 1;
-	while( i < id ){
-		++i;
-		++it;
+	if (this->listaEntidades) {
+		cout << "No hay instancias de esta entidad" << endl;
+	} else {
+		list<Entidad>::iterator it = this->listaEntidades->begin();
+		int i = 1;
+		while( i < id ){
+			++i;
+			++it;
+		}
+		it->listarInstancias();
 	}
-	it->listarInstancias();
+
 }
 
 int AdministradorEntidades::getID(int x) {
