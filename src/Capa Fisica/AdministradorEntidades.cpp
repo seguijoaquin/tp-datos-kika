@@ -166,6 +166,9 @@ int AdministradorEntidades::getID(int x) {
 void AdministradorEntidades::crearInstancia(int id){
 
 	Entidad* ent = this->getEntidad(id);
+	if (!this->validarCreacionInstancia(ent)) {
+		return;
+	}
 	Entidad* auxEnt;
 	char opget[5];
 	list<Atributo>* listaDatos = new list<Atributo>;
@@ -202,10 +205,10 @@ void AdministradorEntidades::crearInstancia(int id){
 				aux.entero = atoi(opget);
 
 				auxEnt->getInstancia(aux.entero,error);
-				if (error) {
+				if (error && aux.entero != 0) {
 					cout<<"Opción ingresada es incorrecta."<<endl;
 				}
-			} while (error);
+			} while (error && (aux.entero != 0));
 
 		}else {
 			cout<<iterAtts->nombre<<"(max "<<iterAtts->cantidadBytes<<"): ";
@@ -335,4 +338,54 @@ bool AdministradorEntidades::entidadExistente(string nombre){
 	return false;
 }
 
+bool AdministradorEntidades::validarCreacionInstancia(Entidad* ent) {
+	//Valido debe existir fabricante para crear familia
+	if (ent->getNombre() == "Familia") {
+		Entidad* entidad = this->getEntidad(1); //Entidad 1 = Fabricante
+		if (entidad->getCantidadInstancias() == 0){
+			cout<<"Debe existir un fabricante para crear una familia"<<endl;
+			return false;
+		}
+		return true;
+	}
+	//Debe existir familia, parte y material  para crear producto
+	if (ent->getNombre() == "Producto") {
+		Entidad* entidad = this->getEntidad(10); //Entidad 10 = Familia
+		if (entidad->getCantidadInstancias() == 0){
+			cout<<"Debe existir una familia para crear un producto"<<endl;
+			return false;
+		}
+		entidad = this->getEntidad(13); //13 = partes
+		if (entidad->getCantidadInstancias() == 0){
+			cout<<"Deben existir partes para crear un producto"<<endl;
+			return false;
+		}
+		entidad = this->getEntidad(5); //5 = material
+		if (entidad->getCantidadInstancias() == 0){
+			cout<<"Debe existir un material para crear un producto"<<endl;
+			return false;
+		}
+		return true;
+	}
+	//Debe existir contorno-copa-bretel para crear partes
+	if (ent->getNombre() == "Partes") {
+		Entidad* entidad = this->getEntidad(11); //Entidad 11 = Copa
+		if (entidad->getCantidadInstancias() == 0){
+			cout<<"Debe existir una copa para crear partes"<<endl;
+			return false;
+		}
+		entidad = this->getEntidad(2); //2 = Contorno
+		if (entidad->getCantidadInstancias() == 0){
+			cout<<"Debe existir un contorno para crear partes"<<endl;
+			return false;
+		}
+		entidad = this->getEntidad(6); //6 = Bretel
+		if (entidad->getCantidadInstancias() == 0){
+			cout<<"Debe existir un bretel para crear partes"<<endl;
+			return false;
+		}
+		return true;
+	}
+	return true;
+}
 
