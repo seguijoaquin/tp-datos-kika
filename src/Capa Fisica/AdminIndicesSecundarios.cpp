@@ -10,12 +10,7 @@
 #include "../Capa Logica/ArbolBMas/ArbolBMas.h"
 
 void AdministradorIndices::listar_indices(){
-//	list<Estructura>::iterator it;
-//	int x = 1;
-//	for (it = this->indices->begin(); it != this->indices->end(); ++it) {
-//		cout << x << " - " << it->getNombre() << endl;
-//		++x;
-//	}
+
 }
 
 void AdministradorIndices::eliminar_indice(int x){
@@ -28,16 +23,20 @@ void AdministradorIndices::eliminar_indice(int x){
 	 cout << "1 - Arbol B+" << endl;
 	 cout << "2 - Hash" << endl;
 	 int tipo; cin >> tipo;
-	 Estructura* estructura;
-	 while (tipo != 1 || tipo != 2) { cin >>tipo; }
-	 switch (tipo) {
-	 	 case 1: estructura = new ArbolBMas(nombre);
-	 		 break;
-	 	 case 2: //HACER UN NEW HASHHHHHHHHHHH
-	 		 break;
-	 }
+	 //VALIDAR SI INGRESA HASH O ARBOL
+	 ArbolBMas* estructura = new ArbolBMas(nombre);
 	 cout << "Ingrese los atributos que formaran parte del indice:" << endl;
-	 //listar atributos y elegir uno
-	 //preguntar si se quiere elegir mas atributos
-
+	 entidad->listarAtributos();
+	 int att; cin >> att;
+	 metaDataAtributo* atributo = entidad->getAtributo(att);
+	 //PEDIR MAS ATRIBUTOS
+	 for (int i = 0; i < 100; ++i) {
+		bool error;
+		entidad->getInstancia(i,error);
+		if (!error) {
+			 estructura->agregarValor(*(new Clave(atributo->nombre)),StringUtil::int2string(i));
+				}
+	 }
+	estructura->persistir();
+	estructura->mostrarArbol();
 }

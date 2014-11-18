@@ -21,7 +21,7 @@ private:
 	tipoEstructura tipo;
 public:
 	Estructura();
-	~Estructura();
+	virtual ~Estructura();
     string getNombre();
     tipoEstructura getTipoEstructura();
     void setTipoEstructura(tipoEstructura T);

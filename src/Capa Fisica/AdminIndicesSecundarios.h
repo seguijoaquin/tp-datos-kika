@@ -8,14 +8,14 @@
 #ifndef ADMININDICESSECUNDARIOS_H_
 #define ADMININDICESSECUNDARIOS_H_
 
-#include "../Capa Logica/Estructura.h"
+#include "../Capa Logica/ArbolBMas/ArbolBMas.h"
 #include "../Capa Fisica/Entidad.h"
 
 
 class AdministradorIndices {
 
 private:
-	//list<Estructura>* indices;
+	list<ArbolBMas>* indices;
 
 public:
 	void listar_indices();
