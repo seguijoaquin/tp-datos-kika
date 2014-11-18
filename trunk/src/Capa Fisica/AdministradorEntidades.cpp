@@ -138,7 +138,7 @@ void AdministradorEntidades::listarEntidades() {
 }
 
 void AdministradorEntidades::listarInstancias(int id){
-	if (this->listaEntidades) {
+	if (this->listaEntidades->empty()) {
 		cout << "No hay instancias de esta entidad" << endl;
 	} else {
 		list<Entidad>::iterator it = this->listaEntidades->begin();
