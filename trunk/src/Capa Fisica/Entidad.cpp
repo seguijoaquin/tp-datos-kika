@@ -104,6 +104,7 @@ bool Entidad::eliminarInstancia(int id_instancia) {
 	}*/
 	try {
 		this->indice->elminarElemento(StringUtil::int2string(id_instancia));
+		this->cantidadInstancias--;
 	}catch(Excepcion& e){
 		return false;
 	}
@@ -178,6 +179,7 @@ bool Entidad::crearInstancia(list<Atributo>* listaDatos){
 	++this->ultimoIDInstancia;
 	try {
 		this->indice->insertarElemento(StringUtil::int2string(instancia->getID()),instancia->serializar());
+		this->cantidadInstancias++;
 	} catch (ExceptionElementoKeyYaIngresado& e){
 			return false;
 	}
@@ -206,13 +208,19 @@ Instancia* Entidad::getInstancia(int id, bool &error){
 	}
 }
 
+int Entidad::getCantidadInstancias() {
+	return this->cantidadInstancias;
+}
+
 void Entidad::leerInstancias(){
+	this->cantidadInstancias = 0;
 	this->ultimoIDInstancia = 0;
 	for (int i = 0; i < 100; i++) {
 		bool error;
 		this->getInstancia(i,error);
 		if (!error) {
 			this->ultimoIDInstancia = i;
+			this->cantidadInstancias++;
 		}
 
 	}

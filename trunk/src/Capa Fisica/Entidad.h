@@ -17,6 +17,8 @@ private:
 	//Archivo* archivo;
 	Hash* indice;
 	//vector<Instancia*> instancias;
+	int cantidadInstancias;
+	void leerInstancias();
 public:
 	Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,TipoArchivo tipoArchivo);
 	~Entidad();
@@ -25,7 +27,6 @@ public:
 	bool crearInstancia(list<Atributo>* listaDatos);
 	int getUltimoIDInstancia();
 	int getID();
-	void leerInstancias();
 	void listarInstancias();
 	//int getCantidadInstancias();
 	void listarAtributos();
@@ -37,6 +38,7 @@ public:
 	void modificarInstancia(int id_instancia, list<Atributo>* newAtts);
 	TipoArchivo getTipoArchivo();
 	Instancia* getInstancia(int id, bool &error);
+	int getCantidadInstancias();
 
 };
 

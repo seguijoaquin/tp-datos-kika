@@ -21,6 +21,7 @@ private:
 	void agregarDato(string buffer);
 	void agregarDato(int buffer);
 	void agregarAtributo(metaDataAtributo atributo);
+	bool validarCreacionInstancia(Entidad* ent);
 public:
 	AdministradorEntidades();
 	~AdministradorEntidades();
