@@ -19,9 +19,9 @@ NodoHoja::NodoHoja(){
 
 NodoHoja::NodoHoja(ArchivoBloque* archivo) {
 
-		char bloque[archivo->getTamanoBloque()];
- 		unsigned int numeroDeBloque = archivo->escribir(bloque);
-		this->setNumeroDeBloque(numeroDeBloque);
+	char bloque[archivo->getTamanoBloque()];
+ 	unsigned int numeroDeBloque = archivo->escribir(bloque);
+	this->setNumeroDeBloque(numeroDeBloque);
 
     this->referenciaAlSiguiente = 0;
     this->elementos = new list<RegistroArbol*>();

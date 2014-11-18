@@ -194,6 +194,12 @@ void Interfaz::listar_instancias(){
 	this->adminEntidades->listarInstancias(id);
 }
 
+int Interfaz::elegirEntidad(){
+	this->adminEntidades->listarEntidades();
+	cout << "Elegir indice: ";
+	int x; cin >> x;
+	return x;
+}
 void Interfaz::administrar_indices_secundarios(){
 	cout << "1 - Crear nuevo indice secundario" << endl;
 	cout << "2 - Eliminar indice secundario existente" << endl;
@@ -201,12 +207,12 @@ void Interfaz::administrar_indices_secundarios(){
 	cout << "0 - Salir" << endl;
 	int opc; cin >> opc;
 	switch (opc) {
-		case 1 :this->adminIndices->crear_indice();
-				break;
-		case 2: this->adminIndices->listar_indices();
-				cout << "Elegir indice: ";
-				int x; cin >> x;
-				this->adminIndices->eliminar_indice(x);
+		case 1 : {
+			Entidad* ent = this->adminEntidades->getEntidad(this->elegirEntidad());
+			this->adminIndices->crear_indice(ent);
+			break;
+		}
+		case 2: this->adminIndices->eliminar_indice(this->elegirEntidad());
 				break;
 		case 3: this->adminIndices->listar_indices();
 				break;

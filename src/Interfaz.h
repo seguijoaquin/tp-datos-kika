@@ -31,6 +31,7 @@ class Interfaz{
 		void eliminar_instancias();
 		void listar_instancias();
 		void administrar_indices_secundarios();
+		int elegirEntidad();
 };
 
 #endif

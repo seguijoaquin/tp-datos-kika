@@ -220,4 +220,10 @@ void Entidad::leerInstancias(){
 	}*/
 }
 
-
+void Entidad::listarNombreAtributos(){
+	int x = 1;
+	for(list<metaDataAtributo>::iterator it = this->listaAtributos->begin(); it != this->listaAtributos->end();++it){
+		cout << x << " - " << it->nombre << endl;
+		++x;
+	}
+}
