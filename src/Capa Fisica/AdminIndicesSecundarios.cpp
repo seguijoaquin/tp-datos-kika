@@ -32,14 +32,19 @@ void AdministradorIndices::eliminar_indice(int x){
 	 metaDataAtributo* atributo = entidad->getAtributo(x);
 	 //PEDIR MAS ATRIBUTOS
 
-	 for (int i = 0; i < 100; ++i) {
+	 for (int i = 1; i <= entidad->getUltimoIDInstancia(); ++i) {
 		bool error;
 		Instancia* nuevaInstancia = entidad->getInstancia(i,error);
 		if (!error) {
-			Atributo* atributoInstancia = nuevaInstancia->getAtributo(atributo);
-			estructura->agregarValor(*(new Clave(atributoInstancia->texto)),StringUtil::int2string(i));
-			estructura->persistir();
-				}
+			Atributo* atributoInstancia = nuevaInstancia->getAtributo(x);
+			if (atributo->tipo == TEXTO) {
+				estructura->agregarValor(*(new Clave(atributoInstancia->texto)),StringUtil::int2string(i));
+				estructura->persistir();
+			} else {
+				estructura->agregarValor(*(new Clave(StringUtil::int2string(atributoInstancia->entero))),StringUtil::int2string(i));
+				estructura->persistir();
+			}
+		}
 	 }
 	estructura->mostrarArbol();
 
