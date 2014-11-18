@@ -21,7 +21,7 @@ void AdministradorIndices::listar_indices(){
 void AdministradorIndices::eliminar_indice(int x){
 
 }
- void AdministradorIndices::crear_indice(){
+ void AdministradorIndices::crear_indice(Entidad* entidad){
 	 cout << "Ingrese el nombre del indice secundario: " << endl;
 	 string nombre;	 cin >> nombre;
 	 cout << "Ingrese el tipo de estructura para el indice secundario:" << endl;
@@ -33,8 +33,10 @@ void AdministradorIndices::eliminar_indice(int x){
 	 switch (opc) {
 	 	 case 1: estructura = new ArbolBMas(nombre);
 	 		 break;
-	 	 case 2:
+	 	 case 2: //HACER UN NEW HASHHHHHHHHHHH
 	 		 break;
 	 }
-
- }
+	 cout << "Ingrese los atributos que formaran parte del indice:" << endl;
+	 entidad->listarNombreAtributos();
+	 int x; cin >> x;
+}

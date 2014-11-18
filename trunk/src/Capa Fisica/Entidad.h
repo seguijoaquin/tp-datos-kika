@@ -35,6 +35,7 @@ public:
 	void modificarInstancia(int id_instancia, list<Atributo>* newAtts);
 	TipoArchivo getTipoArchivo();
 	Instancia* getInstancia(int id, bool &error);
+	void listarNombreAtributos();
 };
 
 #endif

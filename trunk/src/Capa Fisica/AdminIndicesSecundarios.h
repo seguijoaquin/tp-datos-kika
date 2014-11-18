@@ -9,6 +9,7 @@
 #define ADMININDICESSECUNDARIOS_H_
 
 #include "../Capa Logica/Estructura.h"
+#include "../Capa Fisica/Entidad.h"
 
 
 class AdministradorIndices {
@@ -19,7 +20,7 @@ private:
 public:
 	void listar_indices();
 	void eliminar_indice(int x);
-	void crear_indice();
+	void crear_indice(Entidad* entidad);
 };
 
 #endif /* ADMININDICESSECUNDARIOS_H_ */
