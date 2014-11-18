@@ -18,6 +18,7 @@ public:
 	Instancia(list<metaDataAtributo>* listaMetaAtributos);
 	~Instancia();
 	list<Atributo>* getListaAtributos();
+	Atributo* getAtributo(metaDataAtributo* atributo);
 	void setListaAtributos(list<Atributo>* lista);
 	void setListaMetaAtributos(list<metaDataAtributo>* listaMetaAtributos);
 	int getID();

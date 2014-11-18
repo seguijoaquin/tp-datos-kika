@@ -24,19 +24,23 @@ void AdministradorIndices::eliminar_indice(int x){
 	 cout << "2 - Hash" << endl;
 	 int tipo; cin >> tipo;
 	 //VALIDAR SI INGRESA HASH O ARBOL
+
 	 ArbolBMas* estructura = new ArbolBMas(nombre);
 	 cout << "Ingrese los atributos que formaran parte del indice:" << endl;
 	 entidad->listarAtributos();
-	 int att; cin >> att;
-	 metaDataAtributo* atributo = entidad->getAtributo(att);
+	 int x; cin >> x;
+	 metaDataAtributo* atributo = entidad->getAtributo(x);
 	 //PEDIR MAS ATRIBUTOS
+
 	 for (int i = 0; i < 100; ++i) {
 		bool error;
-		entidad->getInstancia(i,error);
+		Instancia* nuevaInstancia = entidad->getInstancia(i,error);
 		if (!error) {
-			 estructura->agregarValor(*(new Clave(atributo->nombre)),StringUtil::int2string(i));
+			Atributo* atributoInstancia = nuevaInstancia->getAtributo(atributo);
+			estructura->agregarValor(*(new Clave(atributoInstancia->texto)),StringUtil::int2string(i));
+			estructura->persistir();
 				}
 	 }
-	estructura->persistir();
 	estructura->mostrarArbol();
+
 }
