@@ -28,6 +28,8 @@ public:
 	void leerInstancias();
 	void listarInstancias();
 	//int getCantidadInstancias();
+	void listarAtributos();
+	metaDataAtributo* getAtributo(unsigned int i);
 	int getCantidad();
 	int getTamanioMaxInstancia();
 	bool eliminarInstancia(int id_instancia);

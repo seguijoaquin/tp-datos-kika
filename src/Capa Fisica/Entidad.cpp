@@ -73,6 +73,24 @@ void Entidad::listarInstancias(){
 	}*/
 }
 
+void Entidad::listarAtributos(){
+	int cont = 1;
+	list<metaDataAtributo>::iterator it = this->listaAtributos->begin();
+	while(it != this->listaAtributos->end()){
+		cout << "	" << cont << ") " << (*it++).nombre << "\n";
+		cont++;
+	}
+}
+
+metaDataAtributo* Entidad::getAtributo(unsigned int i){
+	if (i<1 || i>this->listaAtributos->size())return NULL;
+	list<metaDataAtributo>::iterator it = this->listaAtributos->begin();
+	for(unsigned int j = 1 ; j < i ;++j) {
+		++it;
+	}
+	return &(*it);
+}
+
 bool Entidad::eliminarInstancia(int id_instancia) {
 	/*int encontrado = this->archivo->borrar(id_instancia);
 	if (encontrado == 1) {
@@ -130,6 +148,7 @@ int Entidad::getCantidad(){
 	return this->archivo->getCantidad();
 }
 */
+
 int Entidad::getUltimoIDInstancia(){
 	return this->ultimoIDInstancia;
 }
