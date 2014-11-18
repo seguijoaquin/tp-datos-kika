@@ -27,16 +27,17 @@ void AdministradorIndices::eliminar_indice(int x){
 	 cout << "Ingrese el tipo de estructura para el indice secundario:" << endl;
 	 cout << "1 - Arbol B+" << endl;
 	 cout << "2 - Hash" << endl;
-	 int opc; cin >> opc;
+	 int tipo; cin >> tipo;
 	 Estructura* estructura;
-	 while (opc != 1 || opc != 2) { cin >>opc; }
-	 switch (opc) {
+	 while (tipo != 1 || tipo != 2) { cin >>tipo; }
+	 switch (tipo) {
 	 	 case 1: estructura = new ArbolBMas(nombre);
 	 		 break;
 	 	 case 2: //HACER UN NEW HASHHHHHHHHHHH
 	 		 break;
 	 }
 	 cout << "Ingrese los atributos que formaran parte del indice:" << endl;
-	 entidad->listarNombreAtributos();
-	 int x; cin >> x;
+	 //listar atributos y elegir uno
+	 //preguntar si se quiere elegir mas atributos
+
 }
