@@ -62,8 +62,15 @@ void Instancia::desSerializar(string aDeserealizar){
 	}
 }
 
-Atributo* Instancia::getAtributo(metaDataAtributo* atributo){
+Atributo* Instancia::getAtributo(int n){
 	//Recibo el nombre de un atributo y devuelvo su valor
 	//Por ejemplo, recibo "Color" y devuelvo "Rojo"
+	int cont = 1;
+	for (list<Atributo>::iterator it = this->listaAtributos->begin(); it != this->listaAtributos->end(); it++,cont++) {
+		if (cont == n) {
+
+			return &(*it);
+		}
+	}
 	return NULL;
 }
