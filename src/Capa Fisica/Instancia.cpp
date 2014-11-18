@@ -61,3 +61,9 @@ void Instancia::desSerializar(string aDeserealizar){
 		cont++;
 	}
 }
+
+Atributo* Instancia::getAtributo(metaDataAtributo* atributo){
+	//Recibo el nombre de un atributo y devuelvo su valor
+	//Por ejemplo, recibo "Color" y devuelvo "Rojo"
+	return NULL;
+}
