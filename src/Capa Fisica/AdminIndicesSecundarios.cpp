@@ -20,8 +20,8 @@ void AdministradorIndices::eliminar_indice(int x){
 	 cout << "Ingrese el nombre del indice secundario: " << endl;
 	 string nombre;	 cin >> nombre;
 	 cout << "Ingrese el tipo de estructura para el indice secundario:" << endl;
-	 cout << "1 - Arbol B+" << endl;
-	 cout << "2 - Hash" << endl;
+	 cout << "	1). Arbol B+" << endl;
+	 cout << "	2). Hash" << endl;
 	 int tipo; cin >> tipo;
 	 //VALIDAR SI INGRESA HASH O ARBOL
 
