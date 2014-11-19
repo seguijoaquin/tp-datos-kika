@@ -13,6 +13,7 @@ Interfaz::Interfaz(){
 	this -> adminEntidades    = new AdministradorEntidades();
 	this -> adminEntidades->leerArchivoEntidades(); // Inicializa administrador si existe archivo preexistente.
 	this->adminIndices = new AdministradorIndices();
+	this->consulta = new Consulta(this->adminEntidades);
 }
 
 Interfaz::~Interfaz(){

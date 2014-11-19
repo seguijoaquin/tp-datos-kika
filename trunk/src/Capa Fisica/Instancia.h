@@ -24,6 +24,7 @@ public:
 	int getID();
 	string serializar();
 	void desSerializar(string aDeserealizar);
+	void imprimir();
 };
 
 #endif

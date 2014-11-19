@@ -74,3 +74,15 @@ Atributo* Instancia::getAtributo(int n){
 	}
 	return NULL;
 }
+
+void Instancia::imprimir() {
+	list<Atributo>::iterator it2 = this->listaAtributos->begin();
+	for (list<metaDataAtributo>::iterator it = this->listaMetaAtributos->begin(); it != this->listaMetaAtributos->end(); it++,it2++) {
+		if (it->tipo == TEXTO) {
+			cout<<"Hello"<<endl;
+			cout<<it->nombre<<": "<<it2->texto<<" ";
+		} else {
+			cout<<it->nombre<<": "<<it2->entero<<" ";
+		}
+	}
+}
