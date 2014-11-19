@@ -18,6 +18,7 @@ class Interfaz{
 		list<string>* opciones;
 		AdministradorEntidades* adminEntidades;
 		AdministradorIndices* adminIndices;
+		AdministradorRegistros* adminRegistros;
 		Consulta* consulta;
 		//void crear_entidad();
 		void crear_instancia();
