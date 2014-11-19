@@ -16,7 +16,7 @@ Consulta::Consulta(AdministradorEntidades* admin) {
 void Consulta::listarProductosPorFabricante(int IDFabricante){
 	Entidad* entProducto = this->admin->getEntidad(14);
 	Entidad* entFamilia = this->admin->getEntidad(10);
-	for (int i = 1; i < entProducto->getUltimoIDInstancia();i++) {
+	for (int i = 1; i <= entProducto->getUltimoIDInstancia();i++) {
 		bool error;
 		Instancia* producto= entProducto->getInstancia(i,error);
 		if (!error) {
@@ -31,4 +31,37 @@ void Consulta::listarProductosPorFabricante(int IDFabricante){
 			}
 		}
 	}
+}
+
+void Consulta::listarProductosPorFamilia(int IDFamilia) {
+
+}
+void Consulta::listarProductosPorProducto(int IDProducto){
+
+}
+void Consulta::listarProductosPorTintura(int IDTintura){
+
+}
+void Consulta::listarProductosPorPartes(int IDPartes){
+
+}
+void Consulta::cantidadProductosPorFabricante(int IDFabricante){
+
+}
+void Consulta::cantidadProductosPorFamilia(int IDFamilia){
+
+}
+void Consulta::cantidadProductosPorProducto(int IDProducto){
+
+
+}
+void Consulta::cantidadProductosPorTintura(int IDTintura){
+
+}
+
+void Consulta::listarVentasPorFecha(){
+
+}
+void Consulta::listarStock(){
+
 }
