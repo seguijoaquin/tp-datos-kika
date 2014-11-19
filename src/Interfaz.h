@@ -7,6 +7,7 @@
 #include "Capa Fisica/Entidad.h"
 #include "Capa Fisica/AdministradorEntidades.h"
 #include "Capa Fisica/AdminIndicesSecundarios.h"
+#include "Consultas.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ class Interfaz{
 		list<string>* opciones;
 		AdministradorEntidades* adminEntidades;
 		AdministradorIndices* adminIndices;
+		Consulta* consulta;
 		//void crear_entidad();
 		void crear_instancia();
 		int seleccionar_entidad();
