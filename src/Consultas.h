@@ -19,8 +19,17 @@ class Consulta {
 	public:
 		Consulta(AdministradorEntidades* admin);
 		void listarProductosPorFabricante(int IDFabricante);
+		void listarProductosPorFamilia(int IDFamilia);
+		void listarProductosPorProducto(int IDProducto);
+		void listarProductosPorTintura(int IDTintura);
+		void listarProductosPorPartes(int IDPartes);
+		void cantidadProductosPorFabricante(int IDFabricante);
+		void cantidadProductosPorFamilia(int IDFamilia);
+		void cantidadProductosPorProducto(int IDProducto);
+		void cantidadProductosPorTintura(int IDTintura);
+		void listarVentasPorFecha();
+		void listarStock();
 
 };
-
 
 #endif /* CONSULTAS_H_ */

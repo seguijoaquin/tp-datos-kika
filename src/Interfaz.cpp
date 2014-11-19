@@ -9,6 +9,7 @@ Interfaz::Interfaz(){
 	this -> opciones -> push_back("Eliminar todas las instancias.");
 	this -> opciones -> push_back("Listar instancias.");
 	this->opciones->push_back("Administrar Indices Secundarios");
+	this->opciones->push_back("Consultas");
 	this -> opciones -> push_back("Salir.");
 	this -> adminEntidades    = new AdministradorEntidades();
 	this -> adminEntidades->leerArchivoEntidades(); // Inicializa administrador si existe archivo preexistente.
@@ -363,6 +364,96 @@ void Interfaz::registrar_egreso(){
 	}
 }
 
+void Interfaz::listarConsultas(){
+
+	cout<<"1: Cantidad de productos por Fabricante"<<endl;
+	cout<<"2: Cantidad de productos por Familia"<<endl;
+	cout<<"3: Cantidad de productos por Producto"<<endl;
+	cout<<"4: Cantidad de productos por Tintura"<<endl;
+	cout<<"5: Listar productos por Fabricante"<<endl;
+	cout<<"6: Listar productos por Familia"<<endl;
+	cout<<"7: Listar productos por Producto"<<endl;
+	cout<<"8: Listar productos por Tintura"<<endl;
+	cout<<"9: Listar productos por Partes"<<endl;
+	cout<<"10: Listado de Ventas por fecha"<<endl;
+	cout<<"11: Listado de Stock (actual)"<<endl;
+	cout<<"12: Salir"<<endl;
+	int opc = this->pedir_valor();
+	int IDInstancia;
+	switch (opc) {
+	case 1:
+		cout<<"Ingresar ID del Fabricante"<<endl;
+		IDInstancia = this->pedirIDInstancia(1);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFabricante(IDInstancia);
+		break;
+	case 2:
+		cout<<"Ingresar ID de la Familia"<<endl;
+		IDInstancia = this->pedirIDInstancia(10);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFamilia(IDInstancia);
+		break;
+	case 3:
+		cout<<"Ingresar ID del Producto"<<endl;
+		IDInstancia = this->pedirIDInstancia(14);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorProducto(IDInstancia);
+		break;
+	case 4:
+		cout<<"Ingresar ID de la Tintura"<<endl;
+		IDInstancia = this->pedirIDInstancia(12);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorTintura(IDInstancia);
+		break;
+	case 5:
+		cout<<"Ingresar ID del Fabricante"<<endl;
+		IDInstancia = this->pedirIDInstancia(1);
+		if (IDInstancia != -1)	this->consulta->listarProductosPorFabricante(IDInstancia);
+		break;
+	case 6:
+		cout<<"Ingresar ID de la Familia"<<endl;
+		IDInstancia = this->pedirIDInstancia(10);
+		if (IDInstancia != -1)	this->consulta->listarProductosPorFamilia(IDInstancia);
+		break;
+	case 7:
+		cout<<"Ingresar ID del Producto"<<endl;
+		IDInstancia = this->pedirIDInstancia(14);
+		if (IDInstancia != -1)	this->consulta->listarProductosPorProducto(IDInstancia);
+		break;
+	case 8:
+		cout<<"Ingresar ID de la Tintura"<<endl;
+		IDInstancia = this->pedirIDInstancia(12);
+		if (IDInstancia != -1)	this->consulta->listarProductosPorTintura(IDInstancia);
+		break;
+	case 9:
+		cout<<"Ingresar ID de las Partes"<<endl;
+		IDInstancia = this->pedirIDInstancia(13);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFabricante(IDInstancia);
+		break;
+	case 10:
+		cout<<"Ingresar Fecha"<<endl;
+		this->consulta->listarVentasPorFecha();
+		break;
+	case 11:
+		this->consulta->listarStock();
+		break;
+	case 12:
+		break;
+	default:
+		cout<<"Opcion ingresada es incorrecta"<<endl;
+		break;
+	}
+}
+
+int Interfaz::pedirIDInstancia(int IDEntidad){
+	Entidad* entidad = this->adminEntidades->getEntidad(IDEntidad);
+	int n = this->pedir_valor();
+	bool error;
+	entidad->getInstancia(n,error);
+	if (error) {
+		cout<<"ID ingresado incorrecto"<<endl;
+		return -1;
+	} else {
+		return n;
+	}
+}
+
 bool Interfaz::ejecutar_opcion(unsigned int opc){
 	switch (opc){
 //		/case 1:	// Crear nueva entidad.
@@ -385,6 +476,8 @@ bool Interfaz::ejecutar_opcion(unsigned int opc){
 			break;
 		case 6: //Crear indice secundario
 			this->administrar_indices_secundarios();
+			break;
+		case 7: this->listarConsultas();
 			break;
 		default:
 			return false;

@@ -38,6 +38,8 @@ class Interfaz{
 		int elegirEntidad();
 		void registrar_ingreso();
 		void registrar_egreso();
+		void listarConsultas();
+		int pedirIDInstancia(int IDEntidad);
 };
 
 #endif
