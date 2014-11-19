@@ -8,7 +8,7 @@ Interfaz::Interfaz(){
 	this -> opciones -> push_back("Eliminar instancia.");
 	this -> opciones -> push_back("Eliminar todas las instancias.");
 	this -> opciones -> push_back("Listar instancias.");
-	this->opciones->push_back("Administrar Indices Secundarios");
+	this -> opciones -> push_back("Administrar Indices Secundarios");
 	this->opciones->push_back("Consultas");
 	this -> opciones -> push_back("Salir.");
 	this -> adminEntidades    = new AdministradorEntidades();
@@ -209,10 +209,10 @@ int Interfaz::elegirEntidad(){
 	return x;
 }
 void Interfaz::administrar_indices_secundarios(){
-	cout << "1 - Crear nuevo indice secundario" << endl;
-	cout << "2 - Eliminar indice secundario existente" << endl;
-	cout << "3 - Listar indices secundarios" << endl;
-	cout << "0 - Salir" << endl;
+	cout << "	1). Crear nuevo indice secundario" << endl;
+	cout << "	2). Eliminar indice secundario existente" << endl;
+	cout << "	3). Listar indices secundarios" << endl;
+	cout << "	0). Salir" << endl;
 	int opc; cin >> opc;
 	switch (opc) {
 		case 1 : {
