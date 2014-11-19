@@ -29,6 +29,7 @@ public:
 	int getID();
 	void listarInstancias();
 	//int getCantidadInstancias();
+	void listarOpcionesInstancias();
 	void listarAtributos();
 	metaDataAtributo* getAtributo(unsigned int i);
 	int getCantidad();

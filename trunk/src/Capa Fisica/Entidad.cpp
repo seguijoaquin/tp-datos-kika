@@ -42,7 +42,7 @@ int Entidad::getID(){
 
 void Entidad::listarInstancias(){
 	bool error;
-	for (unsigned int i = 1; i <= this->ultimoIDInstancia; i++) {
+	for (int i = 1; i <= this->ultimoIDInstancia; i++) {
 		Instancia* inst = this->getInstancia(i,error);
 		if (!error) {
 			list<metaDataAtributo>::iterator it = this->listaAtributos->begin();
@@ -71,6 +71,23 @@ void Entidad::listarInstancias(){
 		}
 		cout<<endl;
 	}*/
+}
+
+void Entidad::listarOpcionesInstancias(){
+	bool error;
+	for (int i = 1; i <= this->ultimoIDInstancia; i++) {
+		Instancia* inst = this->getInstancia(i,error);
+		if (!error) {
+			list<metaDataAtributo>::iterator it = this->listaAtributos->begin();
+			for (list<Atributo>::iterator it2 = inst->getListaAtributos()->begin(); it2 != inst->getListaAtributos()->end();it2++,it++){
+				cout<<it->nombre<<": ";
+				if (it->nombre == "Nombre" && it->tipo == TEXTO) {
+					cout<<i<<"). "<<it2->texto<<endl;
+				}
+			}
+			cout<<endl;
+		}
+	}
 }
 
 void Entidad::listarAtributos(){
@@ -113,7 +130,7 @@ bool Entidad::eliminarInstancia(int id_instancia) {
 
 void Entidad::eliminarInstancias(){
 	// Borrar lista de instancias y el archivo.
-	for(unsigned int i = 1; i <= this->ultimoIDInstancia; i++){
+	for(int i = 1; i <= this->ultimoIDInstancia; i++){
 		try {
 			this->indice->elminarElemento(StringUtil::int2string(i));
 		}catch(Excepcion& e){
