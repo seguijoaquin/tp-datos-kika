@@ -7,6 +7,7 @@
 #include "Capa Fisica/Entidad.h"
 #include "Capa Fisica/AdministradorEntidades.h"
 #include "Capa Fisica/AdminIndicesSecundarios.h"
+#include "Capa Fisica/AdministradorRegistros.h"
 #include "Consultas.h"
 
 using namespace std;
@@ -21,7 +22,7 @@ class Interfaz{
 		//void crear_entidad();
 		void crear_instancia();
 		int seleccionar_entidad();
-	
+		unsigned int pedir_valor();
 	public:
 		Interfaz();
 		~Interfaz();
@@ -34,6 +35,8 @@ class Interfaz{
 		void listar_instancias();
 		void administrar_indices_secundarios();
 		int elegirEntidad();
+		void registrar_ingreso();
+		void registrar_egreso();
 };
 
 #endif

@@ -19,6 +19,8 @@ Interfaz::Interfaz(){
 Interfaz::~Interfaz(){
 	delete this->opciones;
 	delete this->adminEntidades;
+	delete this->adminIndices;
+	delete this->adminRegistros;
 }
 
 void Interfaz::listar_opciones(){
@@ -31,13 +33,17 @@ void Interfaz::listar_opciones(){
 	}
 }
 
-unsigned int Interfaz::pedir_opcion(){
+unsigned int Interfaz::pedir_valor(){
 	char opget[5];
-	cout << "Ingrese la opcion seleccionada: ";
 	cin >> opget;
 	cout << endl;
 	cin.get();
 	return atoi(opget);
+}
+
+unsigned int Interfaz::pedir_opcion(){
+	cout << "Ingrese la opcion seleccionada: ";
+	return this->pedir_valor();
 }
 
 int Interfaz::seleccionar_entidad(){
@@ -218,6 +224,142 @@ void Interfaz::administrar_indices_secundarios(){
 		case 3: this->adminIndices->listar_indices();
 				break;
 		default: break;
+	}
+}
+
+void Interfaz::registrar_ingreso(){
+
+	int idEntProd = 14;
+	int idEntColor =  3;
+	int idEntEstampa = 4;
+	int idEntTintura = 12;
+
+	int cant, precio, idProd, idColor, idEstampa, idTintura, precioUnitario;
+	Fecha date;
+	Entidad *producto, *estampa, *color, *tintura;
+	Instancia *instProd, *instColor, *instEstampa;
+	char *nombreProd, *nombreColor, *nombreEstampa;
+	bool error;
+
+
+	// PEDIR FECHA
+	cout<<" Día: ";
+	date.dia = this->pedir_valor();
+	cout<<" Mes: ";
+	date.mes = this->pedir_valor();
+	cout<<" Año: ";
+	date.anio = this->pedir_valor();
+
+
+	// PEDIR PRODUCTO
+	producto = this->adminEntidades->getEntidad(idEntProd);
+	cout<<"Productos:"<<endl;
+	producto->listarOpcionesInstancias();
+	cout<<" Opcion seleccionada: ";
+	idProd = this->pedir_valor();
+	cout<<endl;
+
+	// AVERIGUA PRECIO UNITARIO DEL PRODUCTO
+	instProd = producto->getInstancia(idProd, error);
+	if(error){
+		cout<<"Opcion incorrecta"<<endl;
+		return; 									// Mejorar validacion.
+	}
+	list<Atributo>::iterator itP = instProd->getListaAtributos()->begin();
+	for(unsigned int j = 1 ; j < 5 ;++j){
+		if(j==2)nombreProd = (*itP).texto; // Guardo nombre del producto.
+		++itP;
+	}
+	precioUnitario = (*itP).entero;
+
+
+	// PEDIR COLOR
+	color = this->adminEntidades->getEntidad(idEntColor);
+	cout<<"Colores: "<<endl;
+	color->listarOpcionesInstancias();
+	cout<<" Opcion seleccionada: ";
+	idColor = this->pedir_valor();
+	instColor = color->getInstancia(idColor,error);
+	if(error){
+		cout<<"Opcion incorrecta."<<endl;
+		return;									// Mejorar validacion.
+	}
+	list<Atributo>::iterator itC= instColor->getListaAtributos()->begin();			// Nombre del color
+	itC++; // Pasa a apuntar al nombre.
+	nombreColor = (*itC).texto;
+	cout<<endl;
+
+
+	// PEDIR ESTAMPA
+	estampa = this->adminEntidades->getEntidad(idEntEstampa);
+	cout<<"Estampas: "<<endl;
+	estampa->listarOpcionesInstancias();
+	cout<<" Opcion seleccionada: ";
+	idEstampa = this->pedir_valor();
+	instEstampa = estampa->getInstancia(idEstampa,error);
+	if(error){
+		cout<<"Opcion incorrecta."<<endl;
+		return;									// Mejorar validacion.
+	}
+	list<Atributo>::iterator itE= instEstampa->getListaAtributos()->begin();			// Nombre de la estampa
+	itE++; // Pasa a apuntar al nombre.
+	nombreEstampa = (*itE).texto;
+	cout<<endl;
+
+
+	// CREAR INSTANCIA DE TINTURA CON COLOR Y ESTAMPA.
+	Atributo att;
+	list<Atributo>* atts = new list<Atributo>;
+	tintura = this->adminEntidades->getEntidad(idEntTintura);
+	// Atributo ID
+	idTintura = tintura->getUltimoIDInstancia() + 1;
+	att.entero = idTintura;
+	atts->push_back(att);
+	// Atributo Color
+	att.entero = idColor;
+	atts->push_back(att);
+	// Atributo Estampa
+	att.entero = idEstampa;
+	atts->push_back(att);
+	tintura->crearInstancia(atts);
+
+
+	// PEDIR CANTIDAD
+	cout<<" Cantidad: ";
+	cant = this->pedir_valor();
+
+
+	// PEDIR PRECIO
+	cout<<" Precio: ";
+	precio = this->pedir_valor();
+
+	this->adminRegistros->registrarIngreso(date,idProd,idTintura,precio,cant,precioUnitario,nombreProd,nombreColor,nombreEstampa);
+}
+
+void Interfaz::registrar_egreso(){
+	int opc;
+	Fecha date;
+
+	cout<<"Productos en Stock:"<<endl;
+	if(!this->adminRegistros->listarRegistrosConStock()){
+		return;
+	}else{
+		cout<<"Opcion seleccionada: ";
+		opc = this->pedir_valor();
+		cout<<endl;
+
+		if(!this->adminRegistros->opcionValida(opc)){
+			cout<<"Opcion invalida."<<endl;
+			return;										// Mejorar validacion.
+		}
+
+		cout<<"Indique la fecha\n Día: ";
+		date.dia = this->pedir_valor();
+		cout<<" Mes: ";
+		date.mes = this->pedir_valor();
+		cout<<" Año: ";
+		date.anio = this->pedir_valor();
+		this->adminRegistros->registrarEgreso(opc,date);
 	}
 }
 
