@@ -349,7 +349,7 @@ void Interfaz::registrar_egreso(){
 		opc = this->pedir_valor();
 		cout<<endl;
 
-		if(!this->adminRegistros->opcionValida(opc)){
+		if(!this->adminRegistros->opcionValidaIngreso(opc)){
 			cout<<"Opcion invalida."<<endl;
 			return;										// Mejorar validacion.
 		}
