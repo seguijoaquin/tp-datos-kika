@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <list>
+#include <sstream>
 #include "AdministradorEntidades.h"
 
 using namespace std;
@@ -34,13 +35,22 @@ class AdministradorRegistros {
 private:
 	list<RegistroEntrada>* regsIn;
 	list<RegistroSalida>*  regsOut;
+	FILE *archivoIn;
+	FILE *archivoOut;
+	void agregarDato(FILE* archivo, string buffer);
+	void agregarDato(FILE* archivo, int buffer);
+	void finalizarRegistro(FILE *archivo);
+	void persistirRegistroIn(RegistroEntrada regIn);
+	void persistirRegistroOut(RegistroSalida regOut);
+	void leerRegistrosIn();
+	void leerRegistrosOut();
 public:
 	AdministradorRegistros();
 	~AdministradorRegistros();
 	void registrarIngreso(Fecha fecha, int idP, int idT, int precio, int cant, int precioUnit,char* nombreProd, char* nombreColor, char* nombreEstampa);
 	void registrarEgreso(int reg, Fecha fecha);
 	bool listarRegistrosConStock();
-	bool opcionValida(int opc);
+	bool opcionValidaIngreso(int opc);
 };
 
 #endif
