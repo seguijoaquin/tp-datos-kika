@@ -16,7 +16,7 @@ Interfaz::Interfaz(){
 	this -> adminEntidades->leerArchivoEntidades(); // Inicializa administrador si existe archivo preexistente.
 	this -> adminIndices = new AdministradorIndices();
 	this -> adminRegistros = new AdministradorRegistros();
-	this -> consulta = new Consulta(this->adminEntidades);
+	this -> consulta = new Consulta(this->adminEntidades, this->adminRegistros);
 }
 
 Interfaz::~Interfaz(){
@@ -472,7 +472,9 @@ void Interfaz::listarConsultas(){
 		break;
 	case 10:
 		cout<<"Ingresar Fecha"<<endl;
-		this->consulta->listarVentasPorFecha();
+		//TODO PEDIR FECHA
+		Fecha fecha;
+		this->consulta->listarVentasPorFecha(fecha);
 		break;
 	case 11:
 		this->consulta->listarStock();

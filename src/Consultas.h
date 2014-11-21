@@ -16,8 +16,9 @@ class Consulta {
 
 	private:
 		AdministradorEntidades* admin;
+		AdministradorRegistros* adminreg;
 	public:
-		Consulta(AdministradorEntidades* admin);
+		Consulta(AdministradorEntidades* admin, AdministradorRegistros* adminregistros);
 		void listarProductosPorFabricante(int IDFabricante);
 		void listarProductosPorFamilia(int IDFamilia);
 		void listarProductosPorProducto(int IDProducto);
@@ -27,7 +28,7 @@ class Consulta {
 		void cantidadProductosPorFamilia(int IDFamilia);
 		void cantidadProductosPorProducto(int IDProducto);
 		void cantidadProductosPorTintura(int IDTintura);
-		void listarVentasPorFecha();
+		void listarVentasPorFecha(Fecha fecha);
 		void listarStock();
 
 };
