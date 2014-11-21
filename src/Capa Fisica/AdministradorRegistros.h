@@ -9,6 +9,8 @@
 
 using namespace std;
 
+const int LARGO_CADENA = 30;
+
 struct Fecha{
 	int dia;
 	int mes;
@@ -41,12 +43,14 @@ private:
 	void persistirRegistroOut(RegistroSalida regOut);
 	void leerRegistrosIn();
 	void leerRegistrosOut();
+	void actualizarRegistrosEnArchivo();
 public:
 	AdministradorRegistros();
 	~AdministradorRegistros();
 	void registrarIngreso(Fecha fecha, int idP, int idT, int precio, int cant, int precioUnit,char* nombreProd, char* nombreColor, char* nombreEstampa);
 	void registrarEgreso(int reg, Fecha fecha);
 	bool listarRegistrosConStock();
+	void listarVentas();
 	bool opcionValidaIngreso(int opc);
 };
 

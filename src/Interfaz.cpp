@@ -370,7 +370,9 @@ void Interfaz::registrar_egreso(){
 void Interfaz::listarOpcionesAdminStock(){
 	cout<<"	1). Registrar ingreso"<<endl;
 	cout<<"	2). Registrar venta"<<endl;
-	cout<<"	3). Salir"<<endl;
+	cout<<"	3). Listar stock"<<endl;
+	cout<<"	4). Listar ventas"<<endl;
+	cout<<"	5). Salir"<<endl;
 	int opc = this->pedir_opcion();
 	switch (opc) {
 	case 1:
@@ -380,6 +382,12 @@ void Interfaz::listarOpcionesAdminStock(){
 		this->registrar_egreso();
 		break;
 	case 3:
+		this->adminRegistros->listarRegistrosConStock();
+		break;
+	case 4:
+		this->adminRegistros->listarVentas();
+		break;
+	case 5:
 		break;
 	default:
 		cout<<"Opcion incorrecta."<<endl;
