@@ -9,12 +9,14 @@ Interfaz::Interfaz(){
 	this -> opciones -> push_back("Eliminar todas las instancias.");
 	this -> opciones -> push_back("Listar instancias.");
 	this -> opciones -> push_back("Administrar Indices Secundarios");
-	this->opciones->push_back("Consultas");
+	this -> opciones -> push_back("Consultas");
+	this -> opciones -> push_back("Administrar Stock");
 	this -> opciones -> push_back("Salir.");
 	this -> adminEntidades    = new AdministradorEntidades();
 	this -> adminEntidades->leerArchivoEntidades(); // Inicializa administrador si existe archivo preexistente.
-	this->adminIndices = new AdministradorIndices();
-	this->consulta = new Consulta(this->adminEntidades);
+	this -> adminIndices = new AdministradorIndices();
+	this -> adminRegistros = new AdministradorRegistros();
+	this -> consulta = new Consulta(this->adminEntidades);
 }
 
 Interfaz::~Interfaz(){
@@ -60,7 +62,7 @@ int Interfaz::seleccionar_entidad(){
 	} while (opc == 0);
 	return opc;
 }
-//
+
 //void Interfaz::crear_entidad(){
 //	cout << "Ingrese el nombre de la entidad: ";
 //	string nombre_entidad;
@@ -208,6 +210,7 @@ int Interfaz::elegirEntidad(){
 	int x; cin >> x;
 	return x;
 }
+
 void Interfaz::administrar_indices_secundarios(){
 	cout << "	1). Crear nuevo indice secundario" << endl;
 	cout << "	2). Eliminar indice secundario existente" << endl;
@@ -364,6 +367,26 @@ void Interfaz::registrar_egreso(){
 	}
 }
 
+void Interfaz::listarOpcionesAdminStock(){
+	cout<<"	1). Registrar ingreso"<<endl;
+	cout<<"	2). Registrar venta"<<endl;
+	cout<<"	3). Salir"<<endl;
+	int opc = this->pedir_opcion();
+	switch (opc) {
+	case 1:
+		this->registrar_ingreso();
+		break;
+	case 2:
+		this->registrar_egreso();
+		break;
+	case 3:
+		break;
+	default:
+		cout<<"Opcion incorrecta."<<endl;
+		break;
+	}
+}
+
 void Interfaz::listarConsultas(){
 
 	cout<<"1: Cantidad de productos por Fabricante"<<endl;
@@ -477,7 +500,11 @@ bool Interfaz::ejecutar_opcion(unsigned int opc){
 		case 6: //Crear indice secundario
 			this->administrar_indices_secundarios();
 			break;
-		case 7: this->listarConsultas();
+		case 7:
+			this->listarConsultas();
+			break;
+		case 8:
+			this->listarOpcionesAdminStock();
 			break;
 		default:
 			return false;

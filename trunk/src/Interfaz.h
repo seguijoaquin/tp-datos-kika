@@ -39,6 +39,7 @@ class Interfaz{
 		void registrar_ingreso();
 		void registrar_egreso();
 		void listarConsultas();
+		void listarOpcionesAdminStock();
 		int pedirIDInstancia(int IDEntidad);
 };
 

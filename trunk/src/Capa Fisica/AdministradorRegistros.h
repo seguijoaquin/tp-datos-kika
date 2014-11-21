@@ -37,9 +37,6 @@ private:
 	list<RegistroSalida>*  regsOut;
 	FILE *archivoIn;
 	FILE *archivoOut;
-	void agregarDato(FILE* archivo, string buffer);
-	void agregarDato(FILE* archivo, int buffer);
-	void finalizarRegistro(FILE *archivo);
 	void persistirRegistroIn(RegistroEntrada regIn);
 	void persistirRegistroOut(RegistroSalida regOut);
 	void leerRegistrosIn();
