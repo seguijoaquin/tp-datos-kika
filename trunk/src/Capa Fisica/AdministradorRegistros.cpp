@@ -4,16 +4,31 @@ AdministradorRegistros::AdministradorRegistros(){
 	this->regsIn = new list<RegistroEntrada>;
 	this->regsOut = new list<RegistroSalida>;
 	this->archivoIn = fopen("registrosIn.txt","r+b");
+	if(!this->archivoIn)this->archivoIn = fopen("registrosIn.txt","w+");
 	this->archivoOut = fopen("registrosOut.txt","r+b");
+	if(!this->archivoOut)this->archivoOut = fopen("registrosOut.txt","w+");
 	this->leerRegistrosIn();
 	this->leerRegistrosOut();
 }
 
 AdministradorRegistros::~AdministradorRegistros(){
+	this->actualizarRegistrosEnArchivo(); // Para actualizar stock de productos.
 	delete this->regsIn;
 	delete this->regsOut;
 	fclose(this->archivoIn);
 	fclose(this->archivoOut);
+}
+
+void AdministradorRegistros::actualizarRegistrosEnArchivo(){
+	fclose(this->archivoIn);
+	this->archivoIn = fopen("registrosIn.txt","w+");
+	if (!this->regsIn->empty()) {
+		list<RegistroEntrada>::iterator it = this->regsIn->begin();
+		while(it != this->regsIn->end()){
+			this->persistirRegistroIn(*it);
+			++it;
+		}
+	}
 }
 
 void AdministradorRegistros::persistirRegistroIn(RegistroEntrada regIn){
@@ -32,16 +47,44 @@ void AdministradorRegistros::persistirRegistroOut(RegistroSalida regOut){
 	fprintf(this->archivoOut,"%s %s %s\n",regOut.nombreProd,regOut.nombreColor,regOut.nombreEstampa);
 }
 
+void mostrarRegistro(RegistroEntrada r){
+	cout<<"  Producto: "<<r.nombreProd<<endl;
+	cout<<"  Color: "<<r.nombreColor<<endl;
+	cout<<"  Estampa: "<<r.nombreEstampa<<endl;
+	cout<<"  Fecha: "<<r.date.dia<<"/"<<r.date.mes<<"/"<<r.date.anio<<endl;
+	cout<<"  Precio: "<<r.precio<<endl;
+	cout<<"  Precio Unitario: "<<r.precioUnitario<<endl;
+	cout<<"  Cantidad: "<<r.cantidad<<endl;
+	cout<<"  ID Prod: "<<r.idProducto<<endl;
+	cout<<"  ID Tint: "<<r.idTintura<<endl;
+}
+
 void AdministradorRegistros::leerRegistrosIn(){
 	RegistroEntrada *regIn = new RegistroEntrada();
 	Fecha *fecha = new Fecha();
 	rewind (this->archivoIn);
+	char producto[LARGO_CADENA];
+	char color[LARGO_CADENA];
+	char estampa[LARGO_CADENA];
 	while(fscanf(this->archivoIn,"%d",&(fecha->dia)) != EOF){
 		fscanf(this->archivoIn,"%d %d",&(fecha->mes),&(fecha->anio));
 		regIn->date = *fecha;
+
 		fscanf(this->archivoIn,"%d %d %d",&(regIn->precio),&(regIn->precioUnitario),&(regIn->cantidad));
 		fscanf(this->archivoIn,"%d %d",&(regIn->idProducto),&(regIn->idTintura));
-		fscanf(this->archivoIn,"%s %s %s",regIn->nombreProd,regIn->nombreColor,regIn->nombreEstampa);
+
+		fscanf(this->archivoIn,"%s",producto);
+		regIn->nombreProd = (char*)malloc(LARGO_CADENA*sizeof(int));
+		strcpy(regIn->nombreProd, producto);
+
+		fscanf(this->archivoIn,"%s",color);
+		regIn->nombreColor = (char*)malloc(LARGO_CADENA*sizeof(int));
+		strcpy(regIn->nombreColor, color);
+
+		fscanf(this->archivoIn,"%s",estampa);
+		regIn->nombreEstampa = (char*)malloc(LARGO_CADENA*sizeof(int));
+		strcpy(regIn->nombreEstampa, estampa);
+
 		this->regsIn->push_back(*regIn);
 		fecha = new Fecha();
 		regIn = new RegistroEntrada();
@@ -51,13 +94,28 @@ void AdministradorRegistros::leerRegistrosIn(){
 void AdministradorRegistros::leerRegistrosOut(){
 	RegistroSalida *regOut = new RegistroSalida();
 	Fecha *fecha = new Fecha();
+	char producto[LARGO_CADENA];
+	char color[LARGO_CADENA];
+	char estampa[LARGO_CADENA];
 	rewind (this->archivoOut);
 	while(fscanf(this->archivoOut,"%d",&(fecha->dia)) != EOF){
 		fscanf(this->archivoOut,"%d %d",&(fecha->mes),&(fecha->anio));
 		regOut->date = *fecha;
 		fscanf(this->archivoOut,"%d",&(regOut->precio));
 		fscanf(this->archivoOut,"%d %d",&(regOut->idProducto),&(regOut->idTintura));
-		fscanf(this->archivoOut,"%s %s %s",regOut->nombreProd,regOut->nombreColor,regOut->nombreEstampa);
+
+		fscanf(this->archivoOut,"%s",producto);
+		regOut->nombreProd = (char*)malloc(LARGO_CADENA*sizeof(int));
+		strcpy(regOut->nombreProd, producto);
+
+		fscanf(this->archivoOut,"%s",color);
+		regOut->nombreColor = (char*)malloc(LARGO_CADENA*sizeof(int));
+		strcpy(regOut->nombreColor, color);
+
+		fscanf(this->archivoOut,"%s",estampa);
+		regOut->nombreEstampa = (char*)malloc(LARGO_CADENA*sizeof(int));
+		strcpy(regOut->nombreEstampa, estampa);
+
 		this->regsOut->push_back(*regOut);
 		fecha = new Fecha();
 		regOut = new RegistroSalida();
@@ -76,7 +134,6 @@ void AdministradorRegistros::registrarIngreso(Fecha fecha, int idP, int idT, int
 	regIn.nombreColor = nombreColor;
 	regIn.nombreEstampa = nombreEstampa;
 	this->regsIn->push_back(regIn);
-	this->persistirRegistroIn(regIn);
 }
 
 void AdministradorRegistros::registrarEgreso(int reg, Fecha fecha){
@@ -109,10 +166,10 @@ bool AdministradorRegistros::listarRegistrosConStock(){
 		while(it != this->regsIn->end()){
 			if(it->cantidad > 0){
 				contStock++;
-				*it;
 				cout<<" "<<i<<"). "<<"Producto:"<<(*it).nombreProd<<endl;
 				cout<<"     Color:   "<<(*it).nombreColor<<endl;
 				cout<<"     Estampa: "<<(*it).nombreEstampa<<endl;
+				cout<<"     Cantidad: "<<(*it).cantidad<<endl;
 			}
 			++it;
 			i++;
@@ -124,6 +181,23 @@ bool AdministradorRegistros::listarRegistrosConStock(){
 		}
 	}
 	return true;
+}
+
+void AdministradorRegistros::listarVentas(){
+	if (this->regsOut->empty()) {
+		cout << "No se han realizado ventas" << endl;
+	} else {
+		list<RegistroSalida>::iterator it = this->regsOut->begin();
+		int i = 1;
+		while(it != this->regsOut->end()){
+			cout<<" "<<i<<"). "<<"Producto:"<<(*it).nombreProd<<endl;
+			cout<<"     Color:   "<<(*it).nombreColor<<endl;
+			cout<<"     Estampa: "<<(*it).nombreEstampa<<endl;
+			cout<<"     Precio: "<<(*it).precio<<endl;
+			++it;
+			i++;
+		}
+	}
 }
 
 bool AdministradorRegistros::opcionValidaIngreso(int opc){
