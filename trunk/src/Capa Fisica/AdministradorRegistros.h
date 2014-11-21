@@ -48,7 +48,7 @@ public:
 	AdministradorRegistros();
 	~AdministradorRegistros();
 	void registrarIngreso(Fecha fecha, int idP, int idT, int precio, int cant, int precioUnit,char* nombreProd, char* nombreColor, char* nombreEstampa);
-	void registrarEgreso(int reg, Fecha fecha);
+	void registrarEgreso(int reg, Fecha fecha, int cantidad);
 	bool listarRegistrosConStock();
 	void listarVentas();
 	bool opcionValidaIngreso(int opc);

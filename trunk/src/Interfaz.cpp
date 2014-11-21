@@ -352,7 +352,7 @@ void Interfaz::registrar_ingreso(){
 }
 
 void Interfaz::registrar_egreso(){
-	int opc;
+	int opc, cant;
 	Fecha date;
 
 	cout<<"Productos en Stock:"<<endl;
@@ -374,7 +374,9 @@ void Interfaz::registrar_egreso(){
 		date.mes = this->pedir_valor();
 		cout<<" Año: ";
 		date.anio = this->pedir_valor();
-		this->adminRegistros->registrarEgreso(opc,date);
+		cout<<"Cantidad de productos comprados: ";
+		cant = this->pedir_valor();
+		this->adminRegistros->registrarEgreso(opc,date,cant);
 	}
 }
 

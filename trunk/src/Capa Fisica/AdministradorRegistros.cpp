@@ -136,15 +136,19 @@ void AdministradorRegistros::registrarIngreso(Fecha fecha, int idP, int idT, int
 	this->regsIn->push_back(regIn);
 }
 
-void AdministradorRegistros::registrarEgreso(int reg, Fecha fecha){
+void AdministradorRegistros::registrarEgreso(int reg, Fecha fecha, int cantidad){
 	RegistroSalida regOut;
 	list<RegistroEntrada>::iterator it = this->regsIn->begin();
 	for(int j = 1 ; j < reg ;++j) {
 		++it;
 	}
 	if(((*it).cantidad) < 1) return;
-	(*it).cantidad = (*it).cantidad -1;
-	regOut.precio = (*it).precioUnitario;
+
+	if((*it).cantidad < cantidad){
+		cantidad = (*it).cantidad;
+	}
+	(*it).cantidad = (*it).cantidad - cantidad;
+	regOut.precio = cantidad * (*it).precioUnitario;
 	regOut.date = fecha;
 	regOut.idProducto = (*it).idProducto;
 	regOut.idTintura = (*it).idTintura;
