@@ -3,8 +3,8 @@
 AdministradorRegistros::AdministradorRegistros(){
 	this->regsIn = new list<RegistroEntrada>;
 	this->regsOut = new list<RegistroSalida>;
-	this->archivoIn = fopen("registrosIn.txt","w+");
-	this->archivoOut = fopen("registrosOut.txt","w+");
+	this->archivoIn = fopen("registrosIn.txt","r+b");
+	this->archivoOut = fopen("registrosOut.txt","r+b");
 	this->leerRegistrosIn();
 	this->leerRegistrosOut();
 }
