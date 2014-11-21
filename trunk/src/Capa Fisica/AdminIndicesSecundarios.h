@@ -18,6 +18,7 @@ class AdministradorIndices {
 private:
 	list<ArbolBMas>* arboles;
 	list<Hash>* hashes;
+	string rutaIndices;
 
 
 public:
