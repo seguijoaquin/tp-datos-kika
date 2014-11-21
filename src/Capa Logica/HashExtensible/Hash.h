@@ -5,13 +5,13 @@
 #include "HashTable.h"
 #include "HashNodeInterpreter.h"
 #include "ExceptionOverflowNodo.h"
-#include "../Estructura.h"
+
 
 #include <utility>
 
 using namespace std;
 
-class Hash : public Estructura{
+class Hash {
 
 private:
 	HashTable* tabla;
