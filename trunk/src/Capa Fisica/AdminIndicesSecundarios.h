@@ -10,17 +10,23 @@
 
 #include "../Capa Logica/ArbolBMas/ArbolBMas.h"
 #include "../Capa Fisica/Entidad.h"
+#include "../Capa Logica/HashExtensible/Hash.h"
 
 
 class AdministradorIndices {
 
 private:
-	list<ArbolBMas>* indices;
+	list<ArbolBMas>* arboles;
+	list<Hash>* hashes;
+
 
 public:
+	AdministradorIndices();
+	~AdministradorIndices();
 	void listar_indices();
 	void eliminar_indice(int x);
 	void crear_indice(Entidad* entidad);
+
 };
 
 #endif /* ADMININDICESSECUNDARIOS_H_ */

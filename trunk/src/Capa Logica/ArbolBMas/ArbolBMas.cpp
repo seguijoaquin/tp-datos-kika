@@ -22,8 +22,6 @@ ArbolBMas::ArbolBMas(string nombre) {
 		//busco el bloque raiz
 		this->raiz = Nodo::cargar(archivo, 0);
 	}
-	this->setTipoEstructura(ARBOL);
-	this->setNombre(nombre);
 }
 
 ArbolBMas::~ArbolBMas() {
