@@ -40,9 +40,10 @@ void AdministradorRegistros::persistirRegistroIn(RegistroEntrada regIn){
 }
 
 void AdministradorRegistros::persistirRegistroOut(RegistroSalida regOut){
-	// date precio idProducto idTintura *nombreProd *nombreColor *nombreEstampa.
+	// date precio cantidad idProducto idTintura *nombreProd *nombreColor *nombreEstampa.
 	fprintf(this->archivoOut,"%d %d %d ",regOut.date.dia,regOut.date.mes,regOut.date.anio);
 	fprintf(this->archivoOut,"%d ",regOut.precio);
+	fprintf(this->archivoOut,"%d ",regOut.cantidad);
 	fprintf(this->archivoOut,"%d %d ",regOut.idProducto,regOut.idTintura);
 	fprintf(this->archivoOut,"%s %s %s\n",regOut.nombreProd,regOut.nombreColor,regOut.nombreEstampa);
 }
@@ -101,7 +102,7 @@ void AdministradorRegistros::leerRegistrosOut(){
 	while(fscanf(this->archivoOut,"%d",&(fecha->dia)) != EOF){
 		fscanf(this->archivoOut,"%d %d",&(fecha->mes),&(fecha->anio));
 		regOut->date = *fecha;
-		fscanf(this->archivoOut,"%d",&(regOut->precio));
+		fscanf(this->archivoOut,"%d %d",&(regOut->precio),&(regOut->cantidad));
 		fscanf(this->archivoOut,"%d %d",&(regOut->idProducto),&(regOut->idTintura));
 
 		fscanf(this->archivoOut,"%s",producto);
@@ -147,6 +148,7 @@ void AdministradorRegistros::registrarEgreso(int reg, Fecha fecha, int cantidad)
 	if((*it).cantidad < cantidad){
 		cantidad = (*it).cantidad;
 	}
+	regOut.cantidad = cantidad;
 	(*it).cantidad = (*it).cantidad - cantidad;
 	regOut.precio = cantidad * (*it).precioUnitario;
 	regOut.date = fecha;
@@ -155,6 +157,7 @@ void AdministradorRegistros::registrarEgreso(int reg, Fecha fecha, int cantidad)
 	regOut.nombreProd = (*it).nombreProd;
 	regOut.nombreColor = (*it).nombreColor;
 	regOut.nombreEstampa = (*it).nombreEstampa;
+
 	this->regsOut->push_back(regOut);
 	this->persistirRegistroOut(regOut);
 }
@@ -198,6 +201,7 @@ void AdministradorRegistros::listarVentas(){
 			cout<<"     Color:   "<<(*it).nombreColor<<endl;
 			cout<<"     Estampa: "<<(*it).nombreEstampa<<endl;
 			cout<<"     Precio: "<<(*it).precio<<endl;
+			cout<<"     Cantidad: "<<(*it).cantidad<<endl;
 			++it;
 			i++;
 		}

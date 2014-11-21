@@ -30,6 +30,7 @@ struct RegistroSalida{
 	int precio;
 	int idProducto;
 	int idTintura;
+	int cantidad;
 	char *nombreProd, *nombreColor, *nombreEstampa;
 };
 
