@@ -237,10 +237,11 @@ void Interfaz::registrar_ingreso(){
 	int idEntColor =  3;
 	int idEntEstampa = 4;
 	int idEntTintura = 12;
+	int idEntFamilia = 10;
 
 	int cant, precio, idProd, idColor, idEstampa, idTintura, precioUnitario;
 	Fecha date;
-	Entidad *producto, *estampa, *color, *tintura;
+	Entidad *producto, *estampa, *color, *tintura, *familia;
 	Instancia *instProd, *instColor, *instEstampa;
 	char *nombreProd, *nombreColor, *nombreEstampa;
 	bool error;
@@ -263,6 +264,8 @@ void Interfaz::registrar_ingreso(){
 	idProd = this->pedir_valor();
 	cout<<endl;
 
+	familia = this->adminEntidades->getEntidad(idEntFamilia);
+
 	// AVERIGUA PRECIO UNITARIO DEL PRODUCTO
 	instProd = producto->getInstancia(idProd, error);
 	if(error){
@@ -270,11 +273,19 @@ void Interfaz::registrar_ingreso(){
 		return; 									// Mejorar validacion.
 	}
 	list<Atributo>::iterator itP = instProd->getListaAtributos()->begin();
+	list<Atributo>::iterator itF;
 	for(unsigned int j = 1 ; j < 5 ;++j){
 		if(j==2)nombreProd = (*itP).texto; // Guardo nombre del producto.
+		if(j==3){ // FAMILIA - Para pedir precio
+			itF = familia->getInstancia((*itP).entero,error)->getListaAtributos()->begin();
+			for(unsigned int k = 1 ; k < 4 ;++k){
+				++itF;
+			}
+			precioUnitario = (*itF).entero;
+		}
 		++itP;
 	}
-	precioUnitario = (*itP).entero;
+	precioUnitario = ++(*itP).entero;
 
 
 	// PEDIR COLOR
