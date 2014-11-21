@@ -162,6 +162,26 @@ void AdministradorRegistros::registrarEgreso(int reg, Fecha fecha, int cantidad)
 	this->persistirRegistroOut(regOut);
 }
 
+<<<<<<< .mine
+void AdministradorRegistros::listarEgresosFecha(Fecha fecha){
+	RegistroSalida regOut;
+
+	list<RegistroEntrada>::iterator it = this->regsOut->begin();
+	for(int j = 1 ; j < this->regsOut->size();++j) {
+		if ( fecha == (*it).date){
+			printf(" %d \n", (*it).idProducto);
+		}
+
+		++it;
+	}
+
+}
+
+
+
+=======
+>>>>>>> .r105
+
 bool AdministradorRegistros::listarRegistrosConStock(){
 	if (this->regsIn->empty()) {
 		cout << "No hay productos en Stock" << endl;

@@ -53,6 +53,7 @@ public:
 	bool listarRegistrosConStock();
 	void listarVentas();
 	bool opcionValidaIngreso(int opc);
+	void listarEgresosFecha(Fecha fecha);
 };
 
 #endif
