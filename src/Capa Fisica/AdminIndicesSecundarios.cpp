@@ -130,7 +130,7 @@ void AdministradorIndices::persistirIndice(Indice* indice){
 	 indice.nombreEntidad = entidad->getNombre();
 	 cout << "Ingrese el nombre del indice secundario: " << endl;
 	 string nombre;	 cin >> nombre;
-	 indice.nombreArchivo = rutaBaseIndiceSec + nombre;
+	 indice.nombreArchivo = nombre;
 	 cout << "Ingrese el tipo de estructura para el indice secundario:" << endl;
 	 cout << "	1). Arbol B+" << endl;
 	 cout << "	2). Hash" << endl;
