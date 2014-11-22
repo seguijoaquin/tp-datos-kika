@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "Interfaz.h"
+#include "Capa Usuario/Interfaz.h"
 
 int main(){
 

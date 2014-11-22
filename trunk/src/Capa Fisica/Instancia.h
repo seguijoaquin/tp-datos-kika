@@ -5,7 +5,7 @@
 #include <list>
 #include <string.h>
 #include "Archivos/Archivo.h"
-#include "StringUtil.h"
+#include "../Utilitarios/StringUtil.h"
 using namespace std;
 
 

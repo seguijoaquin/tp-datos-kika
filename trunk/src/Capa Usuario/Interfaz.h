@@ -4,10 +4,10 @@
 #include <cstdlib>
 #include <iostream>
 #include <list>
-#include "Capa Fisica/Entidad.h"
-#include "Capa Fisica/AdministradorEntidades.h"
-#include "Capa Fisica/AdminIndicesSecundarios.h"
-#include "Capa Fisica/AdministradorRegistros.h"
+#include "../Capa Fisica/Entidad.h"
+#include "../Capa Fisica/AdministradorEntidades.h"
+#include "../Capa Fisica/AdminIndicesSecundarios.h"
+#include "../Capa Fisica/AdministradorRegistros.h"
 #include "Consultas.h"
 
 using namespace std;
