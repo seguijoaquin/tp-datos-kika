@@ -320,31 +320,35 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_instancia){
 	Entidad* ent = this->getEntidad(id);
 	vector<Eliminados>* instanciasAfectadas = this->informarEliminacion(ent,id_instancia);
-	if (instanciasAfectadas->size() == 0) {
+	if (instanciasAfectadas == NULL) {
 		ent->eliminarInstancia(id_instancia);
 	} else {
-		cout<<"Eliminar esta instancia eliminara: ";
-		for (int i = 0; i < instanciasAfectadas->size();i++) {
-			Eliminados eliminados = instanciasAfectadas->at(i);
-			Entidad* entidad = this->getEntidad(eliminados.idEntidad);
-			cout<<eliminados.idInstancias->size()<<" instancias de la entidad "<<entidad->getNombre()<<", ";
-		}
-		char respuesta;
-		do
-		{
-		    cout << "Desea continuar? [y/n]" << endl;
-		    cin >> respuesta;
-		}
-		while( !cin.fail() && respuesta!='y' && respuesta!='n' );
-		if (respuesta == 'y') {
+		if (instanciasAfectadas->size() == 0) {
+				ent->eliminarInstancia(id_instancia);
+		} else {
+			cout<<"Eliminar esta instancia eliminara: ";
 			for (int i = 0; i < instanciasAfectadas->size();i++) {
 				Eliminados eliminados = instanciasAfectadas->at(i);
 				Entidad* entidad = this->getEntidad(eliminados.idEntidad);
-				for (int j = 0; j < eliminados.idInstancias->size(); j++) {
-					entidad->eliminarInstancia(eliminados.idInstancias->at(j));
-				}
+				cout<<eliminados.idInstancias->size()<<" instancias de la entidad "<<entidad->getNombre()<<", ";
 			}
-			ent->eliminarInstancia(id_instancia);
+			char respuesta;
+			do
+			{
+				cout << "Desea continuar? [y/n]" << endl;
+				cin >> respuesta;
+			}
+			while( !cin.fail() && respuesta!='y' && respuesta!='n' );
+			if (respuesta == 'y') {
+				for (int i = 0; i < instanciasAfectadas->size();i++) {
+					Eliminados eliminados = instanciasAfectadas->at(i);
+					Entidad* entidad = this->getEntidad(eliminados.idEntidad);
+					for (int j = 0; j < eliminados.idInstancias->size(); j++) {
+						entidad->eliminarInstancia(eliminados.idInstancias->at(j));
+					}
+				}
+				ent->eliminarInstancia(id_instancia);
+			}
 		}
 	}
 }
@@ -424,37 +428,44 @@ vector<Eliminados>* AdministradorEntidades::eliminacionIndirecta(Entidad* ent,in
 		nroAtributoProducto = 4;
 		nroAtributoEntidad = 3;
 	} else if (ent->getNombre() == "Tintura") {
-		nroEntidad = 13;	//Contorno va a Partes
+		nroEntidad = 13;	//Tintura va a Partes
 		nroAtributoProducto = 4;
 		nroAtributoEntidad = 5;
 	}
-
 	vector<int>* instanciasAEliminar = new vector<int>;
 	vector<int>* productosAEliminar = new vector<int>;
 	Entidad* entidad = this->getEntidad(nroEntidad);
-	for (int i = 1; i <= productos->getUltimoIDInstancia();i++) {
+	for (int i = 1; i <= entidad->getUltimoIDInstancia(); i++) { //Ej: recorro familias buscando fabricantes q matchean
 		bool error;
-		Instancia* producto= productos->getInstancia(i,error);
+		Instancia* instancia = entidad->getInstancia(i,error);
 		if (!error) {
-			Atributo* atrProducto = producto->getAtributo(nroAtributoProducto);
-			bool error2;
-			Instancia* instancia = entidad->getInstancia(atrProducto->entero,error2);
-			if (!error2) {
-				Atributo* atrInstancia = instancia->getAtributo(nroAtributoEntidad);
-				if (atrInstancia->entero == id_instancia) {
+			Atributo* atributo = instancia->getAtributo(nroAtributoEntidad);	//Ej: ID de instancia de un fabricante
+			if (atributo->entero == id_instancia) {
+				instanciasAEliminar->push_back(i);
+			}
+		}
+	}
+	for (int i = 1; i <= productos->getUltimoIDInstancia(); i++) { //Ej: recorro productos buscando familias q matchean
+		bool error;
+		Instancia* producto = productos->getInstancia(i,error);
+		if (!error) {
+			Atributo* atributo = producto->getAtributo(nroAtributoProducto);	//Ej: Tengo ID de una instancia de familia
+			bool encontrado = false;
+			for (int j = 0; j < instanciasAEliminar->size() && !encontrado; j++) {
+				if (atributo->entero == instanciasAEliminar->at(j)) {
 					productosAEliminar->push_back(i);
-					bool repetido = false;
-					for (int k = 0; k < instanciasAEliminar->size(); k++) {
-						if (atrProducto->entero == instanciasAEliminar->at(k))
-							repetido = true;
-					}
-					if (!repetido) instanciasAEliminar->push_back(atrProducto->entero);
+					encontrado = true;
 				}
 			}
 		}
 	}
-	e.idEntidad = nroEntidad; e.idInstancias = instanciasAEliminar; instanciasAfectadas->push_back(e);
-	e.idEntidad = 14; e.idInstancias = productosAEliminar; instanciasAfectadas->push_back(e);
+
+	if (instanciasAEliminar->size() != 0) {
+		e.idEntidad = nroEntidad; e.idInstancias = instanciasAEliminar; instanciasAfectadas->push_back(e);
+		if (productosAEliminar->size() != 0) {
+			e.idEntidad = 14; e.idInstancias = productosAEliminar; instanciasAfectadas->push_back(e);
+		}
+	}
 
 	return instanciasAfectadas;
 }
@@ -489,42 +500,53 @@ vector<Eliminados>* AdministradorEntidades::eliminacionInIndirecta(Entidad* ent,
 	vector<int>* productosAEliminar = new vector<int>;
 	Entidad* partes = this->getEntidad(13);
 	Entidad* entidad = this->getEntidad(nroEntidad);
-	for (int i = 1; i <= productos->getUltimoIDInstancia();i++) {
+	for (int i = 1; i <= entidad->getUltimoIDInstancia(); i++) { //Ej: recorro tinturas buscando colores q matchean
 		bool error;
-		Instancia* producto= productos->getInstancia(i,error);
+		Instancia* instancia = entidad->getInstancia(i,error);
 		if (!error) {
-			Atributo* idPartes = producto->getAtributo(4);
-			bool error2;
-			Instancia* parte = partes->getInstancia(idPartes->entero,error2);
-			if (!error2) {
-				Atributo* atrPartes = parte->getAtributo(nroAtributoPartes);	//Ej: Obtengo ID de una instancia de tintura
-				bool error3;
-				Instancia* instancia = entidad->getInstancia(atrPartes->entero,error3);	//Ej: Obtengo instancia de tintura
-				if (!error3) {
-					Atributo* atrEntidad = instancia->getAtributo(nroAtributoEntidad);	//Ej: Obtengo ID de una instancia de Color
-					if (atrEntidad->entero == id_instancia) {
-						productosAEliminar->push_back(i);
-						bool repetido = false;
-						for (int k = 0; k < partesAEliminar->size(); k++) {
-							if (idPartes->entero == partesAEliminar->at(k))
-								repetido = true;
-						}
-						if (!repetido) partesAEliminar->push_back(idPartes->entero);
-						repetido = false;
-						for (int k = 0; k < instanciasAEliminar->size(); k++) {
-							if (atrPartes->entero == instanciasAEliminar->at(k))
-								repetido = true;
-						}
-						if (!repetido) instanciasAEliminar->push_back(atrPartes->entero);
-					}
+			Atributo* atributo = instancia->getAtributo(nroAtributoEntidad);
+			if (atributo->entero == id_instancia) {
+				instanciasAEliminar->push_back(i);
+			}
+		}
+	}
+	for (int i = 1; i <= partes->getUltimoIDInstancia(); i++) { //Ej: recorro partes buscando tinturas q matchean
+		bool error;
+		Instancia* parte = partes->getInstancia(i,error);
+		if (!error) {
+			Atributo* atributo = parte->getAtributo(nroAtributoPartes);	//Ej: Tengo ID de una instancia de tintura
+			bool encontrado = false;
+			for (int j = 0; j < instanciasAEliminar->size() && !encontrado; j++) {
+				if (atributo->entero == instanciasAEliminar->at(j)) {
+					partesAEliminar->push_back(i);
+					encontrado = true;
 				}
 			}
 		}
 	}
-	e.idEntidad = nroEntidad; e.idInstancias = instanciasAEliminar; instanciasAfectadas->push_back(e);
-	e.idEntidad = 13; e.idInstancias = partesAEliminar; instanciasAfectadas->push_back(e);
-	e.idEntidad = 14; e.idInstancias = productosAEliminar; instanciasAfectadas->push_back(e);
-
+	for (int i = 1; i <= productos->getUltimoIDInstancia(); i++) {
+		bool error;
+		Instancia* producto = productos->getInstancia(i,error);
+		if (!error) {
+			Atributo* atributo = producto->getAtributo(4);	//Ej: Tengo ID de una instancia de partes
+			bool encontrado = false;
+			for (int j = 0; j < partesAEliminar->size() && !encontrado; j++) {
+				if (atributo->entero == partesAEliminar->at(j)) {
+					productosAEliminar->push_back(i);
+					encontrado = true;
+				}
+			}
+		}
+	}
+	if (instanciasAEliminar->size() != 0) {
+		e.idEntidad = nroEntidad; e.idInstancias = instanciasAEliminar; instanciasAfectadas->push_back(e);
+		if (partesAEliminar->size() != 0) {
+			e.idEntidad = 13; e.idInstancias = partesAEliminar; instanciasAfectadas->push_back(e);
+			if (productosAEliminar->size() != 0) {
+				e.idEntidad = 14; e.idInstancias = productosAEliminar; instanciasAfectadas->push_back(e);
+			}
+		}
+	}
 	return instanciasAfectadas;
 }
 
