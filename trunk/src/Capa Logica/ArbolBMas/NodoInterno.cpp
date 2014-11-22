@@ -22,7 +22,7 @@ NodoInterno::NodoInterno(ArchivoBloque* archivo){
 		this->tamanioMaximoClave = TAMANIOCLAVE_DEFAULT;
 
 
-	char bloque[tamanioMaximoBloque]; //CAMBIAR ESTOOOOOOO
+	char bloque[tamanioMaximoBloque];
 	unsigned int numeroDeBloque = archivo->escribir(bloque);
 	this->setNumeroDeBloque(numeroDeBloque);
 }
@@ -365,7 +365,7 @@ NodoInterno* NodoInterno::hidratar(char* bloque, unsigned int indice){
 		memcpy((char*)&tamanioClave, bloque + bytesHidratados, tamanioInt);
 		bytesHidratados += tamanioInt;
 
-		char bloqueAux[tamanioClave]; //VER ESTO (ya lo hice- Marian)
+		char bloqueAux[tamanioClave];
 
 		memcpy(bloqueAux, bloque + bytesHidratados, tamanioClave);
 		bytesHidratados += tamanioClave;
