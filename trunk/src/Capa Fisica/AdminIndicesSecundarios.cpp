@@ -59,6 +59,7 @@ void AdministradorIndices::eliminar_indice(){
 	int i;
 	for (i=0; i < x; ++i )	++it;
 	this->indices->erase(it);
+	this->actualizarIndices();
 }
 
 void AdministradorIndices::actualizarIndices(){
