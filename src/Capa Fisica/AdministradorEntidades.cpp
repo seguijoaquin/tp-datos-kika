@@ -319,8 +319,135 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 
 void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_instancia){
 	Entidad* ent = this->getEntidad(id);
+	vector<Eliminados>* instanciasAfectadas = this->informarEliminacion(ent,id_instancia);
+	if (instanciasAfectadas->size() == 0) {
+		ent->eliminarInstancia(id_instancia);
+	} else {
+		cout<<"Eliminar esta instancia eliminara: ";
+		for (int i = 0; i < instanciasAfectadas->size();i++) {
+			Eliminados eliminados = instanciasAfectadas->at(i);
+			Entidad* entidad = this->getEntidad(eliminados.idEntidad);
+			cout<<eliminados.idInstancias->size()<<" instancias de la entidad "<<entidad->getNombre()<<", ";
+		}
+		char respuesta;
+		do
+		{
+		    cout << "Desea continuar? [y/n]" << endl;
+		    cin >> respuesta;
+		}
+		while( !cin.fail() && respuesta!='y' && respuesta!='n' );
+		if (respuesta == 'y') {
+			for (int i = 0; i < instanciasAfectadas->size();i++) {
+				Eliminados eliminados = instanciasAfectadas->at(i);
+				Entidad* entidad = this->getEntidad(eliminados.idEntidad);
+				for (int j = 0; j < eliminados.idInstancias->size(); j++) {
+					entidad->eliminarInstancia(eliminados.idInstancias->at(j));
+				}
+			}
+			ent->eliminarInstancia(id_instancia);
+		}
+	}
+}
 
-	ent->eliminarInstancia(id_instancia);
+vector<Eliminados>* AdministradorEntidades::informarEliminacion(Entidad* ent,unsigned int id_instancia) {
+	vector<Eliminados>* instanciasAfectadas = new vector<Eliminados>;
+	Eliminados e;
+	Entidad* productos = this->getEntidad(14);
+
+	bool entrarProxy = false;
+	int nroEntidad;
+	int nroAtributoProducto;
+	int nroAtributoEntidad;
+	if (ent->getNombre() == "Fabricante") {
+		entrarProxy = true;
+		nroEntidad = 10;	//Fabricante va a familia
+		nroAtributoProducto = 3;	//Familia es 3er atributo en producto
+		nroAtributoEntidad = 3;		//Fabricante es 3er atributo en familia
+	} else if (ent->getNombre() == "Bretel") {
+		entrarProxy = true;
+		nroEntidad = 13;	//Bretel va a Partes
+		nroAtributoProducto = 4;
+		nroAtributoEntidad = 4;
+	} else if (ent->getNombre() == "Contorno") {
+		entrarProxy = true;
+		nroEntidad = 13;	//Contorno va a Partes
+		nroAtributoProducto = 4;
+		nroAtributoEntidad = 2;
+	} else if (ent->getNombre() == "Copa") {
+		entrarProxy = true;
+		nroEntidad = 13;	//Copa va a Partes
+		nroAtributoProducto = 4;
+		nroAtributoEntidad = 3;
+	} else if (ent->getNombre() == "Tintura") {
+		entrarProxy = true;
+		nroEntidad = 13;	//Contorno va a Partes
+		nroAtributoProducto = 4;
+		nroAtributoEntidad = 5;
+	}
+	if (entrarProxy) {
+		vector<int>* instanciasAEliminar = new vector<int>;
+		vector<int>* productosAEliminar = new vector<int>;
+		Entidad* entidad = this->getEntidad(nroEntidad);
+		for (int i = 1; i <= productos->getUltimoIDInstancia();i++) {
+			bool error;
+			Instancia* producto= productos->getInstancia(i,error);
+			if (!error) {
+				Atributo* atrProducto = producto->getAtributo(nroAtributoProducto);
+				bool error2;
+				Instancia* instancia = entidad->getInstancia(atrProducto->entero,error2);
+				if (!error2) {
+					Atributo* atrInstancia = instancia->getAtributo(nroAtributoEntidad);
+					if (atrInstancia->entero == id_instancia) {
+						productosAEliminar->push_back(i);
+						bool repetido = false;
+						for (int k = 0; k < instanciasAEliminar->size(); k++) {
+							if (atrProducto->entero == instanciasAEliminar->at(k))
+								repetido = true;
+						}
+						if (!repetido) instanciasAEliminar->push_back(atrProducto->entero);
+					}
+				}
+			}
+		}
+		e.idEntidad = nroEntidad; e.idInstancias = instanciasAEliminar; instanciasAfectadas->push_back(e);
+		e.idEntidad = 14; e.idInstancias = productosAEliminar; instanciasAfectadas->push_back(e);
+	}
+
+	bool entrar = false;
+	unsigned int nroAtributo;
+	if (ent->getNombre() == "Familia") {
+		nroAtributo = 3;
+		entrar = true;
+		cout<<"Familia"<<endl;
+	} else {
+		if (ent->getNombre() == "Partes") {
+			nroAtributo = 4;
+			entrar = true;
+		} else {
+			if (ent->getNombre() == "Material") {
+				nroAtributo = 6;
+				entrar = true;
+			}
+		}
+	}
+
+	if (entrar) {
+		vector<int>* idInstancias = new vector<int>;
+		for (int i = 1; i <= productos->getUltimoIDInstancia(); i++) {
+			bool error;
+			Instancia * producto = productos->getInstancia(i,error);
+			if (!error) {
+				Atributo* atributo = producto->getAtributo(nroAtributo);
+				if (atributo->entero == id_instancia) {
+					idInstancias->push_back(i);
+				}
+			}
+		}
+		e.idEntidad = 14;
+		e.idInstancias = idInstancias;
+		instanciasAfectadas->push_back(e);
+	}
+	return instanciasAfectadas;
 }
 
 void AdministradorEntidades::eliminarInstancias(int id){

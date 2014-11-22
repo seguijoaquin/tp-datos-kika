@@ -12,6 +12,11 @@
 
 using namespace std;
 
+struct Eliminados{
+	int idEntidad;
+	vector<int>* idInstancias;
+};
+
 class AdministradorEntidades {
 private:
 	list<Entidad>* listaEntidades;
@@ -38,6 +43,7 @@ public:
 	void modificarInstancia(unsigned int id, unsigned int id_instancia);
 	void eliminarInstancias(int id);
 	bool entidadExistente(string nombre);
+	vector<Eliminados>* informarEliminacion(Entidad* ent,unsigned int id_instancia);
 };
 
 #endif
