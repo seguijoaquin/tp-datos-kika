@@ -153,7 +153,7 @@ void Interfaz::administrar_indices_secundarios(){
 			this->adminIndices->crear_indice(ent);
 			break;
 		case 2:
-			this->adminIndices->eliminar_indice(this->elegirEntidad());
+			this->adminIndices->eliminar_indice();
 			break;
 		case 3:
 			this->adminIndices->listar_indices();
