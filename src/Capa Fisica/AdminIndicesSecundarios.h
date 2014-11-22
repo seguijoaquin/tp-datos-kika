@@ -8,6 +8,8 @@
 #ifndef ADMININDICESSECUNDARIOS_H_
 #define ADMININDICESSECUNDARIOS_H_
 
+#include <list>
+#include <cstdlib>
 #include "../Capa Logica/ArbolBMas/ArbolBMas.h"
 #include "../Capa Fisica/Entidad.h"
 #include "../Capa Logica/HashExtensible/Hash.h"
@@ -15,6 +17,7 @@
 
 #define ARBOL 1
 #define HASH  2
+#define LARGO_CADENA
 
 struct Indice{
 	ArbolBMas* arbol;
@@ -22,7 +25,7 @@ struct Indice{
 	string nombreEntidad;
 	string nombreArchivo;
 	int tipo;
-	list<metaDataAtributo>* atributos;
+	list<string>* nombresAtributos;
 };
 
 class AdministradorIndices {

@@ -5,7 +5,6 @@
  *      Author: joaquin
  */
 
-
 #include "AdminIndicesSecundarios.h"
 #include "../Capa Logica/ArbolBMas/ArbolBMas.h"
 
@@ -15,6 +14,7 @@ AdministradorIndices::AdministradorIndices(){
 	if(!this->indicesCreados)this->indicesCreados = fopen("indicesCreados.txt","w+");
 	this->inicializarIndices();
 }
+
 AdministradorIndices::~AdministradorIndices(){
 	list<Indice>::iterator it = this->indices->begin();
 	while (it != this->indices->end()){
@@ -26,6 +26,38 @@ AdministradorIndices::~AdministradorIndices(){
 }
 
 void AdministradorIndices::inicializarIndices(){
+	Indice* indice = new Indice();
+	rewind(this->indicesCreados);
+	char* nombreArchivo;
+	char* nombreEntidad;
+	char* nombreAtributo;
+	int tipoIndice, cantAtributos;
+	list<string>* nombresAtributos = new list<string>;
+
+	while(fscanf(this->indicesCreados,"%s", nombreArchivo) != EOF){
+		fscanf(this->indicesCreados,"%d", &tipoIndice);
+		fscanf(this->indicesCreados,"%s %d",nombreEntidad, &cantAtributos);
+		indice->nombreArchivo = StringUtil::charToString(nombreArchivo);
+		indice->tipo = tipoIndice;
+		if(tipoIndice == ARBOL){
+			indice->arbol = new ArbolBMas(rutaBaseIndiceSec + nombreArchivo);
+			indice->hash  = NULL;
+		}else{
+			indice->hash  = new Hash(rutaBaseIndiceSec + nombreArchivo + rutaTabla,rutaBaseIndiceSec + nombreArchivo + rutaNodos);
+			indice->arbol = NULL;
+		}
+		indice->nombreEntidad = StringUtil::charToString(nombreEntidad);
+
+		for(int i = 0; i < cantAtributos; i++){
+			fscanf(this->indicesCreados,"%s",nombreAtributo);
+			nombresAtributos->push_back(nombreAtributo);
+		}
+		indice->nombresAtributos = nombresAtributos;
+		nombresAtributos = new list<string>;
+		this->indices->push_back(*indice);
+		indice = new Indice();
+	}
+
 //Leer el archivo this->indicesCreados
 //Crear arboles y hash depende tipoIndice con nombreArchivo
 //Guardo arbol o hash en indice
@@ -33,22 +65,23 @@ void AdministradorIndices::inicializarIndices(){
 }
 
 void AdministradorIndices::listar_indices(){
-	list<Indice>::iterator it = this->indices->begin();
-	int i = 1;
-	while (it != this->indices->end()){
+    list<Indice>::iterator it = this->indices->begin();
+    int i = 1;
+    while (it != this->indices->end()){
 		cout << i << " - Indice secundario de entidad: "
-				<< it->nombreEntidad << endl;
+						<< it->nombreEntidad << endl;
 		cout << "\t \t Ordenado por: ";
-		list<metaDataAtributo>::iterator itMetaData = it->atributos->begin();
-		cout << itMetaData->nombre;
-		while (itMetaData != it->atributos->end()){
-			++itMetaData;
-			if (itMetaData != it->atributos->end()) cout << ", " << itMetaData->nombre;
+		list<string>::iterator itNameAtt = it->nombresAtributos->begin();
+		cout << *itNameAtt;
+		while (itNameAtt != it->nombresAtributos->end()){
+				++itNameAtt;
+				if (itNameAtt != it->nombresAtributos->end()) cout << ", " << *itNameAtt;
+			if (itNameAtt != it->nombresAtributos->end()) cout << ", " << *itNameAtt;
 		}
 		cout << endl;
 		++it;
 		++i;
-	}
+    }
 }
 
 void AdministradorIndices::eliminar_indice(){
@@ -68,7 +101,7 @@ void AdministradorIndices::actualizarIndices(){
 	while (it != this->indices->end()) {
 		Indice* indice;
 		indice->arbol = it->arbol;
-		indice->atributos = it->atributos;
+		indice->nombresAtributos = it->nombresAtributos;
 		indice->hash = it->hash;
 		indice->nombreArchivo = it->nombreArchivo;
 		indice->nombreEntidad = it->nombreEntidad;
@@ -83,10 +116,10 @@ void AdministradorIndices::persistirIndice(Indice* indice){
 	//[nombreArchivo tipoIndice nombreEntidad cantidadAtributos nombreAtributo+]
 	fprintf(this->indicesCreados,"%s ",StringUtil::stringToChar(indice->nombreArchivo));
 	fprintf(this->indicesCreados,"%i %s ", indice->tipo, StringUtil::stringToChar(indice->nombreEntidad));
-	fprintf(this->indicesCreados,"%zu ",(indice->atributos)->size());
-	list<metaDataAtributo>::iterator itAtt = indice->atributos->begin();
-	while(itAtt != indice->atributos->end()){
-		fprintf(this->indicesCreados,"%s ",StringUtil::stringToChar(itAtt->nombre));
+	fprintf(this->indicesCreados,"%zu ",(indice->nombresAtributos)->size());
+	list<string>::iterator itAtt = indice->nombresAtributos->begin();
+	while(itAtt != indice->nombresAtributos->end()){
+		fprintf(this->indicesCreados,"%s ",StringUtil::stringToChar(*itAtt));
 		++itAtt;
 	}
 	fprintf(this->indicesCreados,"\n");
@@ -105,15 +138,19 @@ void AdministradorIndices::persistirIndice(Indice* indice){
 	 indice.tipo = tipo;
 	 ArbolBMas* arbol = NULL;
 	 Hash* hash = NULL;
+	 metaDataAtributo* dataAtributo;
 	 list<metaDataAtributo>* atts = new list<metaDataAtributo>;
 	 list<int>* numeroAtts = new list<int>;
+	 list<string>* nombresAtributos = new list<string>;
 
 	 if (tipo==ARBOL)arbol = new ArbolBMas(rutaBaseIndiceSec + nombre);
 	 else hash = new Hash(rutaBaseIndiceSec + nombre + rutaTabla,rutaBaseIndiceSec + nombre + rutaNodos);
 	 cout << "Ingrese los atributos que formaran parte del indice:" << endl;
 	 entidad->listarAtributos();
 	 int x; cin >> x;
-	 atts->push_back(*entidad->getAtributo(x));
+	 dataAtributo = entidad->getAtributo(x);
+	 atts->push_back(*dataAtributo);
+	 nombresAtributos->push_back((*dataAtributo).nombre);
 	 numeroAtts->push_back(x);
 
 	 //PEDIR MAS ATRIBUTOS
@@ -122,12 +159,14 @@ void AdministradorIndices::persistirIndice(Indice* indice){
 	 while(opc == 1){
 		entidad->listarAtributos();
 		cin >> x;
-		atts->push_back(*entidad->getAtributo(x));
+		dataAtributo = entidad->getAtributo(x);
+		atts->push_back(*dataAtributo);
+		nombresAtributos->push_back((*dataAtributo).nombre);
 		numeroAtts->push_back(x);
 		cout << "Desea agregar otro atributo? 1.Si / 2.No: ";
 		cin >> opc;
 	 }
-	 indice.atributos = atts;
+	 indice.nombresAtributos = nombresAtributos;
 	 string claveStr = "";
 	 Atributo* atributoInstancia;
 	 for (int i = 1; i <= entidad->getUltimoIDInstancia(); ++i) {//i es el ID de la instancia
