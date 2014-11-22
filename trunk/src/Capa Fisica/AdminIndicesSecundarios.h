@@ -12,14 +12,27 @@
 #include "../Capa Fisica/Entidad.h"
 #include "../Capa Logica/HashExtensible/Hash.h"
 
+#define ARBOL 1
+#define HASH  2
+
+struct Indice{
+	ArbolBMas* arbol;
+	Hash* hash;
+	string nombreEntidad;
+	string nombreArchivo;
+	int tipo;
+	list<metaDataAtributo>* atributos;
+};
 
 class AdministradorIndices {
 
 private:
-	list<ArbolBMas>* arboles;
-	list<Hash>* hashes;
-	string rutaIndices;
-
+	list<Indice>* indices;
+//	list<ArbolBMas>* arboles;
+//	list<Hash>* hashes;
+	FILE* indicesCreados;
+	void inicializarIndices();
+	void persistirIndice(Indice* indice);
 
 public:
 	AdministradorIndices();
