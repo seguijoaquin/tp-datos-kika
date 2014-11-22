@@ -214,7 +214,7 @@ int Interfaz::elegirEntidad(){
 void Interfaz::administrar_indices_secundarios(){
 	cout << "	1). Crear nuevo indice secundario" << endl;
 	cout << "	2). Eliminar indice secundario existente" << endl;
-	cout << "	3). Listar indices secundarios" << endl;
+	cout << "	3). Listar indices secundarios" << endl << endl;
 	cout << "	0). Salir" << endl;
 	int opc; cin >> opc;
 	switch (opc) {
