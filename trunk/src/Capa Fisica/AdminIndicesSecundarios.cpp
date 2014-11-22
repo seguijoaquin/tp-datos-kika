@@ -58,9 +58,9 @@ void AdministradorIndices::inicializarIndices(){
 	}
 }
 
-void AdministradorIndices::listar_indices(){
+int AdministradorIndices::listar_indices(){
     list<Indice>::iterator it = this->indices->begin();
-    int i = 1;
+    int i = 0;
     while (it != this->indices->end()){
 		cout << i << " - Indice secundario de entidad: "
 						<< it->nombreEntidad << endl;
@@ -76,17 +76,20 @@ void AdministradorIndices::listar_indices(){
 		++it;
 		++i;
     }
+    return i;
 }
 
 void AdministradorIndices::eliminar_indice(){
-	this->listar_indices();
+	int max = this->listar_indices();
 	cout << "Elija el indice que desea eliminar:";
 	int x; cin >> x;
-	list<Indice>::iterator it = this->indices->begin();
-	int i;
-	for (i=0; i < x; ++i )	++it;
-	this->indices->erase(it);
-	this->actualizarIndices();
+	if (x <= max) {
+		list<Indice>::iterator it = this->indices->begin();
+		int i;
+		for (i=0; i < x; ++i )	++it;
+		this->indices->erase(it);
+		this->actualizarIndices();
+	}
 }
 
 void AdministradorIndices::actualizarIndices(){

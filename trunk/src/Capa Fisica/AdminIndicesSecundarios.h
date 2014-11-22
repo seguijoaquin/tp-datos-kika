@@ -42,7 +42,7 @@ private:
 public:
 	AdministradorIndices();
 	~AdministradorIndices();
-	void listar_indices();
+	int listar_indices();
 	void eliminar_indice();
 	void crear_indice(Entidad* entidad);
 
