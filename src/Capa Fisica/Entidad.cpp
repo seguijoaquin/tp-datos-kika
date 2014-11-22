@@ -10,9 +10,6 @@ Entidad::Entidad(list<metaDataAtributo>* listaAtributos,string nombre, int ID,Ti
 		tam += it->cantidadBytes;
 	}
 
-	const string rutaBaseIndice = "Hash";
-	string rutaTabla = "tabla.dat";
-	string rutaNodos = "nodos.dat";
 	this->indice = new Hash(rutaBaseIndice + nombre + rutaTabla, rutaBaseIndice + nombre + rutaNodos);
 	/*if (tipoArchivo == FIJO) this->archivo = new ArchivoRegistroFijo(nombre,tam);
 	else if (tipoArchivo == VARIABLE) this->archivo = new ArchivoRegistroVariable(nombre);

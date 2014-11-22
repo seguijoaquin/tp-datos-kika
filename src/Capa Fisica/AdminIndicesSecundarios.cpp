@@ -38,10 +38,10 @@ void AdministradorIndices::listar_indices(){
 	while (it != this->indices->end()){
 		cout << i << " - Indice secundario de entidad: "
 				<< it->nombreEntidad << endl;
-		cout << "Ordenado por:";
+		cout << "Ordenado por: ";
 		list<metaDataAtributo>::iterator itMetaData = it->atributos->begin();
 		while (itMetaData != it->atributos->end()){
-			cout << itMetaData->nombre << "; ";
+			cout << itMetaData->nombre << ", ";
 			++itMetaData;
 		}
 		cout << endl;
@@ -72,7 +72,7 @@ void AdministradorIndices::persistirIndice(Indice* indice){
 	 indice.nombreEntidad = entidad->getNombre();
 	 cout << "Ingrese el nombre del indice secundario: " << endl;
 	 string nombre;	 cin >> nombre;
-	 indice.nombreArchivo = nombre;
+	 indice.nombreArchivo = rutaBaseIndiceSec + nombre;
 	 cout << "Ingrese el tipo de estructura para el indice secundario:" << endl;
 	 cout << "	1). Arbol B+" << endl;
 	 cout << "	2). Hash" << endl;
@@ -83,9 +83,8 @@ void AdministradorIndices::persistirIndice(Indice* indice){
 	 list<metaDataAtributo>* atts = new list<metaDataAtributo>;
 	 list<int>* numeroAtts = new list<int>;
 
-	 if (tipo==ARBOL)arbol = new ArbolBMas(nombre);
-	 else hash = new Hash(nombre,nombre);
-
+	 if (tipo==ARBOL)arbol = new ArbolBMas(rutaBaseIndiceSec + nombre);
+	 else hash = new Hash(rutaBaseIndiceSec + nombre + rutaTabla,rutaBaseIndiceSec + nombre + rutaNodos);
 	 cout << "Ingrese los atributos que formaran parte del indice:" << endl;
 	 entidad->listarAtributos();
 	 int x; cin >> x;
