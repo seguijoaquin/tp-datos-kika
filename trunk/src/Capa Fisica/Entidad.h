@@ -6,6 +6,7 @@
 #include "Archivos/RegistroVariable/RegistroVariable.h"
 #include "Archivos/Bloques/Bloques.h"
 #include "../Capa Logica/HashExtensible/Hash.h"
+#include "../constantes.h"
 
 class Entidad {
 private:
