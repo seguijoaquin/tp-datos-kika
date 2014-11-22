@@ -43,9 +43,9 @@ string RegistroArbol::getValor(){
 }
 void RegistroArbol::mostrar(){
 
-	cout << "(" << this->getClave() << ")";
-	cout << " " << "(" << this->getValor() << ")" << endl;
-
+//	cout << "(" << this->getClave() << ")";
+//	cout << " " << "(" << this->getValor() << ")" << endl;
+	cout << "- " << this->getClave() << endl;
 }
 
 int RegistroArbol::getTamanioValor(){
