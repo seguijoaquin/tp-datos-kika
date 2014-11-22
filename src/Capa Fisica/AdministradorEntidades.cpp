@@ -350,103 +350,181 @@ void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_
 }
 
 vector<Eliminados>* AdministradorEntidades::informarEliminacion(Entidad* ent,unsigned int id_instancia) {
+
+	if (ent->getNombre() == "Fabricante" || ent->getNombre() == "Bretel" || ent->getNombre() == "Contorno" || ent->getNombre() == "Copa" || ent->getNombre() == "Tintura" ) {
+		return this->eliminacionIndirecta(ent,id_instancia);
+	}
+	if (ent->getNombre() == "Familia" || ent->getNombre() == "Partes" || ent->getNombre() == "Material") {
+		return this->eliminacionDirecta(ent,id_instancia);
+	}
+	if (ent->getNombre() == "Color" || ent->getNombre() == "Estampa" || ent->getNombre() == "Aro" || ent->getNombre() == "Formadores" || ent->getNombre() == "Tintura" ) {
+		return this->eliminacionInIndirecta(ent,id_instancia);
+	}
+	return NULL;
+}
+
+vector<Eliminados>* AdministradorEntidades::eliminacionDirecta(Entidad* ent,int id_instancia){
 	vector<Eliminados>* instanciasAfectadas = new vector<Eliminados>;
 	Eliminados e;
 	Entidad* productos = this->getEntidad(14);
 
-	bool entrarProxy = false;
+	unsigned int nroAtributo;
+	if (ent->getNombre() == "Familia") {
+		nroAtributo = 3;
+	} else {
+		if (ent->getNombre() == "Partes") {
+			nroAtributo = 4;
+		} else {
+			if (ent->getNombre() == "Material") {
+				nroAtributo = 6;
+			}
+		}
+	}
+
+	vector<int>* idInstancias = new vector<int>;
+	for (int i = 1; i <= productos->getUltimoIDInstancia(); i++) {
+		bool error;
+		Instancia * producto = productos->getInstancia(i,error);
+		if (!error) {
+			Atributo* atributo = producto->getAtributo(nroAtributo);
+			if (atributo->entero == id_instancia) {
+				idInstancias->push_back(i);
+			}
+		}
+	}
+	e.idEntidad = 14;
+	e.idInstancias = idInstancias;
+	instanciasAfectadas->push_back(e);
+
+	return instanciasAfectadas;
+}
+
+vector<Eliminados>* AdministradorEntidades::eliminacionIndirecta(Entidad* ent,int id_instancia){
+	vector<Eliminados>* instanciasAfectadas = new vector<Eliminados>;
+	Eliminados e;
+	Entidad* productos = this->getEntidad(14);
+
 	int nroEntidad;
 	int nroAtributoProducto;
 	int nroAtributoEntidad;
 	if (ent->getNombre() == "Fabricante") {
-		entrarProxy = true;
 		nroEntidad = 10;	//Fabricante va a familia
 		nroAtributoProducto = 3;	//Familia es 3er atributo en producto
 		nroAtributoEntidad = 3;		//Fabricante es 3er atributo en familia
 	} else if (ent->getNombre() == "Bretel") {
-		entrarProxy = true;
 		nroEntidad = 13;	//Bretel va a Partes
 		nroAtributoProducto = 4;
 		nroAtributoEntidad = 4;
 	} else if (ent->getNombre() == "Contorno") {
-		entrarProxy = true;
 		nroEntidad = 13;	//Contorno va a Partes
 		nroAtributoProducto = 4;
 		nroAtributoEntidad = 2;
 	} else if (ent->getNombre() == "Copa") {
-		entrarProxy = true;
 		nroEntidad = 13;	//Copa va a Partes
 		nroAtributoProducto = 4;
 		nroAtributoEntidad = 3;
 	} else if (ent->getNombre() == "Tintura") {
-		entrarProxy = true;
 		nroEntidad = 13;	//Contorno va a Partes
 		nroAtributoProducto = 4;
 		nroAtributoEntidad = 5;
 	}
-	if (entrarProxy) {
-		vector<int>* instanciasAEliminar = new vector<int>;
-		vector<int>* productosAEliminar = new vector<int>;
-		Entidad* entidad = this->getEntidad(nroEntidad);
-		for (int i = 1; i <= productos->getUltimoIDInstancia();i++) {
-			bool error;
-			Instancia* producto= productos->getInstancia(i,error);
-			if (!error) {
-				Atributo* atrProducto = producto->getAtributo(nroAtributoProducto);
-				bool error2;
-				Instancia* instancia = entidad->getInstancia(atrProducto->entero,error2);
-				if (!error2) {
-					Atributo* atrInstancia = instancia->getAtributo(nroAtributoEntidad);
-					if (atrInstancia->entero == id_instancia) {
+
+	vector<int>* instanciasAEliminar = new vector<int>;
+	vector<int>* productosAEliminar = new vector<int>;
+	Entidad* entidad = this->getEntidad(nroEntidad);
+	for (int i = 1; i <= productos->getUltimoIDInstancia();i++) {
+		bool error;
+		Instancia* producto= productos->getInstancia(i,error);
+		if (!error) {
+			Atributo* atrProducto = producto->getAtributo(nroAtributoProducto);
+			bool error2;
+			Instancia* instancia = entidad->getInstancia(atrProducto->entero,error2);
+			if (!error2) {
+				Atributo* atrInstancia = instancia->getAtributo(nroAtributoEntidad);
+				if (atrInstancia->entero == id_instancia) {
+					productosAEliminar->push_back(i);
+					bool repetido = false;
+					for (int k = 0; k < instanciasAEliminar->size(); k++) {
+						if (atrProducto->entero == instanciasAEliminar->at(k))
+							repetido = true;
+					}
+					if (!repetido) instanciasAEliminar->push_back(atrProducto->entero);
+				}
+			}
+		}
+	}
+	e.idEntidad = nroEntidad; e.idInstancias = instanciasAEliminar; instanciasAfectadas->push_back(e);
+	e.idEntidad = 14; e.idInstancias = productosAEliminar; instanciasAfectadas->push_back(e);
+
+	return instanciasAfectadas;
+}
+
+vector<Eliminados>* AdministradorEntidades::eliminacionInIndirecta(Entidad* ent,int id_instancia){
+	vector<Eliminados>* instanciasAfectadas = new vector<Eliminados>;
+	Eliminados e;
+	Entidad* productos = this->getEntidad(14);
+
+	int nroEntidad;
+	int nroAtributoPartes;
+	int nroAtributoEntidad;
+	if (ent->getNombre() == "Color") {
+		nroEntidad = 12;	//Tintura
+		nroAtributoPartes = 5;	//Tintura
+		nroAtributoEntidad = 2;		//Color es 2do atributo en tintura
+	} else if (ent->getNombre() == "Estampa") {
+		nroEntidad = 12;	//Tintura
+		nroAtributoPartes = 5;	//Tintura
+		nroAtributoEntidad = 3;
+	} else if (ent->getNombre() == "Aro") {
+		nroEntidad = 11;	//Copa
+		nroAtributoPartes = 3;	//Copa
+		nroAtributoEntidad = 4;
+	} else if (ent->getNombre() == "Formadores") {
+		nroEntidad = 11;	//Copa
+		nroAtributoPartes = 3; //Copa
+		nroAtributoEntidad = 3;
+	}
+	vector<int>* instanciasAEliminar = new vector<int>;
+	vector<int>* partesAEliminar = new vector<int>;
+	vector<int>* productosAEliminar = new vector<int>;
+	Entidad* partes = this->getEntidad(13);
+	Entidad* entidad = this->getEntidad(nroEntidad);
+	for (int i = 1; i <= productos->getUltimoIDInstancia();i++) {
+		bool error;
+		Instancia* producto= productos->getInstancia(i,error);
+		if (!error) {
+			Atributo* idPartes = producto->getAtributo(4);
+			bool error2;
+			Instancia* parte = partes->getInstancia(idPartes->entero,error2);
+			if (!error2) {
+				Atributo* atrPartes = parte->getAtributo(nroAtributoPartes);	//Ej: Obtengo ID de una instancia de tintura
+				bool error3;
+				Instancia* instancia = entidad->getInstancia(atrPartes->entero,error3);	//Ej: Obtengo instancia de tintura
+				if (!error3) {
+					Atributo* atrEntidad = instancia->getAtributo(nroAtributoEntidad);	//Ej: Obtengo ID de una instancia de Color
+					if (atrEntidad->entero == id_instancia) {
 						productosAEliminar->push_back(i);
 						bool repetido = false;
-						for (int k = 0; k < instanciasAEliminar->size(); k++) {
-							if (atrProducto->entero == instanciasAEliminar->at(k))
+						for (int k = 0; k < partesAEliminar->size(); k++) {
+							if (idPartes->entero == partesAEliminar->at(k))
 								repetido = true;
 						}
-						if (!repetido) instanciasAEliminar->push_back(atrProducto->entero);
+						if (!repetido) partesAEliminar->push_back(idPartes->entero);
+						repetido = false;
+						for (int k = 0; k < instanciasAEliminar->size(); k++) {
+							if (atrPartes->entero == instanciasAEliminar->at(k))
+								repetido = true;
+						}
+						if (!repetido) instanciasAEliminar->push_back(atrPartes->entero);
 					}
 				}
 			}
 		}
-		e.idEntidad = nroEntidad; e.idInstancias = instanciasAEliminar; instanciasAfectadas->push_back(e);
-		e.idEntidad = 14; e.idInstancias = productosAEliminar; instanciasAfectadas->push_back(e);
 	}
+	e.idEntidad = nroEntidad; e.idInstancias = instanciasAEliminar; instanciasAfectadas->push_back(e);
+	e.idEntidad = 13; e.idInstancias = partesAEliminar; instanciasAfectadas->push_back(e);
+	e.idEntidad = 14; e.idInstancias = productosAEliminar; instanciasAfectadas->push_back(e);
 
-	bool entrar = false;
-	unsigned int nroAtributo;
-	if (ent->getNombre() == "Familia") {
-		nroAtributo = 3;
-		entrar = true;
-		cout<<"Familia"<<endl;
-	} else {
-		if (ent->getNombre() == "Partes") {
-			nroAtributo = 4;
-			entrar = true;
-		} else {
-			if (ent->getNombre() == "Material") {
-				nroAtributo = 6;
-				entrar = true;
-			}
-		}
-	}
-
-	if (entrar) {
-		vector<int>* idInstancias = new vector<int>;
-		for (int i = 1; i <= productos->getUltimoIDInstancia(); i++) {
-			bool error;
-			Instancia * producto = productos->getInstancia(i,error);
-			if (!error) {
-				Atributo* atributo = producto->getAtributo(nroAtributo);
-				if (atributo->entero == id_instancia) {
-					idInstancias->push_back(i);
-				}
-			}
-		}
-		e.idEntidad = 14;
-		e.idInstancias = idInstancias;
-		instanciasAfectadas->push_back(e);
-	}
 	return instanciasAfectadas;
 }
 

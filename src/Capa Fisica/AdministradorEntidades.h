@@ -27,6 +27,10 @@ private:
 	void agregarDato(int buffer);
 	void agregarAtributo(metaDataAtributo atributo);
 	bool validarCreacionInstancia(Entidad* ent);
+	vector<Eliminados>* informarEliminacion(Entidad* ent,unsigned int id_instancia);
+	vector<Eliminados>* eliminacionDirecta(Entidad* ent,int id_instancia);
+	vector<Eliminados>* eliminacionIndirecta(Entidad* ent,int id_instancia);
+	vector<Eliminados>* eliminacionInIndirecta(Entidad* ent,int id_instancia);
 public:
 	AdministradorEntidades();
 	~AdministradorEntidades();
@@ -43,7 +47,7 @@ public:
 	void modificarInstancia(unsigned int id, unsigned int id_instancia);
 	void eliminarInstancias(int id);
 	bool entidadExistente(string nombre);
-	vector<Eliminados>* informarEliminacion(Entidad* ent,unsigned int id_instancia);
+
 };
 
 #endif
