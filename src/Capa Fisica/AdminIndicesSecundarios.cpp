@@ -33,8 +33,21 @@ void AdministradorIndices::inicializarIndices(){
 }
 
 void AdministradorIndices::listar_indices(){
-
-
+	list<Indice>::iterator it = this->indices->begin();
+	int i = 1;
+	while (it != this->indices->end()){
+		cout << i << " - Indice secundario de entidad: "
+				<< it->nombreEntidad << endl;
+		cout << "Ordenado por:";
+		list<metaDataAtributo>::iterator itMetaData = it->atributos->begin();
+		while (itMetaData != it->atributos->end()){
+			cout << itMetaData->nombre << "; ";
+			++itMetaData;
+		}
+		cout << endl;
+		++it;
+		++i;
+	}
 }
 
 void AdministradorIndices::eliminar_indice(int x){
