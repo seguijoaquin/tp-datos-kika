@@ -7,9 +7,9 @@
 #include <sstream>
 #include "AdministradorEntidades.h"
 
-using namespace std;
+#define LARGO_CADENA 30
 
-const int LARGO_CADENA = 30;
+using namespace std;
 
 struct Fecha{
 	int dia;
