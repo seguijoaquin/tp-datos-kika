@@ -28,12 +28,11 @@ AdministradorIndices::~AdministradorIndices(){
 void AdministradorIndices::inicializarIndices(){
 	Indice* indice = new Indice();
 	rewind(this->indicesCreados);
-	char* nombreArchivo;
-	char* nombreEntidad;
-	char* nombreAtributo;
+	char nombreArchivo[LARGO_CADENA];
+	char nombreEntidad[LARGO_CADENA];
+	char nombreAtributo[LARGO_CADENA];
 	int tipoIndice, cantAtributos;
 	list<string>* nombresAtributos = new list<string>;
-
 	while(fscanf(this->indicesCreados,"%s", nombreArchivo) != EOF){
 		fscanf(this->indicesCreados,"%d", &tipoIndice);
 		fscanf(this->indicesCreados,"%s %d",nombreEntidad, &cantAtributos);
@@ -57,11 +56,6 @@ void AdministradorIndices::inicializarIndices(){
 		this->indices->push_back(*indice);
 		indice = new Indice();
 	}
-
-//Leer el archivo this->indicesCreados
-//Crear arboles y hash depende tipoIndice con nombreArchivo
-//Guardo arbol o hash en indice
-//Agrego indice a lista de indices
 }
 
 void AdministradorIndices::listar_indices(){

@@ -17,7 +17,7 @@
 
 #define ARBOL 1
 #define HASH  2
-#define LARGO_CADENA
+#define LARGO_CADENA 64
 
 struct Indice{
 	ArbolBMas* arbol;
