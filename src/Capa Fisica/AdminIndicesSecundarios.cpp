@@ -12,7 +12,7 @@ AdministradorIndices::AdministradorIndices(){
 	this->indices = new list<Indice>;
 	this->indicesCreados = fopen("indicesCreados.txt","r+b");
 	if(!this->indicesCreados)this->indicesCreados = fopen("indicesCreados.txt","w+");
-	this->inicializarIndices();
+	//this->inicializarIndices();
 }
 
 AdministradorIndices::~AdministradorIndices(){
@@ -93,14 +93,14 @@ void AdministradorIndices::actualizarIndices(){
 	fopen("indicesCreados.txt","w");
 	list<Indice>::iterator it = this->indices->begin();
 	while (it != this->indices->end()) {
-		Indice* indice;
-		indice->arbol = it->arbol;
-		indice->nombresAtributos = it->nombresAtributos;
-		indice->hash = it->hash;
-		indice->nombreArchivo = it->nombreArchivo;
-		indice->nombreEntidad = it->nombreEntidad;
-		indice->tipo = it->tipo;
-		this->persistirIndice(indice);
+		Indice indice;
+		indice.arbol = it->arbol;
+		indice.nombresAtributos = it->nombresAtributos;
+		indice.hash = it->hash;
+		indice.nombreArchivo = it->nombreArchivo;
+		indice.nombreEntidad = it->nombreEntidad;
+		indice.tipo = it->tipo;
+		this->persistirIndice(&indice);
 		++it;
 	}
 
