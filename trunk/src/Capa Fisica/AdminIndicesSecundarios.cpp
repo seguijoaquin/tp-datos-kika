@@ -38,11 +38,12 @@ void AdministradorIndices::listar_indices(){
 	while (it != this->indices->end()){
 		cout << i << " - Indice secundario de entidad: "
 				<< it->nombreEntidad << endl;
-		cout << "Ordenado por: ";
+		cout << "\t \t Ordenado por: ";
 		list<metaDataAtributo>::iterator itMetaData = it->atributos->begin();
+		cout << itMetaData->nombre;
 		while (itMetaData != it->atributos->end()){
-			cout << itMetaData->nombre << ", ";
 			++itMetaData;
+			if (itMetaData != it->atributos->end()) cout << ", " << itMetaData->nombre;
 		}
 		cout << endl;
 		++it;
@@ -50,8 +51,14 @@ void AdministradorIndices::listar_indices(){
 	}
 }
 
-void AdministradorIndices::eliminar_indice(int x){
-
+void AdministradorIndices::eliminar_indice(){
+	this->listar_indices();
+	cout << "Elija el indice que desea eliminar:";
+	int x; cin >> x;
+	list<Indice>::iterator it = this->indices->begin();
+	int i;
+	for (i=0; i < x; ++i )	++it;
+	this->indices->erase(it);
 }
 
 void AdministradorIndices::persistirIndice(Indice* indice){

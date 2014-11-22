@@ -39,7 +39,7 @@ public:
 	AdministradorIndices();
 	~AdministradorIndices();
 	void listar_indices();
-	void eliminar_indice(int x);
+	void eliminar_indice();
 	void crear_indice(Entidad* entidad);
 
 };
