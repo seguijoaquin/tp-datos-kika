@@ -61,6 +61,23 @@ void AdministradorIndices::eliminar_indice(){
 	this->indices->erase(it);
 }
 
+void AdministradorIndices::actualizarIndices(){
+	fopen("indicesCreados.txt","w");
+	list<Indice>::iterator it = this->indices->begin();
+	while (it != this->indices->end()) {
+		Indice* indice;
+		indice->arbol = it->arbol;
+		indice->atributos = it->atributos;
+		indice->hash = it->hash;
+		indice->nombreArchivo = it->nombreArchivo;
+		indice->nombreEntidad = it->nombreEntidad;
+		indice->tipo = it->tipo;
+		this->persistirIndice(indice);
+		++it;
+	}
+
+}
+
 void AdministradorIndices::persistirIndice(Indice* indice){
 	//[nombreArchivo tipoIndice nombreEntidad cantidadAtributos nombreAtributo+]
 	fprintf(this->indicesCreados,"%s ",StringUtil::stringToChar(indice->nombreArchivo));

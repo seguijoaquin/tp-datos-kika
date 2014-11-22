@@ -34,6 +34,7 @@ private:
 	FILE* indicesCreados;
 	void inicializarIndices();
 	void persistirIndice(Indice* indice);
+	void actualizarIndices();
 
 public:
 	AdministradorIndices();
