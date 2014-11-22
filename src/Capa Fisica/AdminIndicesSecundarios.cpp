@@ -26,6 +26,10 @@ AdministradorIndices::~AdministradorIndices(){
 }
 
 void AdministradorIndices::inicializarIndices(){
+	rewind(this->indicesCreados);
+	char* nombreArchivo, nombreEntidad;
+	int tipoIndice, cantAtributos;
+	fscanf(this->indicesCreados,"%s %i %s %i", nombreArchivo,tipoIndice,nombreEntidad, cantAtributos);
 //Leer el archivo this->indicesCreados
 //Crear arboles y hash depende tipoIndice con nombreArchivo
 //Guardo arbol o hash en indice
