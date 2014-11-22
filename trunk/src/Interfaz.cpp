@@ -471,9 +471,14 @@ void Interfaz::listarConsultas(){
 		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFabricante(IDInstancia);
 		break;
 	case 10:
-		cout<<"Ingresar Fecha"<<endl;
-		//TODO PEDIR FECHA
 		Fecha fecha;
+		cout<<"Ingresar Fecha"<<endl;
+		cout<<"Indique día: ";
+		fecha.dia = this->pedir_valor();
+		cout<<" Mes: ";
+		fecha.mes = this->pedir_valor();
+		cout<<" Año: ";
+		fecha.anio = this->pedir_valor();
 		this->consulta->listarVentasPorFecha(fecha);
 		break;
 	case 11:

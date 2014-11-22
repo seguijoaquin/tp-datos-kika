@@ -60,6 +60,15 @@ void mostrarRegistro(RegistroEntrada r){
 	cout<<"  ID Tint: "<<r.idTintura<<endl;
 }
 
+void mostrarRegistroSalida(RegistroSalida r){
+	cout<<"  Fecha: "<<r.date.dia<<"/"<<r.date.mes<<"/"<<r.date.anio<<endl;
+	cout<<"  Producto: "<<r.nombreProd<<endl;
+	cout<<"  Color: "<<r.nombreColor<<endl;
+	cout<<"  Estampa: "<<r.nombreEstampa<<endl;
+	cout<<"  Precio: "<<r.precio<<endl;
+	cout<<"  Cantidad: "<<r.cantidad<<endl;
+}
+
 void AdministradorRegistros::leerRegistrosIn(){
 	RegistroEntrada *regIn = new RegistroEntrada();
 	Fecha *fecha = new Fecha();
@@ -162,25 +171,17 @@ void AdministradorRegistros::registrarEgreso(int reg, Fecha fecha, int cantidad)
 	this->persistirRegistroOut(regOut);
 }
 
-<<<<<<< .mine
 void AdministradorRegistros::listarEgresosFecha(Fecha fecha){
-	RegistroSalida regOut;
-
-	list<RegistroEntrada>::iterator it = this->regsOut->begin();
-	for(int j = 1 ; j < this->regsOut->size();++j) {
-		if ( fecha == (*it).date){
-			printf(" %d \n", (*it).idProducto);
+	list<RegistroSalida>::iterator it = this->regsOut->begin();
+	for(int j = 1 ; j <= this->regsOut->size();++j) {
+		if ((fecha.dia == (*it).date.dia) && (fecha.mes == (*it).date.mes) && (fecha.anio == (*it).date.anio)){
+			printf("%i).",j);
+			mostrarRegistroSalida(*it);
 		}
-
 		++it;
 	}
 
 }
-
-
-
-=======
->>>>>>> .r105
 
 bool AdministradorRegistros::listarRegistrosConStock(){
 	if (this->regsIn->empty()) {
@@ -217,11 +218,9 @@ void AdministradorRegistros::listarVentas(){
 		list<RegistroSalida>::iterator it = this->regsOut->begin();
 		int i = 1;
 		while(it != this->regsOut->end()){
-			cout<<" "<<i<<"). "<<"Producto:"<<(*it).nombreProd<<endl;
-			cout<<"     Color:   "<<(*it).nombreColor<<endl;
-			cout<<"     Estampa: "<<(*it).nombreEstampa<<endl;
-			cout<<"     Precio: "<<(*it).precio<<endl;
-			cout<<"     Cantidad: "<<(*it).cantidad<<endl;
+			cout<<" "<<i<<"). ";
+			mostrarRegistroSalida(*it);
+			cout<<endl;
 			++it;
 			i++;
 		}
