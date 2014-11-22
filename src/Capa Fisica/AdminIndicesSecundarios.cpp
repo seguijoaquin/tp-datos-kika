@@ -12,7 +12,7 @@ AdministradorIndices::AdministradorIndices(){
 	this->indices = new list<Indice>;
 	this->indicesCreados = fopen("indicesCreados.txt","r+b");
 	if(!this->indicesCreados)this->indicesCreados = fopen("indicesCreados.txt","w+");
-	//this->inicializarIndices();
+	this->inicializarIndices();
 }
 
 AdministradorIndices::~AdministradorIndices(){
