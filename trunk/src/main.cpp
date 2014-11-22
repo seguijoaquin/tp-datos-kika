@@ -7,19 +7,13 @@
 int main(){
 
 	Interfaz* iu = new Interfaz();
-	unsigned int opc = 0;
-	while(opc != 9){
+	cout << "75.06 - ORGANIZACION DE DATOS"<<endl<<
+			"TRABAJO PRACTICO"<<endl<<
+			"GESTOCK Y VENTAS"<<endl;
+	while(iu->listar_opciones_menu_principal()){
 		cout << endl;
-		iu->listar_opciones();
-		opc = iu->pedir_opcion();
-		if(iu->ejecutar_opcion(opc)){
-			// Se ejecuto la opción.
-		}else if(opc == 9){
-			cout<<"Adios."<<endl;
-		}else{
-			cout<<"La opción seleccionada es incorrecta."<<endl;
-		}
 	}
+	cout << "Adiós." <<endl;
 	delete iu;
 	return 0;
 }

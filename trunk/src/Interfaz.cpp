@@ -1,17 +1,6 @@
 #include "Interfaz.h"
 
 Interfaz::Interfaz(){
-	this -> opciones = new list<string>;
-	//this -> opciones -> push_back("Crear nueva Entidad.");
-	this -> opciones -> push_back("Crear nueva Instancia.");
-	this -> opciones -> push_back("Modificar Instancia.");
-	this -> opciones -> push_back("Eliminar instancia.");
-	this -> opciones -> push_back("Eliminar todas las instancias.");
-	this -> opciones -> push_back("Listar instancias.");
-	this -> opciones -> push_back("Administrar Indices Secundarios");
-	this -> opciones -> push_back("Consultas");
-	this -> opciones -> push_back("Administrar Stock");
-	this -> opciones -> push_back("Salir.");
 	this -> adminEntidades    = new AdministradorEntidades();
 	this -> adminEntidades->leerArchivoEntidades(); // Inicializa administrador si existe archivo preexistente.
 	this -> adminIndices = new AdministradorIndices();
@@ -20,21 +9,13 @@ Interfaz::Interfaz(){
 }
 
 Interfaz::~Interfaz(){
-	delete this->opciones;
 	delete this->adminEntidades;
 	delete this->adminIndices;
 	delete this->adminRegistros;
+	delete this->consulta;
 }
 
-void Interfaz::listar_opciones(){
-	cout << "Ingrese el número de la opcion seleccionada:\n";
-	int cont = 1;
-	list<string>::iterator it = this->opciones->begin();
-	while(it != this->opciones->end()){
-		cout << "	" << cont << ") " << *it++ << "\n";
-		cont++;
-	}
-}
+/*                  AUXILIARES                 */
 
 unsigned int Interfaz::pedir_valor(){
 	char opget[5];
@@ -63,112 +44,248 @@ int Interfaz::seleccionar_entidad(){
 	return opc;
 }
 
-//void Interfaz::crear_entidad(){
-//	cout << "Ingrese el nombre de la entidad: ";
-//	string nombre_entidad;
-//	getline(cin,nombre_entidad); //preferible getline antes que cin >> porque incluye espacios
-//
-//	if(this->admin->entidadExistente(nombre_entidad)){ // Verificar que no exista.
-//		cout<<"Ya existe entidad con ese nombre"<<endl;
-//		return;
-//	}
-//
-//	int indice = 1;
-//	int opget = 0;
-//	char tamanio[5];
-//	unsigned int tamanio_string;
-//	list<metaDataAtributo>* atts = new list<metaDataAtributo>; // Lista con atributos de la entidad.
-//	metaDataAtributo att;
-//
-//	/* Agrega el atributo del identificador
-//	att.cantidadBytes = sizeof(int); att.tipo = ENTERO; att.nombre = "ID"; att.idEntidad = 0;
-//	atts->push_back(att);
-//
-//	while(true){
-//	/*    Pide atributos hasta que la opción de tipo de atributo sea      *
-//	 *  diferente de las existentes, en ese caso deja de pedir atributos.
-//
-//		cout << "\n Atributo N°" << indice << ": \n  Tipo de atributo: \n";
-//		cout << "    1. Entero.\n    2. Cadena de caracteres.\n    3. Entidad X."<<endl;
-//		cout << "    0. Salir"<<endl;
-//		opget = this -> pedir_opcion();
-//
-//		if( opget > 3 || opget < 1 ){break;} // Opción no válida.
-//
-//		// Agregar que hacer cuando no sea una opcion correcta.
-//
-//		switch(opget){
-//		/* Tipo de atributo seleccionado
-//
-//			case 1: // Entero
-//				att.cantidadBytes = sizeof(int); att.tipo = ENTERO;
-//				att.idEntidad = 0;
-//				break;
-//
-//			case 2: // Cadena de caracteres
-//				cout << "Ingrese el tamaño de la cadena de caracteres: ";
-//				cin >> tamanio;
-//				cout << " \n";
-//				cin.get();
-//				tamanio_string = atoi(tamanio);
-//				att.cantidadBytes = tamanio_string*sizeof(char); att.tipo = TEXTO;
-//				att.idEntidad = 0;
-//				cout << "\n";
-//				break;
-//
-//			case 3: // Entidad X
-//				att.cantidadBytes = sizeof(int); att.tipo = ENTID;	// Tamaño de la entidad, sizeof(int),
-//																	// ya que guarda el ID de la entidad.
-//
-//				att.idEntidad = this->seleccionar_entidad();
-//				break;
-//		}
-//
-//		cout << "Ingrese el nombre del atributo: ";
-//		std::string nombre_att;
-//		do {
-//			getline(cin,nombre_att);
-//		} while (nombre_att.size() > 50);
-//		//cin >> nombre_att;
-//		cout << "\n";
-//
-//		att.nombre = nombre_att;
-//		atts->push_back(att); // Agrega el atributo a la lista.
-//		indice ++;
-//	}
-//
-//	/*      Especificación de tipo de archivo
-//	cout<<endl<<" Tipo de archivo para almacenar la entidad:"<<endl;
-//	cout<<"    1. Archivo de registros de longitud fija."<<endl<<"    2. Archivo de registros de longitud variable."<<endl<<"    3. Archivo en bloque con registros de longitud variable."<<endl;
-//	opget = this -> pedir_opcion();
-//
-//	if( opget > 3 || opget < 1 ){  // Opción no válida.
-//		return;
-//	}
-//
-//	TipoArchivo t_arch;
-//
-//	switch(opget){
-//		/* Tipo de archivo seleccionado
-//
-//			case 1: // Archivo de registros de longitud fija.
-//				 t_arch = FIJO;
-//				break;
-//
-//			case 2: // Archivo de registros de longitud variable.
-//				t_arch = VARIABLE;
-//				break;
-//
-//			case 3: // Archivo en bloque con registros de longitud variable.
-//				t_arch = DEBLOQUES;
-//				break;
-//	}
-//
-//	int id = this->admin->getUltimoID() + 1; // Pide ultimo id para asignarle a la entidad el siguiente
-//
-//	Entidad* ent = new Entidad(atts,nombre_entidad,id,t_arch);
-//	this->admin->crearEntidad(ent);
-//}
+int Interfaz::elegirEntidad(){
+	this->adminEntidades->listarEntidades();
+	cout << "Elegir indice: ";
+	int x; cin >> x;
+	return x;
+}
+
+int Interfaz::pedirIDInstancia(int IDEntidad){
+	Entidad* entidad = this->adminEntidades->getEntidad(IDEntidad);
+	int n = this->pedir_valor();
+	bool error;
+	entidad->getInstancia(n,error);
+	if (error) {
+		cout<<"ID ingresado incorrecto"<<endl;
+		return -1;
+	} else {
+		return n;
+	}
+}
+
+/*                     MENU                    */
+
+bool Interfaz::listar_opciones_menu_principal(){
+	cout << endl<<"MENU PRINCIPAL"<<endl;
+	cout << "	1). Administrar Entidades"<<endl;
+	cout << "	2). Administrar Stock"<<endl;
+	cout << "	3). Consultas"<<endl;
+	cout << "	4). Libro de quejas en linea"<<endl;
+	cout << "	0). Salir"<<endl;
+	int opc = this->pedir_opcion();
+	system("clear");
+	switch (opc) {
+		case 1 :
+			this->listar_opciones_administrar_entidades();
+			break;
+		case 2:
+			this->listar_opciones_administrar_stock();
+			break;
+		case 3:
+			this->listar_opciones_consultas();
+			break;
+		case 4:
+			this->listar_opciones_libro_quejas();
+			break;
+		case 0:
+			return false;
+		default:
+			cout << "Opcion incorrecta." << endl;
+			break;
+	}
+	return true;
+}
+
+bool Interfaz::listar_opciones_administrar_entidades(){
+	cout << "ADMINISTRACION DE ENTIDADES" << endl;
+	cout << "	1). Agregar nueva instancia"<<endl;
+	cout << "	2). Modificar instancia existente"<<endl;
+	cout << "	3). Eliminar instancia exitente"<<endl;
+	cout << "	4). Eliminar todas las instancias existentes"<<endl;
+	cout << "	5). Listar instancias"<<endl;
+	cout << "	6). Administrar indices secundarios"<<endl;
+	cout << "	0). Salir"<<endl;
+	cout << "Ingrese el número de la opcion seleccionada:";
+	int opc = this->pedir_opcion();
+	system("clear");
+	switch (opc) {
+		case 1: // Crear nueva instancia.
+			this->crear_instancia();
+			break;
+		case 2: // Modificar instancia.
+			this->modificar_instancia();
+			break;
+		case 3: // Eliminar instancia.
+			this->eliminar_instancia();
+			break;
+		case 4: // Eliminar todas las instancias.
+			this->eliminar_instancias();
+			break;
+		case 5: // Listar instancias.
+			this->listar_instancias();
+			break;
+		case 6: //Crear indice secundario
+			this->administrar_indices_secundarios();
+			break;
+		case 0:
+			return true;
+		default:
+			cout << "Opcion incorrecta." << endl;
+			return false;
+	}
+	return true;
+}
+
+void Interfaz::administrar_indices_secundarios(){
+	Entidad* ent;
+	cout << "ADMINISTRACION DE INDICES SECUNDARIOS" << endl;
+	cout << "	1). Crear nuevo indice secundario" << endl;
+	cout << "	2). Eliminar indice secundario existente" << endl;
+	cout << "	3). Listar indices secundarios"<< endl;
+	cout << "	0). Salir" << endl;
+	cout << "Ingrese el número de la opcion seleccionada:";
+	int opc = this->pedir_opcion();
+	system("clear");
+	switch (opc) {
+		case 1:
+			ent = this->adminEntidades->getEntidad(this->elegirEntidad());
+			this->adminIndices->crear_indice(ent);
+			break;
+		case 2:
+			this->adminIndices->eliminar_indice(this->elegirEntidad());
+			break;
+		case 3:
+			this->adminIndices->listar_indices();
+			break;
+		default:
+			break;
+	}
+}
+
+bool Interfaz::listar_opciones_administrar_stock(){
+	cout << "ADMINISTRACION DE STOCK" << endl;
+	cout << "	1). Registrar ingreso"<<endl;
+	cout << "	2). Registrar venta"<<endl;
+	cout << "	3). Listar stock"<<endl;
+	cout << "	4). Listar ventas"<<endl;
+	cout << "	0). Salir"<<endl;
+	int opc = this->pedir_opcion();
+	system("clear");
+	switch (opc) {
+		case 1:
+			this->registrar_ingreso();
+			break;
+		case 2:
+			this->registrar_egreso();
+			break;
+		case 3:
+			this->adminRegistros->listarRegistrosConStock();
+			break;
+		case 4:
+			this->adminRegistros->listarVentas();
+			break;
+		case 5:
+			break;
+		default:
+			cout<<"Opcion incorrecta."<<endl;
+			return false;
+	}
+	return true;
+}
+
+bool Interfaz::listar_opciones_consultas(){
+	cout << "CONSULTAS" << endl;
+	cout << "   1). Cantidad de productos por Fabricante"<<endl;
+	cout << "   2). Cantidad de productos por Familia"<<endl;
+	cout << "   3). Cantidad de productos por Producto"<<endl;
+	cout << "   4). Cantidad de productos por Tintura"<<endl;
+	cout << "   5). Listar productos por Fabricante"<<endl;
+	cout << "   6). Listar productos por Familia"<<endl;
+	cout << "   7). Listar productos por Producto"<<endl;
+	cout << "   8). Listar productos por Tintura"<<endl;
+	cout << "   9). Listar productos por Partes"<<endl;
+	cout << "   10). Listado de Ventas por fecha"<<endl;
+	cout << "   11). Listado de Stock (actual)"<<endl;
+	cout << "   0). Salir"<<endl;
+	int opc = this->pedir_opcion();
+	system("clear");
+	int IDInstancia;
+	switch (opc) {
+	case 1:
+		cout<<"Ingresar ID del Fabricante:";
+		IDInstancia = this->pedirIDInstancia(1);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFabricante(IDInstancia);
+		break;
+	case 2:
+		cout<<"Ingresar ID de la Familia:";
+		IDInstancia = this->pedirIDInstancia(10);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFamilia(IDInstancia);
+		break;
+	case 3:
+		cout<<"Ingresar ID del Producto:";
+		IDInstancia = this->pedirIDInstancia(14);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorProducto(IDInstancia);
+		break;
+	case 4:
+		cout<<"Ingresar ID de la Tintura:";
+		IDInstancia = this->pedirIDInstancia(12);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorTintura(IDInstancia);
+		break;
+	case 5:
+		cout<<"Ingresar ID del Fabricante:";
+		IDInstancia = this->pedirIDInstancia(1);
+		if (IDInstancia != -1)	this->consulta->listarProductosPorFabricante(IDInstancia);
+		break;
+	case 6:
+		cout<<"Ingresar ID de la Familia:";
+		IDInstancia = this->pedirIDInstancia(10);
+		if (IDInstancia != -1)	this->consulta->listarProductosPorFamilia(IDInstancia);
+		break;
+	case 7:
+		cout<<"Ingresar ID del Producto:";
+		IDInstancia = this->pedirIDInstancia(14);
+		if (IDInstancia != -1)	this->consulta->listarProductosPorProducto(IDInstancia);
+		break;
+	case 8:
+		cout<<"Ingresar ID de la Tintura:";
+		IDInstancia = this->pedirIDInstancia(12);
+		if (IDInstancia != -1)	this->consulta->listarProductosPorTintura(IDInstancia);
+		break;
+	case 9:
+		cout<<"Ingresar ID de las Partes:";
+		IDInstancia = this->pedirIDInstancia(13);
+		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFabricante(IDInstancia);
+		break;
+	case 10:
+		Fecha fecha;
+		cout<<"Ingresar Fecha"<<endl;
+		cout<<"Indique día: ";
+		fecha.dia = this->pedir_valor();
+		cout<<" Mes: ";
+		fecha.mes = this->pedir_valor();
+		cout<<" Año: ";
+		fecha.anio = this->pedir_valor();
+		this->consulta->listarVentasPorFecha(fecha);
+		break;
+	case 11:
+		this->consulta->listarStock();
+		break;
+	case 0:
+		break;
+	default:
+		cout<<"Opcion incorrecta"<<endl;
+		return false;
+	}
+	return true;
+}
+
+bool Interfaz::listar_opciones_libro_quejas(){
+	cout<<"Coming soon"<<endl;
+	return true;
+}
+
+/*         ADMINISTRACION DE ENTIDADES         */
 
 void Interfaz::crear_instancia(){
 	int id = this->seleccionar_entidad();
@@ -204,12 +321,7 @@ void Interfaz::listar_instancias(){
 	this->adminEntidades->listarInstancias(id);
 }
 
-int Interfaz::elegirEntidad(){
-	this->adminEntidades->listarEntidades();
-	cout << "Elegir indice: ";
-	int x; cin >> x;
-	return x;
-}
+/*            ADMINISTRACION DE STOCK          */
 
 void Interfaz::administrar_indices_secundarios(){
 	cout << "	1). Crear nuevo indice secundario" << endl;
@@ -378,164 +490,4 @@ void Interfaz::registrar_egreso(){
 		cant = this->pedir_valor();
 		this->adminRegistros->registrarEgreso(opc,date,cant);
 	}
-}
-
-void Interfaz::listarOpcionesAdminStock(){
-	cout<<"	1). Registrar ingreso"<<endl;
-	cout<<"	2). Registrar venta"<<endl;
-	cout<<"	3). Listar stock"<<endl;
-	cout<<"	4). Listar ventas"<<endl;
-	cout<<"	5). Salir"<<endl;
-	int opc = this->pedir_opcion();
-	switch (opc) {
-	case 1:
-		this->registrar_ingreso();
-		break;
-	case 2:
-		this->registrar_egreso();
-		break;
-	case 3:
-		this->adminRegistros->listarRegistrosConStock();
-		break;
-	case 4:
-		this->adminRegistros->listarVentas();
-		break;
-	case 5:
-		break;
-	default:
-		cout<<"Opcion incorrecta."<<endl;
-		break;
-	}
-}
-
-void Interfaz::listarConsultas(){
-
-	cout<<"1: Cantidad de productos por Fabricante"<<endl;
-	cout<<"2: Cantidad de productos por Familia"<<endl;
-	cout<<"3: Cantidad de productos por Producto"<<endl;
-	cout<<"4: Cantidad de productos por Tintura"<<endl;
-	cout<<"5: Listar productos por Fabricante"<<endl;
-	cout<<"6: Listar productos por Familia"<<endl;
-	cout<<"7: Listar productos por Producto"<<endl;
-	cout<<"8: Listar productos por Tintura"<<endl;
-	cout<<"9: Listar productos por Partes"<<endl;
-	cout<<"10: Listado de Ventas por fecha"<<endl;
-	cout<<"11: Listado de Stock (actual)"<<endl;
-	cout<<"12: Salir"<<endl;
-	int opc = this->pedir_valor();
-	int IDInstancia;
-	switch (opc) {
-	case 1:
-		cout<<"Ingresar ID del Fabricante"<<endl;
-		IDInstancia = this->pedirIDInstancia(1);
-		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFabricante(IDInstancia);
-		break;
-	case 2:
-		cout<<"Ingresar ID de la Familia"<<endl;
-		IDInstancia = this->pedirIDInstancia(10);
-		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFamilia(IDInstancia);
-		break;
-	case 3:
-		cout<<"Ingresar ID del Producto"<<endl;
-		IDInstancia = this->pedirIDInstancia(14);
-		if (IDInstancia != -1)	this->consulta->cantidadProductosPorProducto(IDInstancia);
-		break;
-	case 4:
-		cout<<"Ingresar ID de la Tintura"<<endl;
-		IDInstancia = this->pedirIDInstancia(12);
-		if (IDInstancia != -1)	this->consulta->cantidadProductosPorTintura(IDInstancia);
-		break;
-	case 5:
-		cout<<"Ingresar ID del Fabricante"<<endl;
-		IDInstancia = this->pedirIDInstancia(1);
-		if (IDInstancia != -1)	this->consulta->listarProductosPorFabricante(IDInstancia);
-		break;
-	case 6:
-		cout<<"Ingresar ID de la Familia"<<endl;
-		IDInstancia = this->pedirIDInstancia(10);
-		if (IDInstancia != -1)	this->consulta->listarProductosPorFamilia(IDInstancia);
-		break;
-	case 7:
-		cout<<"Ingresar ID del Producto"<<endl;
-		IDInstancia = this->pedirIDInstancia(14);
-		if (IDInstancia != -1)	this->consulta->listarProductosPorProducto(IDInstancia);
-		break;
-	case 8:
-		cout<<"Ingresar ID de la Tintura"<<endl;
-		IDInstancia = this->pedirIDInstancia(12);
-		if (IDInstancia != -1)	this->consulta->listarProductosPorTintura(IDInstancia);
-		break;
-	case 9:
-		cout<<"Ingresar ID de las Partes"<<endl;
-		IDInstancia = this->pedirIDInstancia(13);
-		if (IDInstancia != -1)	this->consulta->cantidadProductosPorFabricante(IDInstancia);
-		break;
-	case 10:
-		Fecha fecha;
-		cout<<"Ingresar Fecha"<<endl;
-		cout<<"Indique día: ";
-		fecha.dia = this->pedir_valor();
-		cout<<" Mes: ";
-		fecha.mes = this->pedir_valor();
-		cout<<" Año: ";
-		fecha.anio = this->pedir_valor();
-		this->consulta->listarVentasPorFecha(fecha);
-		break;
-	case 11:
-		this->consulta->listarStock();
-		break;
-	case 12:
-		break;
-	default:
-		cout<<"Opcion ingresada es incorrecta"<<endl;
-		break;
-	}
-}
-
-int Interfaz::pedirIDInstancia(int IDEntidad){
-	Entidad* entidad = this->adminEntidades->getEntidad(IDEntidad);
-	int n = this->pedir_valor();
-	bool error;
-	entidad->getInstancia(n,error);
-	if (error) {
-		cout<<"ID ingresado incorrecto"<<endl;
-		return -1;
-	} else {
-		return n;
-	}
-}
-
-bool Interfaz::ejecutar_opcion(unsigned int opc){
-	switch (opc){
-//		/case 1:	// Crear nueva entidad.
-//			this->crear_entidad();
-//			break;
-		case 1: // Crear nueva instancia.
-			this->crear_instancia();
-			break;
-		case 2: // Modificar instancia.
-			this->modificar_instancia();
-			break;
-		case 3: // Eliminar instancia.
-			this->eliminar_instancia();
-			break;
-		case 4: // Eliminar todas las instancias.
-			this->eliminar_instancias();
-			break;
-		case 5: // Listar instancias.
-			this->listar_instancias();
-			break;
-		case 6: //Crear indice secundario
-			this->administrar_indices_secundarios();
-			break;
-		case 7:
-			this->listarConsultas();
-			break;
-		case 8:
-			this->listarOpcionesAdminStock();
-			break;
-		default:
-			return false;
-	}
-	return true;
 }
