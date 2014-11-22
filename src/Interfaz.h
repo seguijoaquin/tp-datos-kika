@@ -15,7 +15,6 @@ using namespace std;
 class Interfaz{
 
 	private:
-		list<string>* opciones;
 		AdministradorEntidades* adminEntidades;
 		AdministradorIndices* adminIndices;
 		AdministradorRegistros* adminRegistros;
@@ -27,7 +26,11 @@ class Interfaz{
 	public:
 		Interfaz();
 		~Interfaz();
-		void listar_opciones();
+		bool listar_opciones_menu_principal();
+		bool listar_opciones_administrar_entidades();
+		bool listar_opciones_administrar_stock();
+		bool listar_opciones_consultas();
+		bool listar_opciones_libro_quejas();
 		unsigned int pedir_opcion();
 		bool ejecutar_opcion(unsigned int opc);
 		void modificar_instancia();
@@ -38,8 +41,6 @@ class Interfaz{
 		int elegirEntidad();
 		void registrar_ingreso();
 		void registrar_egreso();
-		void listarConsultas();
-		void listarOpcionesAdminStock();
 		int pedirIDInstancia(int IDEntidad);
 };
 
