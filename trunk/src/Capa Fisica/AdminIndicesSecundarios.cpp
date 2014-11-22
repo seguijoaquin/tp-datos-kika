@@ -69,7 +69,6 @@ int AdministradorIndices::listar_indices(){
 		cout << *itNameAtt;
 		while (itNameAtt != it->nombresAtributos->end()){
 				++itNameAtt;
-				if (itNameAtt != it->nombresAtributos->end()) cout << ", " << *itNameAtt;
 			if (itNameAtt != it->nombresAtributos->end()) cout << ", " << *itNameAtt;
 		}
 		cout << endl;
@@ -93,7 +92,7 @@ void AdministradorIndices::eliminar_indice(){
 }
 
 void AdministradorIndices::actualizarIndices(){
-	fopen("indicesCreados.txt","w");
+	fopen("indicesCreados.txt","w+");
 	list<Indice>::iterator it = this->indices->begin();
 	while (it != this->indices->end()) {
 		Indice indice;
