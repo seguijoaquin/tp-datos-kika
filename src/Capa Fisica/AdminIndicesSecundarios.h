@@ -11,6 +11,7 @@
 #include "../Capa Logica/ArbolBMas/ArbolBMas.h"
 #include "../Capa Fisica/Entidad.h"
 #include "../Capa Logica/HashExtensible/Hash.h"
+#include "../constantes.h"
 
 #define ARBOL 1
 #define HASH  2

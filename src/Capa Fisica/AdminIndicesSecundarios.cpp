@@ -127,6 +127,7 @@ void AdministradorIndices::persistirIndice(Indice* indice){
 				}
 				++itAtt;
 				++itNum;
+				claveStr += separadorClaves;
 			}
 			// AGREGA VALOR CON CLAVE CONCATENADA.
 			if (tipo==ARBOL) {
