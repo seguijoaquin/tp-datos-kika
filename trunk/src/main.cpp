@@ -9,7 +9,7 @@ int main(){
 	Interfaz* iu = new Interfaz();
 	cout << "75.06 - ORGANIZACION DE DATOS"<<endl<<
 			"TRABAJO PRACTICO"<<endl<<
-			"GESTOCK Y VENTAS"<<endl;
+			"GESTOCK Y VENTAS"<<endl<<endl<<endl;
 	while(iu->listar_opciones_menu_principal()){
 		cout << endl;
 	}

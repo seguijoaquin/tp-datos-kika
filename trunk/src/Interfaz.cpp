@@ -142,7 +142,7 @@ void Interfaz::administrar_indices_secundarios(){
 	cout << "ADMINISTRACION DE INDICES SECUNDARIOS" << endl;
 	cout << "	1). Crear nuevo indice secundario" << endl;
 	cout << "	2). Eliminar indice secundario existente" << endl;
-	cout << "	3). Listar indices secundarios"<< endl;
+	cout << "	3). Listar indices secundarios" << endl << endl;
 	cout << "	0). Salir" << endl;
 	cout << "Ingrese el número de la opcion seleccionada:";
 	int opc = this->pedir_opcion();
@@ -322,26 +322,6 @@ void Interfaz::listar_instancias(){
 }
 
 /*            ADMINISTRACION DE STOCK          */
-
-void Interfaz::administrar_indices_secundarios(){
-	cout << "	1). Crear nuevo indice secundario" << endl;
-	cout << "	2). Eliminar indice secundario existente" << endl;
-	cout << "	3). Listar indices secundarios" << endl << endl;
-	cout << "	0). Salir" << endl;
-	int opc; cin >> opc;
-	switch (opc) {
-		case 1 : {
-			Entidad* ent = this->adminEntidades->getEntidad(this->elegirEntidad());
-			this->adminIndices->crear_indice(ent);
-			break;
-		}
-		case 2: this->adminIndices->eliminar_indice(this->elegirEntidad());
-				break;
-		case 3: this->adminIndices->listar_indices();
-				break;
-		default: break;
-	}
-}
 
 void Interfaz::registrar_ingreso(){
 
