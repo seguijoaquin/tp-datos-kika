@@ -8,8 +8,8 @@
 #ifndef CONSULTAS_H_
 #define CONSULTAS_H_
 
-#include "Capa Fisica/AdministradorEntidades.h"
-#include "Capa Fisica/AdministradorRegistros.h"
+#include "../Capa Fisica/AdministradorEntidades.h"
+#include "../Capa Fisica/AdministradorRegistros.h"
 
 using namespace std;
 
