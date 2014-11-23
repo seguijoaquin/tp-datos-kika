@@ -84,6 +84,7 @@ void AdministradorIndices::mostrar_indice(int x){
 		++it;
 	}
 	if (it->tipo == ARBOL) it->arbol->mostrarArbol();
+	else it->hash->mostrarHash();
 			//else it->hash->mostrarHash();
 }
 void AdministradorIndices::eliminar_indice(){

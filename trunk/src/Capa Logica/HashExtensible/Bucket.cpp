@@ -100,6 +100,14 @@ ostream& operator<< (ostream& os, const Bucket& ptrObj){
 	return os;
 }
 
+void Bucket::mostrarElementos(){
+	if (!this->elementos.empty()) {
+		for (list<HashElement>::const_iterator it = this->elementos.begin(); it!=this->elementos.end(); it++) {
+				cout << *it ;
+		}
+	}
+}
+
 string Bucket::serializar()const{
 	//Acelerar Respuesta
 	if (elementos.empty()) {

@@ -33,6 +33,7 @@ public:
 	void redispersarNodo(const list<pair<HashElement,bool> >&  bulkInsert,const int numNodoViejo,const int numNodoNuevo);
 	void actualizarNodoLiberado(int numeroNodo);
 
+	void mostrarHashNodeInterpreter();
 	friend ostream& operator<< (ostream& out, HashNodeInterpreter& ptrObj);
 };
 

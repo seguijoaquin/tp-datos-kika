@@ -25,6 +25,7 @@ public:
 	virtual bool operator== (const HashElement& other) const;
 	virtual bool operator==  (const HashClave& key) const;
 
+	void mostrarHashElement();
 
 	const string& getValor() const;
 	void setValor(const string& nvoValor);

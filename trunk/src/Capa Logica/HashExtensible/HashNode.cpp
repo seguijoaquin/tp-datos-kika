@@ -72,6 +72,10 @@ ostream& operator<< (ostream& os,const HashNode& ptrObj){
 	return os;
 }
 
+void HashNode::mostrarNodo(){
+	this->elementos->mostrarElementos();
+}
+
 string HashNode::serializar()const{
 	string retorno;
 	retorno = Convertidor::intToString(tamDispersion);

@@ -83,11 +83,8 @@ void Hash::resolverOverflowNodo(const ExceptionOverflowNodo e, const HashClave& 
 	}
 }
 
-ostream& operator << (ostream& o, Hash& hash){
-	o << *(hash.tabla);
-	o << "\n";
-	o << *(hash.interpreteNodo);
-	return o;
+void Hash::mostrarHash(){
+	this->interpreteNodo->mostrarHashNodeInterpreter();
 }
 
 Hash::~Hash(){

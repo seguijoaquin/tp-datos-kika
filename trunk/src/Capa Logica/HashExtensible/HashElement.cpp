@@ -36,9 +36,10 @@ HashElement::HashElement(const string aDesSerializar): Serializable(";"){
 }
 
 ostream& operator<< (ostream& os, const HashElement& ptrObj){
-	os << "\t" <<  *ptrObj.clave << "\t" << " Valor :" << ptrObj.valor << endl;
+	os << "\t" <<  *ptrObj.clave << endl;
 	return os;
 }
+
 
 string HashElement::serializar()const {
 	string retorno;

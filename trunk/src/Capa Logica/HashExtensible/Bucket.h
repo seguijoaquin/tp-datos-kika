@@ -27,6 +27,8 @@ public:
 	void insertar(const HashClave& key,const string& valor);
 	void modificar(const HashClave& key,const string& nvoValor);
 
+	void mostrarElementos();
+
 	const list<HashElement> getElementos()const;
 	void vaciarElementos();
 
