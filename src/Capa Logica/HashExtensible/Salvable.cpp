@@ -15,9 +15,6 @@ void Salvable::leerBloque(const int& numBloque,string* buffer)const{
 
 void Salvable::escribirBloque(const string& bloque, const unsigned int& numBloque){
 	try {
-//		if(numBloque < archivo->getCantidadBloques() && archivo->getCantidadBloques() > 0){
-//			archivo->borrar(numBloque);
-//		}
 		archivo->reescribir((char*)bloque.c_str(),numBloque);
 	} catch (ExcepcionOverflowTamBloque& e) {
 		throw e;
