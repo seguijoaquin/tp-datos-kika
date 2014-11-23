@@ -52,15 +52,10 @@ NodoHoja* NodoHoja::cargar(ArchivoBloque* archivo, unsigned int nroDeBloque){
 
 
 void NodoHoja::mostrar(){
-//        cout << "Nro de nodo: ";
-//        cout << this->getNumeroDeBloque();
-//        cout << " ,";
         list<RegistroArbol*>::iterator it;
         for (it = elementos->begin(); it != elementos->end(); it++){
                 (*it)->mostrar();
         }
-//        cout << ", ";
-//        cout << this->referenciaAlSiguiente;
         cout << "\n";
 
 }
