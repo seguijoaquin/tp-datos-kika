@@ -45,6 +45,7 @@ public:
 	int listar_indices();
 	void eliminar_indice();
 	void crear_indice(Entidad* entidad);
+	void mostrar_indice(int x);
 
 };
 
