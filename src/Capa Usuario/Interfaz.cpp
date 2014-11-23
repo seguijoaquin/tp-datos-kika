@@ -358,20 +358,34 @@ void Interfaz::registrar_ingreso(){
 	// PEDIR PRODUCTO
 	producto = this->adminEntidades->getEntidad(idEntProd);
 	cout<<"Productos:"<<endl;
-	producto->listarOpcionesInstancias();
+	producto->listarInstancias();//listarOpcionesInstancias();
 	cout<<" Opcion seleccionada: ";
 	idProd = this->pedir_valor();
 	cout<<endl;
 
 	familia = this->adminEntidades->getEntidad(idEntFamilia);
-
+	price = this->adminEntidades->getEntidad(idEntPrecio);
 	// AVERIGUA PRECIO UNITARIO DEL PRODUCTO
 	instProd = producto->getInstancia(idProd, error);
 	if(error){
 		cout<<"Opcion incorrecta"<<endl;
 		return; 									// Mejorar validacion.
 	}
-	list<Atributo>::iterator itP = instProd->getListaAtributos()->begin();
+	nombreProd = instProd->getAtributo(2)->texto;
+	Instancia* instFam = familia->getInstancia(instProd->getAtributo(3)->entero,error);
+	if (error) {
+		return; //No tendria q pasar pero por si acaso
+	}
+	instPrecio = price->getInstancia(instFam->getAtributo(4)->entero,error);
+	precioUnitario = 0;
+	if (!error) {
+		precioUnitario = instPrecio->getAtributo(2)->entero;
+	}
+	instPrecio = price->getInstancia(instProd->getAtributo(5)->entero,error);
+	if (!error) {
+		precioUnitario += instPrecio->getAtributo(2)->entero;
+	}
+	/*list<Atributo>::iterator itP = instProd->getListaAtributos()->begin();
 	list<Atributo>::iterator itF;
 	for(unsigned int j = 1 ; j <= 5 ;j++){
 		if(j==2)nombreProd = (*itP).texto; // Guardo nombre del producto.
@@ -406,12 +420,12 @@ void Interfaz::registrar_ingreso(){
 			return;
 	}
 	precioUnitario += instPrecio->getAtributo(idPrecio)->entero;
-
+*/
 
 	// PEDIR COLOR
 	color = this->adminEntidades->getEntidad(idEntColor);
 	cout<<"Colores: "<<endl;
-	color->listarOpcionesInstancias();
+	color->listarInstancias();//listarOpcionesInstancias();
 	cout<<" Opcion seleccionada: ";
 	idColor = this->pedir_valor();
 	instColor = color->getInstancia(idColor,error);
@@ -428,7 +442,7 @@ void Interfaz::registrar_ingreso(){
 	// PEDIR ESTAMPA
 	estampa = this->adminEntidades->getEntidad(idEntEstampa);
 	cout<<"Estampas: "<<endl;
-	estampa->listarOpcionesInstancias();
+	estampa->listarInstancias();//listarOpcionesInstancias();
 	cout<<" Opcion seleccionada: ";
 	idEstampa = this->pedir_valor();
 	instEstampa = estampa->getInstancia(idEstampa,error);
