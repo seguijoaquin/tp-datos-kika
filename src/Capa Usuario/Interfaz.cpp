@@ -335,11 +335,13 @@ void Interfaz::registrar_ingreso(){
 	int idEntEstampa = 4;
 	int idEntTintura = 12;
 	int idEntFamilia = 10;
+	int idEntPrecio = 9;
 
 	int cant, precio, idProd, idColor, idEstampa, idTintura, precioUnitario;
+	int idPrecio;
 	Fecha date;
-	Entidad *producto, *estampa, *color, *tintura, *familia;
-	Instancia *instProd, *instColor, *instEstampa;
+	Entidad *producto, *estampa, *color, *tintura, *familia, *price;
+	Instancia *instProd, *instColor, *instEstampa, *instPrecio;
 	char *nombreProd, *nombreColor, *nombreEstampa;
 	bool error;
 
@@ -371,18 +373,40 @@ void Interfaz::registrar_ingreso(){
 	}
 	list<Atributo>::iterator itP = instProd->getListaAtributos()->begin();
 	list<Atributo>::iterator itF;
-	for(unsigned int j = 1 ; j < 5 ;++j){
+	for(unsigned int j = 1 ; j <= 5 ;j++){
 		if(j==2)nombreProd = (*itP).texto; // Guardo nombre del producto.
 		if(j==3){ // FAMILIA - Para pedir precio
 			itF = familia->getInstancia((*itP).entero,error)->getListaAtributos()->begin();
+			if(error){
+				cout<<"Opcion incorrecta - Familia"<<endl;
+				return;
+			}
 			for(unsigned int k = 1 ; k < 4 ;++k){
 				++itF;
 			}
-			precioUnitario = (*itF).entero;
+
+			idPrecio = itF->entero;
+			cout<<idPrecio<<endl;
+			price =this->adminEntidades->getEntidad(idEntPrecio);
+			instPrecio = price->getInstancia(idPrecio,error);
+			if(error){
+					cout<<"Opcion incorrecta"<<endl;
+					return;
+			}
+			precioUnitario = instPrecio->getAtributo(idPrecio)->entero;
+
 		}
 		++itP;
 	}
-	precioUnitario = ++((*itP).entero);
+	idPrecio = (*itP).entero;
+	price =this->adminEntidades->getEntidad(idEntPrecio);
+	instPrecio = price->getInstancia(idPrecio,error);
+	if(error){
+			cout<<"Opcion incorrecta"<<endl;
+			return;
+	}
+	precioUnitario += instPrecio->getAtributo(idPrecio)->entero;
+
 
 	// PEDIR COLOR
 	color = this->adminEntidades->getEntidad(idEntColor);
