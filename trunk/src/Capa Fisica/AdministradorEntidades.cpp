@@ -207,10 +207,10 @@ Instancia* AdministradorEntidades::crearInstancia(int id){
 
 				auxEnt->getInstancia(aux.entero,error);
 				valido = this->validarIdCreacionInstancia(ent,aux.entero,iterAtts->nombre);
-				if (error || !valido) {
+				if (!valido || (error && aux.entero != 0)) {
 					cout<<"Opción ingresada es incorrecta."<<endl;
 				}
-			} while (error || !valido);
+			} while (!valido || (error && aux.entero != 0));
 
 		}else {
 			cout<<iterAtts->nombre<<"(max "<<iterAtts->cantidadBytes<<"): ";
