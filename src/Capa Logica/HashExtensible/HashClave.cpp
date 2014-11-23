@@ -20,7 +20,7 @@ HashClave::HashClave(string valor,bool desSerealizar){
 //}
 
 ostream& operator<< (ostream& os, const HashClave& ptrObj){
-	os << "Clave :" << ptrObj.key;
+	os << ptrObj.key;
 	return os;
 }
 

@@ -167,3 +167,11 @@ ostream& operator<< (ostream& os,HashNodeInterpreter& ptrObj){
 
 	return os;
 }
+
+void HashNodeInterpreter::mostrarHashNodeInterpreter(){
+	for (unsigned int bloque = 0; bloque < this->getCantidadDeBloques(); ++bloque) {
+			this->levantarNodo(bloque);
+			this->nodo->mostrarNodo();
+			this->liberarNodo();
+	}
+}

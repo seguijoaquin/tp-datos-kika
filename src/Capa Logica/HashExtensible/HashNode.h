@@ -36,6 +36,8 @@ public:
 	void insertarElemento(const HashClave& key, const string& valor);
 	void modificarElemento(const HashClave& key, const string& nvoValor);
 
+	void mostrarNodo();
+
 	//Devuelvo una copia al listado Completo
 	const list<HashElement> getElementos()const;
 	void vaciarElementos();

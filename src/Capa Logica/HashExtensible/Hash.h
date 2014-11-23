@@ -25,9 +25,8 @@ public:
 	void insertarElemento(const string& clave, const string& valor);
 	void modificarElemento(const string& clave, const string& valor);
 	string buscarElemento(const string& clave);
+	void mostrarHash();
 	void elminarElemento(const string& clave);
-
-	friend ostream& operator << (ostream& o, Hash& tabla);
 
 	~Hash();
 };
