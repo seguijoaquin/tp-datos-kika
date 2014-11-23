@@ -157,6 +157,9 @@ void Interfaz::administrar_indices_secundarios(){
 			break;
 		case 3:
 			this->adminIndices->listar_indices();
+			cout << endl << "Elija el indice a listar ";
+			int x; cin >> x;
+			this->adminIndices->mostrar_indice(x);
 			break;
 		default:
 			break;
