@@ -197,8 +197,8 @@ Instancia* AdministradorEntidades::crearInstancia(int id){
 			auxEnt = this->getEntidad(iterAtts->idEntidad); // Entidad de la que pide.
 			auxEnt->listarInstancias();
 
-			cout << "Ingrese el ID de la instancia que desea utilizar: ";
-			bool error;
+			cout << "Ingrese el ID de la instancia que desea utilizar o 0 si no quiere utilizar ninguna: ";
+			bool error,valido;
 			do {
 				cin >> opget;
 				cout << endl;
@@ -206,10 +206,11 @@ Instancia* AdministradorEntidades::crearInstancia(int id){
 				aux.entero = atoi(opget);
 
 				auxEnt->getInstancia(aux.entero,error);
-				if (error && aux.entero != 0) {
+				valido = this->validarIdCreacionInstancia(ent,aux.entero,iterAtts->nombre);
+				if (error && !valido) {
 					cout<<"Opción ingresada es incorrecta."<<endl;
 				}
-			} while (error && (aux.entero != 0));
+			} while (error && !valido);
 
 		}else {
 			cout<<iterAtts->nombre<<"(max "<<iterAtts->cantidadBytes<<"): ";
@@ -225,6 +226,34 @@ Instancia* AdministradorEntidades::crearInstancia(int id){
 	ent->crearInstancia(listaDatos);
 	bool error;
 	return ent->getInstancia(id_instancia,error);
+}
+
+bool AdministradorEntidades::validarIdCreacionInstancia(Entidad* ent,int id_instancia,string nombreAtributo){
+	//Valido debe existir fabricante para crear familia
+	if (ent->getNombre() == "Familia") {
+		if ((nombreAtributo == "Fabricante") && (id_instancia == 0)) {
+			cout<<"No puede ingresar 0 como ID en este caso"<<endl;
+			return false;
+		}
+		return true;
+	}
+	//Debe existir familia, parte y material  para crear producto
+	if (ent->getNombre() == "Producto") {
+		if ((nombreAtributo == "Familia" || nombreAtributo == "Partes" || nombreAtributo == "Material") && id_instancia == 0) {
+			cout<<"No puede ingresar 0 como ID en este caso"<<endl;
+			return false;
+		}
+		return true;
+	}
+	//Debe existir contorno-copa-bretel para crear partes
+	if (ent->getNombre() == "Partes") {
+		if ((nombreAtributo == "Contorno" || nombreAtributo == "Copa" || nombreAtributo == "Bretel") && id_instancia == 0) {
+			cout<<"No puede ingresar 0 como ID en este caso"<<endl;
+			return false;
+		}
+		return true;
+	}
+	return true;
 }
 
 Entidad* AdministradorEntidades::getEntidad(int id){
