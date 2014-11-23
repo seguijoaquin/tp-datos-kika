@@ -28,7 +28,6 @@ int HashTable::getElement(const HashClave& key){
 	return Convertidor::stringToInt(buf);
 }
 
-//PRIVADO
 int HashTable::getElement(int pos){
 	//obtengo el bloque y devuelvo el valor...
 	string buf;
@@ -47,7 +46,6 @@ void HashTable::setElement(int elem, const HashClave& key){
 	escribirBloque(Convertidor::intToString(elem), pos+1);
 }
 
-//PRIVADO
 void HashTable::setElement(int elem, int pos){
 	if (tamTabla == 0){
 		tamTabla++;
@@ -189,7 +187,7 @@ bool HashTable::tablaEspejo(){
 				fin = true;
 			}
 		}
-	}//fin while
+	}
 	return espejo;
 }
 
@@ -200,16 +198,6 @@ void HashTable::guardarTamTabla(){
 		//cuando el tamTabla no entra para guardar, y hay qe agrandar el tam bloque de la tabla.
 		throw ExceptionTamTabla();
 	}
-}
-
-ostream& operator << (ostream& o, HashTable& tabla){
-	o << "Tabla:\n\t";
-	for (int i=0; i<tabla.tamTabla; i++){
-		string buf;
-		tabla.leerBloque(i+1,&buf);
-		o << buf << " ";
-	}
-    return o;
 }
 
 HashTable::~HashTable(){

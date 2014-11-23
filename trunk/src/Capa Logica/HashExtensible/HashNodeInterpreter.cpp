@@ -155,19 +155,6 @@ HashNodeInterpreter::~HashNodeInterpreter(){
 	}
 }
 
-ostream& operator<< (ostream& os,HashNodeInterpreter& ptrObj){
-	//Para cada Nodo del archivoBloque
-	os << "Archivo: \n";
-	for (unsigned int bloque = 0; bloque < ptrObj.getCantidadDeBloques(); ++bloque) {
-		ptrObj.levantarNodo(bloque);
-		os << "\tNumero Nodo: " << bloque << "\n";
-		os << *ptrObj.nodo << endl;
-		ptrObj.liberarNodo();
-	}
-
-	return os;
-}
-
 void HashNodeInterpreter::mostrarHashNodeInterpreter(){
 	for (unsigned int bloque = 0; bloque < this->getCantidadDeBloques(); ++bloque) {
 			this->levantarNodo(bloque);

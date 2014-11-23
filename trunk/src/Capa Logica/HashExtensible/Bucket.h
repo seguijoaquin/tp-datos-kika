@@ -20,7 +20,6 @@ public:
 	~Bucket();
 
 	virtual string serializar() const;
-	friend ostream& operator<< (ostream& out, const Bucket& ptrObj);
 
 	string obtenerValor(const HashClave& key)const;
 	void eliminar(const HashClave& key);

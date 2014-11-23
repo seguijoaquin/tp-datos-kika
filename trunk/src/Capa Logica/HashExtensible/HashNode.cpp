@@ -65,13 +65,6 @@ const string HashNode::buscarElemento(const HashClave& key)const{
 	}
 }
 
-ostream& operator<< (ostream& os,const HashNode& ptrObj){
-	os << "\tTamaño de dispersion : " << ptrObj.tamDispersion << endl;
-	os << "\tElemenentos :" << endl;
-	os <<  *ptrObj.elementos;
-	return os;
-}
-
 void HashNode::mostrarNodo(){
 	this->elementos->mostrarElementos();
 }

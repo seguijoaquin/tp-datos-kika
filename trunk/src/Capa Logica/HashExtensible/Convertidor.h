@@ -6,10 +6,6 @@
 
 using namespace std;
 
-/**
- * Clase utilitaria que brinda funciones para la conversion de tipo datos.
- *
- */
 class Convertidor {
 
 public:

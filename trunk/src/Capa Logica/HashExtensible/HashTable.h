@@ -35,8 +35,6 @@ public:
 	int nodoNuevo(int tamDispersion, const HashClave& key);
 	int nodoLibre(int tamDispersion, const HashClave& key);
 
-	friend ostream& operator << (ostream& o, HashTable& tabla);
-
 	~HashTable();
 };
 

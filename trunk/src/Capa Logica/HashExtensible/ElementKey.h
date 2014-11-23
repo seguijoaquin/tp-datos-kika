@@ -18,7 +18,6 @@ protected:
 
 public:
 	ElementKey(T valor, bool desSerializar);
-	//ElementKey(const string aDesSerializar);
 	ElementKey(const ElementKey& elCopia); //Constructor copia
 	~ElementKey();
 
@@ -53,12 +52,6 @@ template <typename T>
 ElementKey<T>::ElementKey(const ElementKey<T>& elCopia){
 	valor = elCopia.valor;
 }
-
-//template <typename T>
-//ElementKey<T>::ElementKey(const string aDesSerializar){
-//	valor = NULL;
-//	desSerializar(aDesSerializar);
-//}
 
 template <typename T>
 ElementKey<T>::~ElementKey(){
@@ -102,7 +95,7 @@ const T& ElementKey<T>::getValor()const{
 template <typename T>
 string ElementKey<T>::serializar()const{
 	if (valor == "") {
-		//No deberia poder pasar esto
+		//No deberia ocurrir
 		return "NULL";
 	}
 
