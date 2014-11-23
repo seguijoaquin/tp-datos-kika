@@ -3,7 +3,6 @@
 using namespace std;
 
 Salvable::Salvable(const string& ruta){
-	//archivo = new ArchivoBloque(ruta, tamElem, sobreEscribir);
 	archivo = new ArchivoBloque(ruta,TAMANIOBLOQUE_DEFAULT);
 }
 

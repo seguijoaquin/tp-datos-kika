@@ -27,7 +27,6 @@ public:
 	~HashNode();
 
 	virtual string serializar()const ;
-	friend ostream& operator<< (ostream& out, const HashNode& ptrObj);
 
 	const int getTamDispersion()const;
 

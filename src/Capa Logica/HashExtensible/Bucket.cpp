@@ -6,8 +6,6 @@ Bucket::Bucket(const string aDesSerializar):Serializable(){
 }
 
 void Bucket::insertar(const HashClave& key, const string& valor){
-	//Yo inserto si despues no alcanza el tamaño para guardar vemo...
-
 	//Lo Busco, si ya existe en el bucket no lo puedo ingresar Nuevamente
 	string enCasoDeError;
 	try {
@@ -87,19 +85,6 @@ string Bucket::obtenerValor(const HashClave& key)const{
 	throw ExceptionElementoNoEncontrado("No se encontro el elemento con clave " + key.serializar());
 }
 
-
-ostream& operator<< (ostream& os, const Bucket& ptrObj){
-	if (ptrObj.elementos.empty()) {
-		os << "\t\t"  << "Vacio" << endl;
-	}
-
-	for (list<HashElement>::const_iterator it = ptrObj.elementos.begin(); it!=ptrObj.elementos.end(); it++) {
-		os << "\t"  << *it;
-	}
-
-	return os;
-}
-
 void Bucket::mostrarElementos(){
 	if (!this->elementos.empty()) {
 		for (list<HashElement>::const_iterator it = this->elementos.begin(); it!=this->elementos.end(); it++) {
@@ -109,7 +94,6 @@ void Bucket::mostrarElementos(){
 }
 
 string Bucket::serializar()const{
-	//Acelerar Respuesta
 	if (elementos.empty()) {
 		return "";
 	}

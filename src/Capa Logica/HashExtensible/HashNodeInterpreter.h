@@ -34,7 +34,6 @@ public:
 	void actualizarNodoLiberado(int numeroNodo);
 
 	void mostrarHashNodeInterpreter();
-	friend ostream& operator<< (ostream& out, HashNodeInterpreter& ptrObj);
 };
 
 #endif /* HASHNODEINTERPRETER_H_ */

@@ -1,10 +1,6 @@
 
 #include "HashClave.h"
 
-//HashClave::HashClave(const HashClave& elKey){
-//	key = new ElementKey<string>(*(elKey.key));
-//}
-
 HashClave::HashClave(string valor,bool desSerealizar){
 	if(desSerealizar){
 		key="";
@@ -14,10 +10,6 @@ HashClave::HashClave(string valor,bool desSerealizar){
 	}
 }
 
-//HashClave HashClave::desSerializarHashClave(const string aDesSerializar):Serializable(){
-//	key=NULL;
-//	desSerializar(aDesSerializar);
-//}
 
 ostream& operator<< (ostream& os, const HashClave& ptrObj){
 	os << ptrObj.key;
@@ -54,7 +46,6 @@ int HashClave::hashear(const int& mod)const{
     }
 
     return (asciTotal%mod);
-	//return ((key)%mod);
 }
 
 HashClave::~HashClave(){

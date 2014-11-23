@@ -12,8 +12,6 @@ class HashClave : public Serializable {
 public:
 	HashClave();
 	HashClave(string valor, bool desSerializar);
-//HashClave(const string aDesSerializar);
-	//HashClave(const HashClave& elKey); //Constructor Copia
 	virtual ~HashClave();
 
 	bool operator==  (const HashClave& other) const;
