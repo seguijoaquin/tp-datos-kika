@@ -78,6 +78,14 @@ int AdministradorIndices::listar_indices(){
     return i;
 }
 
+void AdministradorIndices::mostrar_indice(int x){
+	list<Indice>::iterator it = this->indices->begin();
+	for (int i = 0; i < x; ++i) {
+		++it;
+	}
+	if (it->tipo == ARBOL) it->arbol->mostrarArbol();
+			//else it->hash->mostrarHash();
+}
 void AdministradorIndices::eliminar_indice(){
 	int max = this->listar_indices();
 	cout << "Elija el indice que desea eliminar:";
