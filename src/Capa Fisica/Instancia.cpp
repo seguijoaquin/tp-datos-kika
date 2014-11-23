@@ -22,6 +22,10 @@ void Instancia::setListaAtributos(list<Atributo>* lista){
 	this->listaAtributos = lista;
 }
 
+list<metaDataAtributo>* Instancia::getListaMetaData(){
+	return this->listaMetaAtributos;
+}
+
 void Instancia::setListaMetaAtributos(list<metaDataAtributo>* listaMetaAtributos){
 	this->listaMetaAtributos = listaMetaAtributos;
 }
