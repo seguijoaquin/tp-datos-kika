@@ -163,11 +163,11 @@ int AdministradorEntidades::getID(int x) {
 	return it->getID();
 }
 
-void AdministradorEntidades::crearInstancia(int id){
+Instancia* AdministradorEntidades::crearInstancia(int id){
 
 	Entidad* ent = this->getEntidad(id);
 	if (!this->validarCreacionInstancia(ent)) {
-		return;
+		return NULL;
 	}
 	Entidad* auxEnt;
 	char opget[5];
@@ -178,6 +178,7 @@ void AdministradorEntidades::crearInstancia(int id){
 	Atributo aux;
 	// Agrega el ID.
 	aux.entero = ent->getUltimoIDInstancia() + 1;
+	int id_instancia = aux.entero;
 	listaDatos->push_back(aux);
 	iterAtts++;
 
@@ -222,6 +223,8 @@ void AdministradorEntidades::crearInstancia(int id){
 		iterAtts++;
 	}
 	ent->crearInstancia(listaDatos);
+	bool error;
+	return ent->getInstancia(id_instancia,error);
 }
 
 Entidad* AdministradorEntidades::getEntidad(int id){
@@ -232,11 +235,12 @@ Entidad* AdministradorEntidades::getEntidad(int id){
 	return &(*it);
 }
 
-void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id_instancia){
+void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id_instancia,Instancia** instanciaVieja, Instancia** instanciaNueva){
 
 	Entidad* ent = this->getEntidad(id);
 	bool error;
 	Instancia* inst = ent->getInstancia(id_instancia,error);
+	(*instanciaVieja) = inst;
 	if(error){
 		cout<<"Opción ingresada es incorrecta."<<endl;
 		return;
@@ -315,16 +319,21 @@ void AdministradorEntidades::modificarInstancia(unsigned int id, unsigned int id
 		iter++;
 	}
 	ent->modificarInstancia(id_instancia, newAtts);
+	(*instanciaNueva) = ent->getInstancia(id_instancia,error);
 }
 
-void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_instancia){
+Instancia* AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_instancia){
 	Entidad* ent = this->getEntidad(id);
 	vector<Eliminados>* instanciasAfectadas = this->informarEliminacion(ent,id_instancia);
+	Instancia* retorno = NULL;
+	bool error;
 	if (instanciasAfectadas == NULL) {
+		retorno = ent->getInstancia(id_instancia,error);
 		ent->eliminarInstancia(id_instancia);
 	} else {
 		if (instanciasAfectadas->size() == 0) {
-				ent->eliminarInstancia(id_instancia);
+			retorno = ent->getInstancia(id_instancia,error);
+			ent->eliminarInstancia(id_instancia);
 		} else {
 			cout<<"Eliminar esta instancia eliminara: ";
 			for (int i = 0; i < instanciasAfectadas->size();i++) {
@@ -347,10 +356,12 @@ void AdministradorEntidades::eliminarInstancia(unsigned int id, unsigned int id_
 						entidad->eliminarInstancia(eliminados.idInstancias->at(j));
 					}
 				}
+				retorno = ent->getInstancia(id_instancia,error);
 				ent->eliminarInstancia(id_instancia);
 			}
 		}
 	}
+	return retorno;
 }
 
 vector<Eliminados>* AdministradorEntidades::informarEliminacion(Entidad* ent,unsigned int id_instancia) {

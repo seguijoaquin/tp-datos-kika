@@ -37,14 +37,14 @@ public:
 	void menuUsuario();
 	void leerArchivoEntidades();
 	//void crearEntidad(Entidad* entidad);
-	void crearInstancia(int id);
+	Instancia* crearInstancia(int id);
 	int getUltimoID();
 	int getID(int x);
 	void listarEntidades();
 	void listarInstancias(int id);
 	Entidad* getEntidad(int id);
-	void eliminarInstancia(unsigned int id, unsigned int id_instancia);
-	void modificarInstancia(unsigned int id, unsigned int id_instancia);
+	Instancia* eliminarInstancia(unsigned int id, unsigned int id_instancia);
+	void modificarInstancia(unsigned int id, unsigned int id_instancia,Instancia** instanciaVieja, Instancia** instanciaNueva);
 	void eliminarInstancias(int id);
 	bool entidadExistente(string nombre);
 
