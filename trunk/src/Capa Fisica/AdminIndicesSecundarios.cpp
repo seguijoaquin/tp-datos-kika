@@ -137,6 +137,7 @@ void AdministradorIndices::actualizar(Entidad* entidadVieja, Entidad* entidadNue
 		}
 		++it;
 	}
+
 }
 
 void AdministradorIndices::persistirIndice(Indice* indice){
