@@ -27,6 +27,7 @@ private:
 	void agregarDato(int buffer);
 	void agregarAtributo(metaDataAtributo atributo);
 	bool validarCreacionInstancia(Entidad* ent);
+	bool validarIdCreacionInstancia(Entidad* ent,int id_instancia,string nombreAtributo);
 	vector<Eliminados>* informarEliminacion(Entidad* ent,unsigned int id_instancia);
 	vector<Eliminados>* eliminacionDirecta(Entidad* ent,int id_instancia);
 	vector<Eliminados>* eliminacionIndirecta(Entidad* ent,int id_instancia);
