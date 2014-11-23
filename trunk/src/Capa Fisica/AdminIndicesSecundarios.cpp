@@ -120,14 +120,14 @@ void AdministradorIndices::actualizarIndices(){
 
 void AdministradorIndices::actualizar(Entidad* entidadVieja, Entidad* entidadNueva){
 	list<Indice>::iterator it = this->indices->begin();
-	list<metaDataAtributo>::iterator itAtributosEntidadNueva = entidadNueva->getListaAtributos();
+	list<metaDataAtributo>::iterator itAtributosEntidadNueva = entidadNueva->getListaAtributos()->begin();
 	list<string>::iterator itAtributos;
 	while (it != this->indices->end()) {
 		if (it->nombreEntidad == entidadNueva->getNombre()) {
 			string claveNueva;
 			itAtributos = it->nombresAtributos->begin();
 			while (itAtributos != it->nombresAtributos->end()) {
-				if (itAtributos == itAtributosEntidadNueva->nombre) {
+				if (*itAtributos == itAtributosEntidadNueva->nombre) {
 					claveNueva += itAtributosEntidadNueva->nombre;
 					claveNueva += separadorClaves;
 				}
