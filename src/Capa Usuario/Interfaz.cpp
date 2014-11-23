@@ -301,7 +301,9 @@ void Interfaz::modificar_instancia(){
 	cout<<"Instancias de la entidad "<<ent->getNombre()<<":"<<endl;
 	ent->listarInstancias();							// Muestra sus instancias.
 	int id_instancia = this->pedir_opcion();	// Pide instancia a modificar.
-	adminEntidades->modificarInstancia(ent->getID(),id_instancia);
+	Instancia* instanciaVieja = NULL;
+	Instancia* instanciaNueva = NULL;
+	adminEntidades->modificarInstancia(ent->getID(),id_instancia,&instanciaVieja,&instanciaNueva);
 }
 
 void Interfaz::eliminar_instancia(){
