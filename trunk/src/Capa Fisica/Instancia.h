@@ -25,6 +25,7 @@ public:
 	string serializar();
 	void desSerializar(string aDeserealizar);
 	void imprimir();
+	list<metaDataAtributo>* getListaMetaData();
 };
 
 #endif

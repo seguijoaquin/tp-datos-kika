@@ -85,7 +85,6 @@ void AdministradorIndices::mostrar_indice(int x){
 	}
 	if (it->tipo == ARBOL) it->arbol->mostrarArbol();
 	else it->hash->mostrarHash();
-			//else it->hash->mostrarHash();
 }
 void AdministradorIndices::eliminar_indice(){
 	int max = this->listar_indices();
@@ -115,27 +114,37 @@ void AdministradorIndices::actualizarIndices(){
 		this->persistirIndice(&indice);
 		++it;
 	}
-
 }
 
-void AdministradorIndices::actualizar(Entidad* entidadVieja, Entidad* entidadNueva){
-	list<Indice>::iterator it = this->indices->begin();
-	list<metaDataAtributo>::iterator itAtributosEntidadNueva = entidadNueva->getListaAtributos()->begin();
-	list<string>::iterator itAtributos;
-	while (it != this->indices->end()) {
-		if (it->nombreEntidad == entidadNueva->getNombre()) {
-			string claveNueva;
-			itAtributos = it->nombresAtributos->begin();
-			while (itAtributos != it->nombresAtributos->end()) {
-				if (*itAtributos == itAtributosEntidadNueva->nombre) {
-					claveNueva += itAtributosEntidadNueva->nombre;
-					claveNueva += separadorClaves;
+void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* instanciaVieja, string nombreEntidad, int x){
+	/*
+	 * - Recibo instancia actualizada y el nombre de la entidad a la que pertenece
+	 * - Recorro la lista de indices hasta encontrar un indice cuya entidad coincida
+	 * 	con la entidad que recibo por parametro
+	 * - Recorro la lista de nombres de atributos del indice y la lista de metadata de la instancia
+	 * - Por cada coincidencia entre el nombreAtrib del indice y el nombre de la lista de metadata,
+	 * hago un getAtributo() y lo agrego a un string
+	 * - agrego el string al arbol
+	*/
+	list<Indice>::iterator itIndices = this->indices->begin();
+	while (itIndices != this->indices->end()) {
+		if (itIndices->nombreEntidad == nombreEntidad){
+			list<string>::iterator itNombresAtributos = itIndices->nombresAtributos->begin();
+			list<metaDataAtributo>::iterator itMetaDataNueva = instanciaNueva->getListaMetaData()->begin();
+			while (itMetaDataNueva != instanciaNueva->getListaMetaData()->end()){
+				int indiceAtributo = 1;
+				while (itNombresAtributos != itIndices->nombresAtributos->end()){
+					string claveNueva = "";
+					if(itNombresAtributos == itMetaDataNueva->nombre){
+						claveNueva += instanciaNueva->getAtributo(indiceAtributo);
+					}
+					++itNombresAtributos;
 				}
-				++itAtributos;
+				++itMetaDataNueva;
+				++indiceAtributo;
 			}
-			++itAtributosEntidadNueva;
 		}
-		++it;
+		++itIndices;
 	}
 
 }
