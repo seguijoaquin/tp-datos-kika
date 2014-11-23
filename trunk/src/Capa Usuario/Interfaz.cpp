@@ -382,8 +382,7 @@ void Interfaz::registrar_ingreso(){
 		}
 		++itP;
 	}
-	precioUnitario = ++(*itP).entero;
-
+	precioUnitario = ++((*itP).entero);
 
 	// PEDIR COLOR
 	color = this->adminEntidades->getEntidad(idEntColor);
