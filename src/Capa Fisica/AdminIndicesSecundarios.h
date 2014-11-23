@@ -46,6 +46,7 @@ public:
 	void eliminar_indice();
 	void crear_indice(Entidad* entidad);
 	void mostrar_indice(int x);
+	void actualizar(Entidad* entidadVieja, Entidad* entidadNueva);
 
 };
 
