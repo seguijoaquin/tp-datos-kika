@@ -134,23 +134,26 @@ void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* insta
 		claveVieja = "";
 		if (itIndices->nombreEntidad == nombreEntidad){
 			list<string>::iterator itNombresAtributos = itIndices->nombresAtributos->begin();
-			list<metaDataAtributo>::iterator itMetaDataVieja = instanciaVieja->getListaMetaData()->begin();
-			int indiceAtributo = 1;
-			while (itMetaDataVieja != instanciaNueva->getListaMetaData()->end()){
-				while (itNombresAtributos != itIndices->nombresAtributos->end()){
+			while (itNombresAtributos != itIndices->nombresAtributos->end()){
+				list<metaDataAtributo>::iterator itMetaDataVieja = instanciaVieja->getListaMetaData()->begin();
+				int indiceAtributo = 1;
+				while (itMetaDataVieja != instanciaNueva->getListaMetaData()->end()){
 					if(*itNombresAtributos == itMetaDataVieja->nombre){
 						//Validar el tipo de atributo devuelto
 						Atributo* att = instanciaVieja->getAtributo(indiceAtributo);
+
 						if (itMetaDataVieja->tipo == TEXTO) {
 							claveVieja += att->texto;
 						} else {
 							claveVieja += StringUtil::int2string(att->entero);
 						}
+
+						claveVieja += separadorClaves;
 					}
-					++itNombresAtributos;
+					++indiceAtributo;
+					++itMetaDataVieja;
 				}
-				++itMetaDataVieja;
-				++indiceAtributo;
+				++itNombresAtributos;
 			}
 		}
 		if (!claveVieja.empty()){
@@ -169,22 +172,24 @@ void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* insta
 		claveNueva = "";
 		if (itIndices->nombreEntidad == nombreEntidad){
 			list<string>::iterator itNombresAtributos = itIndices->nombresAtributos->begin();
-			list<metaDataAtributo>::iterator itMetaDataNueva = instanciaNueva->getListaMetaData()->begin();
-			int indiceAtributo = 1;
-			while (itMetaDataNueva != instanciaNueva->getListaMetaData()->end()){
-				while (itNombresAtributos != itIndices->nombresAtributos->end()){
+			while (itNombresAtributos != itIndices->nombresAtributos->end()){
+				list<metaDataAtributo>::iterator itMetaDataNueva = instanciaNueva->getListaMetaData()->begin();
+				int indiceAtributo = 1;
+				while (itMetaDataNueva != instanciaNueva->getListaMetaData()->end()){
 					if(*itNombresAtributos == itMetaDataNueva->nombre){
+						//Validar el tipo de atributo devuelto
 						Atributo* att = instanciaNueva->getAtributo(indiceAtributo);
 						if (itMetaDataNueva->tipo == TEXTO) {
-							claveVieja += att->texto;
+							claveNueva += att->texto;
 						} else {
 							claveNueva += StringUtil::int2string(att->entero);
 						}
+						claveNueva += separadorClaves;
 					}
-					++itNombresAtributos;
+					++indiceAtributo;
+					++itMetaDataNueva;
 				}
-				++itMetaDataNueva;
-				++indiceAtributo;
+				++itNombresAtributos;
 			}
 		}
 		if (!claveNueva.empty()){
