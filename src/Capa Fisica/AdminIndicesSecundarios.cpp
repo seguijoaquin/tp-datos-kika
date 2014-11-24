@@ -118,7 +118,7 @@ void AdministradorIndices::actualizarIndices(){
 	}
 }
 
-void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* instanciaVieja, string nombreEntidad, int operacion){
+void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* instanciaVieja, string nombreEntidad){
 	/*
 	 * - Recibo instancia actualizada y el nombre de la entidad a la que pertenece
 	 * - Recorro la lista de indices hasta encontrar un indice cuya entidad coincida
@@ -162,7 +162,6 @@ void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* insta
 		}
 		++itIndices;
 	}
-	if (operacion == MODIFICACION) { //Si es una modificacion
 		//Luego agrego la clave nueva
 			itIndices = this->indices->begin();
 			string claveNueva;
@@ -197,7 +196,6 @@ void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* insta
 				}
 				++itIndices;
 			}
-	}
 }
 
 void AdministradorIndices::persistirIndice(Indice* indice){

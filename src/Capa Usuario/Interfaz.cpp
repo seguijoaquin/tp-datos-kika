@@ -304,6 +304,7 @@ void Interfaz::modificar_instancia(){
 	Instancia* instanciaVieja = NULL;
 	Instancia* instanciaNueva = NULL;
 	adminEntidades->modificarInstancia(ent->getID(),id_instancia,&instanciaVieja,&instanciaNueva);
+	adminIndices->actualizar(instanciaNueva,instanciaVieja,ent->getNombre());
 }
 
 void Interfaz::eliminar_instancia(){
