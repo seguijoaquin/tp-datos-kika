@@ -118,16 +118,46 @@ void AdministradorIndices::actualizarIndices(){
 	}
 }
 
-void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* instanciaVieja, string nombreEntidad){
-	/*
-	 * - Recibo instancia actualizada y el nombre de la entidad a la que pertenece
-	 * - Recorro la lista de indices hasta encontrar un indice cuya entidad coincida
-	 * 	con la entidad que recibo por parametro
-	 * - Recorro la lista de nombres de atributos del indice y la lista de metadata de la instancia
-	 * - Por cada coincidencia entre el nombreAtrib del indice y el nombre de la lista de metadata,
-	 * hago un getAtributo() y lo agrego a un string
-	 * - agrego el string al arbol
-	*/
+void AdministradorIndices::agregar(Instancia* instancia, string nombreEntidad){
+	list<Indice>::iterator itIndices = this->indices->begin();
+	string claveNueva;
+	while (itIndices != this->indices->end()) {
+		claveNueva = "";
+		if (itIndices->nombreEntidad == nombreEntidad){
+			list<string>::iterator itNombresAtributos = itIndices->nombresAtributos->begin();
+			while (itNombresAtributos != itIndices->nombresAtributos->end()){
+				list<metaDataAtributo>::iterator itMetaDataNueva = instancia->getListaMetaData()->begin();
+				int indiceAtributo = 1;
+				while (itMetaDataNueva != instancia->getListaMetaData()->end()){
+					if(*itNombresAtributos == itMetaDataNueva->nombre){
+						//Validar el tipo de atributo devuelto
+						Atributo* att = instancia->getAtributo(indiceAtributo);
+						if (itMetaDataNueva->tipo == TEXTO) {
+							claveNueva += att->texto;
+						} else {
+							claveNueva += StringUtil::int2string(att->entero);
+						}
+						claveNueva += separadorClaves;
+					}
+					++indiceAtributo;
+					++itMetaDataNueva;
+				}
+				++itNombresAtributos;
+			}
+		}
+		if (!claveNueva.empty()){
+			if(itIndices->tipo == ARBOL) {
+				itIndices->arbol->agregarValor(*(new Clave(claveNueva)),StringUtil::int2string(instancia->getID()));
+			} else {
+				itIndices->hash->insertarElemento(claveNueva,StringUtil::int2string(instancia->getID()));
+			}
+		}
+		++itIndices;
+	}
+
+}
+
+void AdministradorIndices::eliminar(Instancia* instanciaVieja, string nombreEntidad) {
 	list<Indice>::iterator itIndices = this->indices->begin();
 	string claveVieja;
 	while (itIndices != this->indices->end()) {
@@ -137,7 +167,7 @@ void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* insta
 			while (itNombresAtributos != itIndices->nombresAtributos->end()){
 				list<metaDataAtributo>::iterator itMetaDataVieja = instanciaVieja->getListaMetaData()->begin();
 				int indiceAtributo = 1;
-				while (itMetaDataVieja != instanciaNueva->getListaMetaData()->end()){
+				while (itMetaDataVieja != instanciaVieja->getListaMetaData()->end()){
 					if(*itNombresAtributos == itMetaDataVieja->nombre){
 						//Validar el tipo de atributo devuelto
 						Atributo* att = instanciaVieja->getAtributo(indiceAtributo);
@@ -165,42 +195,21 @@ void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* insta
 		}
 		++itIndices;
 	}
+}
+
+void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* instanciaVieja, string nombreEntidad){
+	/*
+	 * - Recibo instancia actualizada y el nombre de la entidad a la que pertenece
+	 * - Recorro la lista de indices hasta encontrar un indice cuya entidad coincida
+	 * 	con la entidad que recibo por parametro
+	 * - Recorro la lista de nombres de atributos del indice y la lista de metadata de la instancia
+	 * - Por cada coincidencia entre el nombreAtrib del indice y el nombre de la lista de metadata,
+	 * hago un getAtributo() y lo agrego a un string
+	 * - agrego el string al arbol
+	*/
+	this->eliminar(instanciaVieja,nombreEntidad);
 	//Luego agrego la clave nueva
-	itIndices = this->indices->begin();
-	string claveNueva;
-	while (itIndices != this->indices->end()) {
-		claveNueva = "";
-		if (itIndices->nombreEntidad == nombreEntidad){
-			list<string>::iterator itNombresAtributos = itIndices->nombresAtributos->begin();
-			while (itNombresAtributos != itIndices->nombresAtributos->end()){
-				list<metaDataAtributo>::iterator itMetaDataNueva = instanciaNueva->getListaMetaData()->begin();
-				int indiceAtributo = 1;
-				while (itMetaDataNueva != instanciaNueva->getListaMetaData()->end()){
-					if(*itNombresAtributos == itMetaDataNueva->nombre){
-						//Validar el tipo de atributo devuelto
-						Atributo* att = instanciaNueva->getAtributo(indiceAtributo);
-						if (itMetaDataNueva->tipo == TEXTO) {
-							claveNueva += att->texto;
-						} else {
-							claveNueva += StringUtil::int2string(att->entero);
-						}
-						claveNueva += separadorClaves;
-					}
-					++indiceAtributo;
-					++itMetaDataNueva;
-				}
-				++itNombresAtributos;
-			}
-		}
-		if (!claveNueva.empty()){
-			if(itIndices->tipo == ARBOL) {
-				itIndices->arbol->agregarValor(*(new Clave(claveNueva)),StringUtil::int2string(instanciaNueva->getID()));
-			} else {
-				itIndices->hash->insertarElemento(claveNueva,StringUtil::int2string(instanciaNueva->getID()));
-			}
-		}
-		++itIndices;
-	}
+	this->agregar(instanciaNueva,nombreEntidad);
 }
 
 void AdministradorIndices::persistirIndice(Indice* indice){
