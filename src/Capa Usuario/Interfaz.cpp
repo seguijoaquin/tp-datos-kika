@@ -292,7 +292,10 @@ bool Interfaz::listar_opciones_libro_quejas(){
 
 void Interfaz::crear_instancia(){
 	int id = this->seleccionar_entidad();
-	this->adminEntidades->crearInstancia(id);
+	Instancia* inst =this->adminEntidades->crearInstancia(id);
+	if (inst != NULL){
+		this->adminIndices->agregar(inst,this->adminEntidades->getEntidad(id)->getNombre());
+	}
 }
 
 void Interfaz::modificar_instancia(){
@@ -314,7 +317,8 @@ void Interfaz::eliminar_instancia(){
 	ent->listarInstancias();
 
 	int num_instancia = this->pedir_opcion();	// Pide instancia a modificar.
-	this->adminEntidades->eliminarInstancia(id,num_instancia);
+	Instancia* inst = this->adminEntidades->eliminarInstancia(id,num_instancia);
+	this->adminIndices->eliminar(inst,ent->getNombre());
 }
 
 void Interfaz::eliminar_instancias(){

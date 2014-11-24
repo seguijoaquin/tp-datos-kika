@@ -47,6 +47,8 @@ public:
 	void crear_indice(Entidad* entidad);
 	void mostrar_indice(int x);
 	void actualizar(Instancia* instancia, Instancia* instanciaVieja,string nombreEntidad);
+	void agregar(Instancia* instancia, string nombreEntidad);
+	void eliminar(Instancia* instancia, string nombreEntidad);
 
 };
 
