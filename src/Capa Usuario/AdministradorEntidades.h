@@ -4,8 +4,8 @@
 #include <iostream>
 #include <list>
 #include <sstream>
-#include "Entidad.h"
-#include "Archivos/Archivo.h"
+#include "../Capa Fisica/Entidad.h"
+#include "../Capa Fisica/Archivos/Archivo.h"
 #include <cstring>
 #include <cstdlib>
 
