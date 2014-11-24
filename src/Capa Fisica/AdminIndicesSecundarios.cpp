@@ -8,6 +8,8 @@
 #include "AdminIndicesSecundarios.h"
 #include "../Capa Logica/ArbolBMas/ArbolBMas.h"
 
+#define MODIFICACION 1
+
 AdministradorIndices::AdministradorIndices(){
 	this->indices = new list<Indice>;
 	this->indicesCreados = fopen("indicesCreados.txt","r+b");
@@ -116,7 +118,7 @@ void AdministradorIndices::actualizarIndices(){
 	}
 }
 
-void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* instanciaVieja, string nombreEntidad, int x){
+void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* instanciaVieja, string nombreEntidad, int operacion){
 	/*
 	 * - Recibo instancia actualizada y el nombre de la entidad a la que pertenece
 	 * - Recorro la lista de indices hasta encontrar un indice cuya entidad coincida
@@ -127,26 +129,75 @@ void AdministradorIndices::actualizar(Instancia* instanciaNueva,Instancia* insta
 	 * - agrego el string al arbol
 	*/
 	list<Indice>::iterator itIndices = this->indices->begin();
+	string claveVieja;
 	while (itIndices != this->indices->end()) {
 		if (itIndices->nombreEntidad == nombreEntidad){
 			list<string>::iterator itNombresAtributos = itIndices->nombresAtributos->begin();
-			list<metaDataAtributo>::iterator itMetaDataNueva = instanciaNueva->getListaMetaData()->begin();
-			while (itMetaDataNueva != instanciaNueva->getListaMetaData()->end()){
-				int indiceAtributo = 1;
+			list<metaDataAtributo>::iterator itMetaDataVieja = instanciaVieja->getListaMetaData()->begin();
+			int indiceAtributo = 1;
+			claveVieja = "";
+			while (itMetaDataVieja != instanciaNueva->getListaMetaData()->end()){
 				while (itNombresAtributos != itIndices->nombresAtributos->end()){
-					string claveNueva = "";
-					if(itNombresAtributos == itMetaDataNueva->nombre){
-						claveNueva += instanciaNueva->getAtributo(indiceAtributo);
+					if(*itNombresAtributos == itMetaDataVieja->nombre){
+						//Validar el tipo de atributo devuelto
+						Atributo* att = instanciaVieja->getAtributo(indiceAtributo);
+						if (itMetaDataVieja->tipo == TEXTO) {
+							claveVieja += att->texto;
+						} else {
+							claveVieja += StringUtil::int2string(att->entero);
+						}
 					}
 					++itNombresAtributos;
 				}
-				++itMetaDataNueva;
+				++itMetaDataVieja;
 				++indiceAtributo;
+			}
+		}
+		if (!claveVieja.empty()){
+			if (itIndices->tipo == ARBOL){
+				itIndices->arbol->borrarValor(*(new Clave(claveVieja)),StringUtil::int2string(instanciaVieja->getID()));
+			} else {
+				itIndices->hash->elminarElemento(claveVieja);
 			}
 		}
 		++itIndices;
 	}
-
+	if (operacion == MODIFICACION) { //Si es una modificacion
+		//Luego agrego la clave nueva
+			itIndices = this->indices->begin();
+			string claveNueva;
+			while (itIndices != this->indices->end()) {
+				if (itIndices->nombreEntidad == nombreEntidad){
+					list<string>::iterator itNombresAtributos = itIndices->nombresAtributos->begin();
+					list<metaDataAtributo>::iterator itMetaDataNueva = instanciaNueva->getListaMetaData()->begin();
+					int indiceAtributo = 1;
+					claveNueva = "";
+					while (itMetaDataNueva != instanciaNueva->getListaMetaData()->end()){
+						while (itNombresAtributos != itIndices->nombresAtributos->end()){
+							if(*itNombresAtributos == itMetaDataNueva->nombre){
+								Atributo* att = instanciaNueva->getAtributo(indiceAtributo);
+								if (itMetaDataNueva->tipo == TEXTO) {
+									claveVieja += att->texto;
+								} else {
+									claveNueva += StringUtil::int2string(att->entero);
+								}
+							}
+							++itNombresAtributos;
+						}
+						++itMetaDataNueva;
+						++indiceAtributo;
+					}
+				}
+				if (!claveNueva.empty()){
+					if(itIndices->tipo == ARBOL) {
+						itIndices->arbol->agregarValor(*(new Clave(claveNueva)),StringUtil::int2string(instanciaNueva->getID()));
+					} else {
+						itIndices->hash->insertarElemento(claveNueva,StringUtil::int2string(instanciaNueva->getID()));
+					}
+				}
+				++itIndices;
+			}
+	}
 }
 
 void AdministradorIndices::persistirIndice(Indice* indice){
