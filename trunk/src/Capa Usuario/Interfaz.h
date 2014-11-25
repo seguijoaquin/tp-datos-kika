@@ -5,7 +5,7 @@
 #include <iostream>
 #include <list>
 #include "../Capa Fisica/Entidad.h"
-#include "../Capa Usuario/AdministradorEntidades.h"
+#include "../Capa Fisica/AdministradorEntidades.h"
 #include "../Capa Usuario/AdminIndicesSecundarios.h"
 #include "../Capa Usuario/AdministradorRegistros.h"
 #include "Consultas.h"

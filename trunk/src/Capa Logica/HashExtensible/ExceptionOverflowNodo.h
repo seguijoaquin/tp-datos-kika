@@ -1,10 +1,3 @@
-/*
- * ExceptionOverflowNodo.h
- *
- *  Created on: 14/04/2010
- *      Author: gonzalo
- */
-
 #ifndef EXCEPTIONOVERFLOWNODO_H_
 #define EXCEPTIONOVERFLOWNODO_H_
 
