@@ -23,12 +23,13 @@ C_UPPER_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Utilitarios \
+Capa\ Usuario \
+Capa\ Logica/HashExtensible \
+Capa\ Logica/ArbolBMas \
 Capa\ Fisica \
+Capa\ Fisica/Excepciones \
 Capa\ Fisica/Archivos/RegistroVariable \
 Capa\ Fisica/Archivos/RegistroFijo \
 Capa\ Fisica/Archivos/Bloques \
 Capa\ Fisica/Archivos \
-Capa\ Fisica\Excepciones \
-Capa\ Logica \
-Capa\ Logica/ArbolBMas \
-Capa\ Logica/HashExtensible \
