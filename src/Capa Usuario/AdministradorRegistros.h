@@ -5,7 +5,7 @@
 #include <iostream>
 #include <list>
 #include <sstream>
-#include "AdministradorEntidades.h"
+#include "../Capa Fisica/AdministradorEntidades.h"
 
 #define LARGO_CADENA 30
 
