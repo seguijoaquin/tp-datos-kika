@@ -1,54 +1,55 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
 ################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-./Capa\ Fisica/Excepciones/ExcepcionBloqueIncorrecto.cpp \
-./Capa\ Fisica/Excepciones/ExcepcionBloqueInexistente.cpp \
-./Capa\ Fisica/Excepciones/ExcepcionOverflowTamBloque.cpp \
-./Capa\ Fisica/Excepciones/ExcepcionPosicionEnEspacioLibre.cpp 
+./Capa\ Usuario/AdminIndicesSecundarios.cpp \
+./Capa\ Usuario/AdministradorRegistros.cpp \
+./Capa\ Usuario/Consultas.cpp \
+./Capa\ Usuario/Interfaz.cpp \
 
 OBJS += \
-./Capa\ Fisica/Excepciones/ExcepcionBloqueIncorrecto.o \
-./Capa\ Fisica/Excepciones/ExcepcionBloqueInexistente.o \
-./Capa\ Fisica/Excepciones/ExcepcionOverflowTamBloque.o \
-./Capa\ Fisica/Excepciones/ExcepcionPosicionEnEspacioLibre.o 
+./Capa\ Usuario/AdminIndicesSecundarios.o \
+./Capa\ Usuario/AdministradorRegistros.o \
+./Capa\ Usuario/Consultas.o \
+./Capa\ Usuario/Interfaz.o \
 
 CPP_DEPS += \
-./Capa\ Fisica/Excepciones/ExcepcionBloqueIncorrecto.d \
-./Capa\ Fisica/Excepciones/ExcepcionBloqueInexistente.d \
-./Capa\ Fisica/Excepciones/ExcepcionOverflowTamBloque.d \
-./Capa\ Fisica/Excepciones/ExcepcionPosicionEnEspacioLibre.d 
+./trunk/src/Capa\ Usuario/AdminIndicesSecundarios.d \
+./Capa\ Usuario/AdministradorRegistros.d \
+./Capa\ Usuario/Consultas.d \
+./Capa\ Usuario/Interfaz.d \
 
 
 # Each subdirectory must supply rules for building sources it contributes
-Capa\ Fisica/Excepciones/ExcepcionBloqueIncorrecto.o: ./Capa\ Fisica/Excepciones/ExcepcionBloqueIncorrecto.cpp
+Capa\ Usuario/AdminIndicesSecundarios.o: ./Capa\ Usuario/AdminIndicesSecundarios.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-Capa\ Fisica/Excepciones/ExcepcionBloqueInexistente.o: ./Capa\ Fisica/Excepciones/ExcepcionBloqueInexistente.cpp
+Capa\ Usuario/AdministradorRegistros.o: ./Capa\ Usuario/AdministradorRegistros.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-Capa\ Fisica/Excepciones/ExcepcionOverflowTamBloque.o: ./Capa\ Fisica/Excepciones/ExcepcionOverflowTamBloque.cpp
+Capa\ Usuario/Consultas.o: ./Capa\ Usuario/Consultas.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-Capa\ Fisica/Excepciones/ExcepcionPosicionEnEspacioLibre.o: ./Capa\ Fisica/Excepciones/ExcepcionPosicionEnEspacioLibre.cpp
+Capa\ Usuario/Interfaz.o: ./Capa\ Usuario/Interfaz.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
-
 

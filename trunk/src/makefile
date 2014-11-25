@@ -8,14 +8,16 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Utilitarios/subdir.mk
+-include Capa\ Usuario/subdir.mk
+-include Capa\ Logica/HashExtensible/subdir.mk
+-include Capa\ Logica/ArbolBMas/subdir.mk
+-include Capa\ Fisica/Excepciones/subdir.mk
 -include Capa\ Fisica/Archivos/RegistroVariable/subdir.mk
 -include Capa\ Fisica/Archivos/RegistroFijo/subdir.mk
 -include Capa\ Fisica/Archivos/Bloques/subdir.mk
 -include Capa\ Fisica/Archivos/subdir.mk
 -include Capa\ Fisica/subdir.mk
--include Capa\ Fisica/Excepciones/subdir.mk
--include Capa\ Logica/ArbolBMas/subdir.mk
--include Capa\ Logica/HashExtensible/subdir.mk
 -include subdir.mk
 -include objects.mk
 
