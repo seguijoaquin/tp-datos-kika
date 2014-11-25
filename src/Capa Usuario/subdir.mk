@@ -18,7 +18,7 @@ OBJS += \
 ./Capa\ Usuario/Interfaz.o \
 
 CPP_DEPS += \
-./trunk/src/Capa\ Usuario/AdminIndicesSecundarios.d \
+./Capa\ Usuario/AdminIndicesSecundarios.d \
 ./Capa\ Usuario/AdministradorRegistros.d \
 ./Capa\ Usuario/Consultas.d \
 ./Capa\ Usuario/Interfaz.d \
