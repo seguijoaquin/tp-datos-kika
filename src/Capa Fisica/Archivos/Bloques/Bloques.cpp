@@ -29,51 +29,43 @@ ArchivoBloque::~ArchivoBloque() {
 	archivo.close();
 }
 
-bool ArchivoBloque::esMultiplo(int tamanio){
-
-        double n1= tamanio / 512;
-        double n2= log2(n1);
-
-        return((n2 == static_cast<int>(n2)) && (tamanio>=512));
-}
-
 void ArchivoBloque::leerMapaBloques(){
 
-        string dirMapaBloques = nombreArchivo + "MapaBloques";
+	string dirMapaBloques = nombreArchivo + "MapaBloques";
 
-        ifstream archivoMapaBloques;
-        archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary);
-		if(!archivoMapaBloques) // si no existe, crear archivo nuevo
-			archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary | fstream::app);
+	ifstream archivoMapaBloques;
+	archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary);
+	if(!archivoMapaBloques) // si no existe, crear archivo nuevo
+		archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary | fstream::app);
 
-		char bit;
+	char bit;
+	archivoMapaBloques.read((char*)&bit, sizeof(char));
+	while(!archivoMapaBloques.eof()){
+		vectorMapaBits.push_back(bit);
 		archivoMapaBloques.read((char*)&bit, sizeof(char));
-		while(!archivoMapaBloques.eof()){
-			vectorMapaBits.push_back(bit);
-			archivoMapaBloques.read((char*)&bit, sizeof(char));
-		}
+	}
 
-       /* ifstream archivoMapaBloques;
-        archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary);
-        if(!archivoMapaBloques) // si no existe, crear archivo nuevo
-        	archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary | fstream::app);
+   /* ifstream archivoMapaBloques;
+	archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary);
+	if(!archivoMapaBloques) // si no existe, crear archivo nuevo
+		archivoMapaBloques.open(dirMapaBloques.c_str(), fstream::binary | fstream::app);
 
-        int bloqueActual = 0;
-		int cantInstanciasBloque;
-		int espacioLibreBloque;
+	int bloqueActual = 0;
+	int cantInstanciasBloque;
+	int espacioLibreBloque;
+	archivoMapaBloques.read((char*)&cantInstanciasBloque, sizeof(cantInstanciasBloque));
+	archivoMapaBloques.read((char*)&espacioLibreBloque, sizeof(espacioLibreBloque));
+	while(!archivoMapaBloques.eof()){
+		Bloque* bloque = new Bloque(this->tamanioBloque);
+		bloque->setCantInstancias(cantInstanciasBloque);
+		bloque->setEspacioLibre(espacioLibreBloque);
+		this->vectorBloques.push_back(bloque);
 		archivoMapaBloques.read((char*)&cantInstanciasBloque, sizeof(cantInstanciasBloque));
 		archivoMapaBloques.read((char*)&espacioLibreBloque, sizeof(espacioLibreBloque));
-		while(!archivoMapaBloques.eof()){
-			Bloque* bloque = new Bloque(this->tamanioBloque);
-			bloque->setCantInstancias(cantInstanciasBloque);
-			bloque->setEspacioLibre(espacioLibreBloque);
-			this->vectorBloques.push_back(bloque);
-			archivoMapaBloques.read((char*)&cantInstanciasBloque, sizeof(cantInstanciasBloque));
-			archivoMapaBloques.read((char*)&espacioLibreBloque, sizeof(espacioLibreBloque));
-			bloqueActual++;
-		}
+		bloqueActual++;
+	}
 */
-		archivoMapaBloques.close();
+	archivoMapaBloques.close();
 }
 
 void ArchivoBloque::escribirEspaciosLibres(){

@@ -45,7 +45,6 @@ private:
         vector<char> vectorMapaBits;
         unsigned int tamanioBloque;
         unsigned int cantidadBloques;
-        bool esMultiplo(int tamanioBloque);
         unsigned int siguientePosicionLibre(int tamanioInstancia);
         unsigned int siguientePosicionLibre();
         void leerMapaBloques();
